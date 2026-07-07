@@ -1,0 +1,251 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% ========== Fonts (XeLaTeX) ==========
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+% ========== Math ==========
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ========== Margins: top=3, left=4, right=3, bottom=3 cm (Pedoman Undiksha hlm. 71) ==========
+\usepackage[a4paper,top=3cm,bottom=3cm,left=4cm,right=3cm]{geometry}
+
+% ========== Line spacing 2.0 ==========
+\usepackage{setspace}
+\doublespacing
+
+% ========== Disable automatic hyphenation ==========
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=3em
+
+% ========== Indonesian language support ==========
+\usepackage{polyglossia}
+\setdefaultlanguage{indonesian}
+\setotherlanguage{english}
+
+% ========== Force Indonesian caption labels ==========
+\usepackage{caption}
+\captionsetup[table]{name=Tabel}
+\captionsetup[figure]{name=Gambar}
+\renewcommand{\tablename}{Tabel}
+\renewcommand{\figurename}{Gambar}
+
+% ========== Chapter/section formatting ==========
+\usepackage{titlesec}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries\centering}
+  {BAB~\thechapter}{1ex}{\Large}
+\titlespacing*{\chapter}{0pt}{-20pt}{24pt}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries\itshape}
+
+% ========== TOC depth ==========
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% ========== Paragraph indent on first line ==========
+\usepackage{indentfirst}
+\setlength{\parindent}{1.27cm}
+
+% ========== Links ==========
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+\urlstyle{same}
+
+% ========== Graphics, tables ==========
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{csquotes}
+\usepackage[table]{xcolor}
+
+% ========== TikZ for diagrams ==========
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+
+% ========== Pandoc compatibility ==========
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{iftex}
+
+% ========== Bibliography entry (APA-style hanging indent) ==========
+\newcommand{\refitem}[1]{%
+  \noindent\hangindent=1.27cm\hangafter=1 #1\par\vspace{0.35em}}
+
+$if(header-includes)$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$endif$
+
+% ========== Metadata variables ==========
+\newcommand{\thesistitle}{$thesis-title$}
+\newcommand{\studentname}{$author$}
+\newcommand{\studentnim}{$nim$}
+\newcommand{\programstudi}{$program-studi$}
+\newcommand{\jurusan}{$jurusan$}
+\newcommand{\fakultas}{$fakultas$}
+\newcommand{\universitas}{$universitas$}
+\newcommand{\tahun}{$tahun$}
+\newcommand{\kota}{$kota$}
+\newcommand{\pembimbingsatu}{$pembimbing1-nama$}
+\newcommand{\pembimbingsatunip}{$pembimbing1-nip$}
+\newcommand{\pembimbingdua}{$pembimbing2-nama$}
+\newcommand{\pembimbingduanip}{$pembimbing2-nip$}
+
+\title{\thesistitle}
+\author{\studentname}
+\date{\tahun}
+
+\begin{document}
+
+% ================================================================
+% FRONT MATTER (roman numerals)
+% ================================================================
+\frontmatter
+\pagestyle{plain}
+
+% ---------- COVER ----------
+\begin{titlepage}
+\begin{center}
+\singlespacing
+{\Large\bfseries PROPOSAL SKRIPSI\par}
+\vspace{1.5cm}
+{\large\bfseries\MakeUppercase{\thesistitle}\par}
+\vspace{1cm}
+
+$if(logo-undiksha)$
+\includegraphics[width=4.5cm]{$logo-undiksha$}\par
+$else$
+\vspace{4.5cm}
+$endif$
+
+\vspace{1cm}
+{\normalsize Oleh:\par}
+\vspace{0.3cm}
+{\large\bfseries\studentname\par}
+{\normalsize NIM. \studentnim\par}
+\vfill
+
+{\normalsize\bfseries PROGRAM STUDI \MakeUppercase{\programstudi}\par}
+{\normalsize\bfseries JURUSAN \MakeUppercase{\jurusan}\par}
+{\normalsize\bfseries FAKULTAS \MakeUppercase{\fakultas}\par}
+{\normalsize\bfseries \MakeUppercase{\universitas}\par}
+{\normalsize\bfseries \tahun\par}
+\end{center}
+\end{titlepage}
+
+% ---------- LEMBAR PERSETUJUAN ----------
+\newpage
+\thispagestyle{plain}
+\begin{center}
+\singlespacing
+{\large\bfseries LEMBAR PERSETUJUAN PROPOSAL SKRIPSI\par}
+\end{center}
+\vspace{0.8cm}
+\noindent Proposal skripsi dengan judul:
+\begin{center}\textbf{\thesistitle}\end{center}
+\vspace{0.3cm}
+\noindent yang disusun oleh:\par
+\vspace{0.3cm}
+\noindent\begin{tabular}{@{}ll@{\ }l@{}}
+Nama            & : & \studentname \\
+NIM             & : & \studentnim \\
+Program Studi   & : & \programstudi \\
+Jurusan         & : & \jurusan \\
+Fakultas        & : & \fakultas \\
+\end{tabular}
+\vspace{0.6cm}
+
+\noindent telah disetujui oleh dosen pembimbing untuk diajukan dalam seminar proposal skripsi.
+\vspace{1.5cm}
+
+\noindent \kota, \tahun
+\vspace{0.3cm}
+
+\noindent\begin{tabular}{@{}p{0.45\textwidth} @{\hfill} p{0.45\textwidth}@{}}
+\centering Pembimbing I & \centering Pembimbing II \tabularnewline
+\\[2.5cm]
+\centering \underline{\pembimbingsatu} & \centering \underline{\pembimbingdua} \tabularnewline
+\centering NIP. \pembimbingsatunip & \centering NIP. \pembimbingduanip
+\end{tabular}
+
+% ---------- ABSTRAK (Indonesia) ----------
+\newpage
+\chapter*{ABSTRAK}
+\addcontentsline{toc}{chapter}{ABSTRAK}
+\thispagestyle{plain}
+
+\noindent
+\studentname. \studentnim. \tahun. \emph{\thesistitle}. Proposal Skripsi. \programstudi, \jurusan, \fakultas, \universitas.
+
+\vspace{0.4cm}
+\noindent
+Pembimbing I: \pembimbingsatu\\
+Pembimbing II: \pembimbingdua
+
+\vspace{0.6cm}
+\begin{singlespace}
+$abstrak-id$
+\end{singlespace}
+
+\vspace{0.4cm}
+\noindent\textbf{Kata Kunci:} $kata-kunci-id$
+
+% ---------- ABSTRACT (English) ----------
+\newpage
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+\thispagestyle{plain}
+
+\noindent
+\studentname. \studentnim. \tahun. \emph{\thesistitle}. Thesis Proposal. \programstudi, \jurusan, \fakultas, \universitas.
+
+\vspace{0.4cm}
+\noindent
+Supervisor I: \pembimbingsatu\\
+Supervisor II: \pembimbingdua
+
+\vspace{0.6cm}
+\begin{singlespace}
+$abstract-en$
+\end{singlespace}
+
+\vspace{0.4cm}
+\noindent\textbf{Keywords:} $keywords-en$
+
+% ---------- DAFTAR ISI ----------
+\newpage
+\renewcommand{\contentsname}{DAFTAR ISI}
+\tableofcontents
+
+% ---------- DAFTAR GAMBAR ----------
+\newpage
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\listoffigures
+% ---------- DAFTAR TABEL ----------
+\newpage
+\renewcommand{\listtablename}{DAFTAR TABEL}
+\listoftables
+
+% ================================================================
+% MAIN MATTER (arabic numerals, starts from 1)
+% ================================================================
+\mainmatter
+\pagestyle{plain}
+
+$body$
+
+\end{document}

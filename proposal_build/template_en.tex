@@ -1,0 +1,269 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% ========== Fonts (XeLaTeX) ==========
+\usepackage{fontspec}
+% NOTE: macOS "Times New Roman" under XeLaTeX embeds a broken ToUnicode map that
+% encodes every semicolon as U+037E (Greek question mark). The PDF looks correct
+% but text extraction (copy-paste, Turnitin) reads Greek homoglyphs, which trips
+% Turnitin's "replaced characters" integrity flag. TeX Gyre Termes is a
+% metric-compatible Times clone with a correct Unicode map and identical look.
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont       = texgyretermes-bold.otf,
+  ItalicFont     = texgyretermes-italic.otf,
+  BoldItalicFont = texgyretermes-bolditalic.otf ]
+
+% ========== Math ==========
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ========== Margins: top=3, left=4, right=3, bottom=3 cm (Pedoman Undiksha hlm. 71) ==========
+\usepackage[a4paper,top=3cm,bottom=3cm,left=4cm,right=3cm]{geometry}
+
+% ========== Line spacing 2.0 ==========
+\usepackage{setspace}
+\doublespacing
+
+% ========== Disable automatic hyphenation ==========
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=3em
+
+% ========== Widow/orphan control (avoid a lone line/word at top/bottom of a page) ==========
+% Discourage (but do not forbid) lone widow/orphan lines. Values below the
+% "infinite" 10000 let TeX still break paragraphs across pages when needed,
+% so pages fill normally instead of leaving large gaps.
+\widowpenalty=1000
+\clubpenalty=1000
+\raggedbottom
+
+% ========== Language support (English default) ==========
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setotherlanguage{indonesian}
+
+% ========== English caption labels ==========
+\usepackage{caption}
+\captionsetup[table]{name=Table}
+\captionsetup[figure]{name=Figure}
+\renewcommand{\tablename}{Table}
+\renewcommand{\figurename}{Figure}
+
+% ========== Chapter/section formatting ==========
+\usepackage{titlesec}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries\centering}
+  {CHAPTER~\thechapter}{1ex}{\Large}
+\titlespacing*{\chapter}{0pt}{-20pt}{24pt}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries\itshape}
+
+% ========== TOC depth ==========
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% ========== Paragraph indent on first line ==========
+\usepackage{indentfirst}
+\setlength{\parindent}{1.27cm}
+% titlesec otherwise suppresses the indent of the first paragraph after a heading;
+% the non-starred \titlespacing (with indentfirst) keeps it indented at every level.
+\titlespacing{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% ========== Links ==========
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+\urlstyle{same}
+
+% ========== Graphics, tables ==========
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{csquotes}
+\usepackage[table]{xcolor}
+
+% ========== Float placement (keep figures on text pages, not stranded/centred on a float page) ==========
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.85}
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+
+% ========== TikZ for diagrams ==========
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+
+% ========== Pandoc compatibility ==========
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{iftex}
+
+% ========== Bibliography entry (APA-style hanging indent) ==========
+% Single line spacing WITHIN each entry; ~1.5 line gap BETWEEN entries (Pedoman Undiksha §7.2)
+\newcommand{\refitem}[1]{%
+  \begingroup
+  \setstretch{1.0}%
+  \noindent\hangindent=1.27cm\hangafter=1 #1\par
+  \endgroup
+  \vspace{7pt}}
+
+$if(header-includes)$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$endif$
+
+% ========== Metadata variables ==========
+\newcommand{\thesistitle}{$thesis-title$}
+\newcommand{\studentname}{$author$}
+\newcommand{\studentnim}{$nim$}
+\newcommand{\programstudi}{$program-studi$}
+\newcommand{\jurusan}{$jurusan$}
+\newcommand{\fakultas}{$fakultas$}
+\newcommand{\universitas}{$universitas$}
+\newcommand{\tahun}{$tahun$}
+\newcommand{\kota}{$kota$}
+\newcommand{\pembimbingsatu}{$pembimbing1-nama$}
+\newcommand{\pembimbingsatunip}{$pembimbing1-nip$}
+\newcommand{\pembimbingdua}{$pembimbing2-nama$}
+\newcommand{\pembimbingduanip}{$pembimbing2-nip$}
+
+\title{\thesistitle}
+\author{\studentname}
+\date{\tahun}
+
+\begin{document}
+
+% ================================================================
+% FRONT MATTER (roman numerals)
+% ================================================================
+\frontmatter
+\pagestyle{plain}
+
+% ---------- COVER ----------
+\begin{titlepage}
+\begin{center}
+\bfseries
+\setstretch{1.5}
+\vspace*{0.4cm}
+\MakeUppercase{\thesistitle}\par
+\vfill
+
+$if(logo-undiksha)$
+\includegraphics[width=4.5cm]{$logo-undiksha$}\par
+$else$
+\vspace{4.5cm}
+$endif$
+\vspace{0.7cm}
+
+BY:\par
+\MakeUppercase{\studentname}\par
+NIM. \studentnim\par
+\vfill
+
+COMPUTER SCIENCE STUDY PROGRAM\par
+DEPARTMENT OF \MakeUppercase{\jurusan}\par
+FACULTY OF ENGINEERING AND VOCATIONAL\par
+GANESHA UNIVERSITY OF EDUCATION\par
+\MakeUppercase{\kota}\par
+\tahun\par
+\vspace*{0.4cm}
+\end{center}
+\end{titlepage}
+
+% ---------- APPROVAL SHEET ----------
+\newpage
+\thispagestyle{plain}
+\begin{center}
+\singlespacing
+{\large\bfseries THESIS PROPOSAL APPROVAL SHEET\par}
+\end{center}
+\vspace{0.8cm}
+\noindent The thesis proposal entitled:
+\begin{center}\textbf{\thesistitle}\end{center}
+\vspace{0.3cm}
+\noindent prepared by:\par
+\vspace{0.3cm}
+\noindent\begin{tabular}{@{}ll@{\ }l@{}}
+Name              & : & \studentname \\
+Student ID Number & : & \studentnim \\
+Study Program     & : & \programstudi \\
+Department        & : & \jurusan \\
+Faculty           & : & \fakultas \\
+\end{tabular}
+\vspace{0.6cm}
+
+\noindent has been approved by the supervisors to be presented in the thesis proposal seminar.
+\vspace{1.5cm}
+
+\noindent \kota, \tahun
+\vspace{0.3cm}
+
+\noindent\begin{tabular}{@{}p{0.45\textwidth} @{\hfill} p{0.45\textwidth}@{}}
+\centering Supervisor I & \centering Supervisor II \tabularnewline
+\\[2.5cm]
+\centering {\small\underline{\pembimbingsatu}} & \centering {\small\underline{\pembimbingdua}} \tabularnewline
+\centering NIP. \pembimbingsatunip & \centering NIP. \pembimbingduanip
+\end{tabular}
+
+% ---------- ABSTRACT (English) ----------
+\newpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+\begin{center}
+\begin{spacing}{1.5}
+{\bfseries\MakeUppercase{\thesistitle}\par}
+\end{spacing}
+\vspace{0.3cm}
+By\par
+\vspace{0.2cm}
+{\bfseries \studentname, Student ID Number \studentnim\par}
+{\bfseries \programstudi{} Study Program\par}
+\vspace{0.5cm}
+{\bfseries ABSTRACT\par}
+\end{center}
+\vspace{0.2cm}
+
+\begin{singlespace}
+\noindent $abstract-en$
+
+\vspace{0.3cm}
+\noindent\textbf{Keywords:} $keywords-en$
+\end{singlespace}
+
+% ---------- TABLE OF CONTENTS ----------
+\newpage
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\tableofcontents
+
+% ---------- LIST OF FIGURES ----------
+\newpage
+\renewcommand{\listfigurename}{LIST OF FIGURES}
+\listoffigures
+% ---------- LIST OF TABLES ----------
+\newpage
+\renewcommand{\listtablename}{LIST OF TABLES}
+\listoftables
+
+% ================================================================
+% MAIN MATTER (arabic numerals, starts from 1)
+% ================================================================
+\mainmatter
+\pagestyle{plain}
+
+$body$
+
+\end{document}

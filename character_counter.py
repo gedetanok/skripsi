@@ -1,0 +1,5 @@
+import math
+
+TEXT = 'Seandainya klinik anda ga bisa ngerespons leads diluar jam operasional. Maka kita bisa hitung secara kasar gimana kerugian klinik anda. Katakanlah ada 10 orang aja yang ngechat diluar jam operasional. Dari 10 orang anggaplah 1 yang berpotensi untuk beneran booking. Satu pelanggan ini minimal lah ngambil treatment yang harganya 250rb. Kalau anda melakukan hal yang sama terus menerus, dalam 30 hari klinik anda bisa rugi sebesar 7.5 juta rupiah per bulannya. Rugi sebesar itu cuma karena kualitas konversi iklan yang buruk. Itulah kenapa kami ingin membantu klinik anda untuk memaksimalkan konversi iklan dengan menggunakan AI Chatbot yang kami buat khusus untuk klinik. Khusus khusus artinya AI kami jauh lebih ngerti treatment dibanding AI yang general, lebih ngerti operasional klinik dan pastinya lebih bisa mengkonversi pelanggan untuk klinik anda.'
+text_length = len(TEXT)
+print(text_length)

@@ -1,0 +1,132 @@
+\documentclass[11pt,a4paper]{article}
+
+% ========== Fonts (XeLaTeX) ==========
+\usepackage{fontspec}
+% TeX Gyre Termes = metric-compatible Times clone with a correct Unicode map
+% (menghindari masalah homoglyph Yunani pada "Times New Roman" bawaan macOS).
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont       = texgyretermes-bold.otf,
+  ItalicFont     = texgyretermes-italic.otf,
+  BoldItalicFont = texgyretermes-bolditalic.otf ]
+
+% ========== Math ==========
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ========== Margins ==========
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm]{geometry}
+
+% ========== Spasi 1.15, paragraf rata kiri-kanan ==========
+\usepackage{setspace}
+\setstretch{1.15}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=3em
+\widowpenalty=10000
+\clubpenalty=10000
+
+% ========== Bahasa Indonesia ==========
+\usepackage{polyglossia}
+\setdefaultlanguage{indonesian}
+\setotherlanguage{english}
+
+% ========== Caption ==========
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,justification=centering}
+\captionsetup[table]{name=Tabel}
+\captionsetup[figure]{name=Gambar}
+
+% ========== Penomoran section ==========
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries\itshape}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{1.0cm}
+
+% ========== Links ==========
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+\urlstyle{same}
+
+% ========== Grafis, tabel, TikZ ==========
+\usepackage{graphicx}
+$if(graphics-path)$
+\graphicspath{$for(graphics-path)${$graphics-path$}$endfor$}
+$endif$
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+\usepackage{float}
+
+% ========== Pandoc compatibility ==========
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\providecommand{\passthrough}[1]{#1}
+\usepackage{iftex}
+
+% ========== Entri pustaka (hanging indent ala APA) ==========
+\newcommand{\refitem}[1]{%
+  \begingroup
+  \setstretch{1.0}%
+  \noindent\hangindent=1.0cm\hangafter=1 #1\par
+  \endgroup
+  \vspace{6pt}}
+
+$if(header-includes)$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$endif$
+
+% ========== Metadata ==========
+\title{\vspace{-1.2cm}\bfseries $title$}
+\author{}
+\date{}
+
+\begin{document}
+
+% ---------- Judul ----------
+{\setstretch{1.1}
+\begin{center}
+{\Large\bfseries $title$\par}
+\vspace{0.5cm}
+$for(author)$
+{\normalsize\bfseries $author.name$$if(author.mark)$\textsuperscript{$author.mark$}$endif$\par}
+$endfor$
+\vspace{0.2cm}
+{\small\itshape $affiliation$\par}
+{\small $email$\par}
+\end{center}
+}
+\vspace{0.3cm}
+
+% ---------- Abstrak ----------
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+\setstretch{1.0}
+\small
+\noindent\textbf{Abstrak}\\[2pt]
+$abstract-id$
+
+\vspace{4pt}
+\noindent\textbf{Kata kunci:} \emph{$keywords-id$}
+\end{minipage}
+\end{center}
+\vspace{0.4cm}
+\hrule
+\vspace{0.4cm}
+
+$body$
+
+\end{document}

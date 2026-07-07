@@ -1,6 +1,0 @@
-path: /Users/mac/Documents/Kuliah/Semester 6/Skripsi/yolo_dataset
-train: images/train
-val: images/val
-nc: 1
-names:
-- soft_exudate

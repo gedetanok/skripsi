@@ -1,0 +1,170 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% ========== Fonts (XeLaTeX) ==========
+\usepackage{fontspec}
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont       = texgyretermes-bold.otf,
+  ItalicFont     = texgyretermes-italic.otf,
+  BoldItalicFont = texgyretermes-bolditalic.otf ]
+
+% ========== Math ==========
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ========== Margins (Pedoman Undiksha: atas 3, kiri 4, kanan 3, bawah 3 cm) ==========
+\usepackage[a4paper,top=3cm,bottom=3cm,left=4cm,right=3cm]{geometry}
+
+% ========== Spasi 1.5 ==========
+\usepackage{setspace}
+\onehalfspacing
+
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=3em
+\widowpenalty=10000
+\clubpenalty=10000
+
+% ========== Bahasa Indonesia ==========
+\usepackage{polyglossia}
+\setdefaultlanguage{indonesian}
+\setotherlanguage{english}
+
+% ========== Caption Bahasa Indonesia ==========
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,justification=centering}
+\captionsetup[table]{name=Tabel}
+\captionsetup[figure]{name=Gambar}
+
+% ========== Format BAB / section ==========
+\usepackage{titlesec}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\titleformat{\chapter}[display]
+  {\normalfont\large\bfseries\centering}
+  {BAB~\thechapter}{1ex}{\large}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries\itshape}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{1.27cm}
+\titlespacing{\section}{0pt}{3ex plus 1ex minus .2ex}{1.6ex plus .2ex}
+\titlespacing{\subsection}{0pt}{2.6ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+% ========== Links ==========
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+\urlstyle{same}
+
+% ========== Grafis, tabel, TikZ ==========
+\usepackage{graphicx}
+$if(graphics-path)$
+\graphicspath{$for(graphics-path)${$graphics-path$}$endfor$}
+$endif$
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+\usepackage{float}
+
+% ========== Pandoc compatibility ==========
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\providecommand{\passthrough}[1]{#1}
+\usepackage{iftex}
+
+% ========== Entri pustaka (hanging indent ala APA) ==========
+\newcommand{\refitem}[1]{%
+  \begingroup
+  \setstretch{1.0}%
+  \noindent\hangindent=1.27cm\hangafter=1 #1\par
+  \endgroup
+  \vspace{7pt}}
+
+$if(header-includes)$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$endif$
+
+% ========== Metadata ==========
+\newcommand{\judul}{$title$}
+\newcommand{\penulis}{$author$}
+\newcommand{\nim}{$nim$}
+\newcommand{\dosen}{$dosen$}
+\newcommand{\matakuliah}{$matakuliah$}
+\newcommand{\programstudi}{$program-studi$}
+\newcommand{\jurusan}{$jurusan$}
+\newcommand{\fakultas}{$fakultas$}
+\newcommand{\universitas}{$universitas$}
+\newcommand{\tahun}{$tahun$}
+\newcommand{\kota}{$kota$}
+
+\begin{document}
+
+% ================================================================
+% SAMPUL
+% ================================================================
+\frontmatter
+\pagestyle{plain}
+
+\begin{titlepage}
+\begin{center}
+\singlespacing
+{\large\bfseries\MakeUppercase{\judul}\par}
+\vspace{1.2cm}
+
+$if(logo-undiksha)$
+\includegraphics[width=5cm]{$logo-undiksha$}\par
+$else$
+\vspace{3.8cm}
+$endif$
+
+\vspace{1.2cm}
+{\normalsize Oleh:\par}
+\vspace{0.2cm}
+{\large\bfseries\penulis\par}
+{\normalsize NIM \nim\par}
+\vspace{0.8cm}
+{\normalsize Dosen Pengampu:\par}
+{\normalsize\bfseries\dosen\par}
+$if(matakuliah)$\vspace{0.3cm}{\normalsize Mata Kuliah: \matakuliah\par}$endif$
+\vfill
+
+{\normalsize\bfseries PROGRAM STUDI \MakeUppercase{\programstudi}\par}
+{\normalsize\bfseries JURUSAN \MakeUppercase{\jurusan}\par}
+{\normalsize\bfseries FAKULTAS \MakeUppercase{\fakultas}\par}
+{\normalsize\bfseries \MakeUppercase{\universitas}\par}
+{\normalsize\bfseries \MakeUppercase{\kota}\par}
+{\normalsize\bfseries \tahun\par}
+\end{center}
+\end{titlepage}
+
+% ---------- DAFTAR ISI ----------
+\newpage
+\renewcommand{\contentsname}{DAFTAR ISI}
+\begin{singlespace}
+\tableofcontents
+\end{singlespace}
+
+% ================================================================
+% ISI
+% ================================================================
+\mainmatter
+\pagestyle{plain}
+
+$body$
+
+\end{document}

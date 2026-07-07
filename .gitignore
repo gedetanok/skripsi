@@ -8,3 +8,15 @@ wheels/
 
 # Virtual environments
 .venv
+
+# --- Added: keep large artifacts out of GitHub (stored locally only) ---
+# Model weights (>100MB each, exceed GitHub limits)
+*.pt
+*.pth
+
+# Raw datasets (kept locally, not versioned)
+ddb1_v02_01/
+yolo_dataset/
+1. Original Images/
+2. All Segmentation Groundtruths/
+DIARETDB1 V2.1

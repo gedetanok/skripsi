@@ -1,0 +1,34 @@
+---
+title: "Segmentasi Soft Exudate pada Citra Fundus Retina Menggunakan Attention U-Net dengan Pipeline Praproses Bertingkat"
+
+author:
+  - name: "Gede Tanok Arta Wijaya"
+    mark: "1"
+
+affiliation: "Program Studi Ilmu Komputer, Jurusan Teknik Informatika, Fakultas Teknik dan Kejuruan, Universitas Pendidikan Ganesha, Singaraja, Indonesia"
+email: "gedebagusde144@gmail.com"
+
+abstract-id: |
+  Soft exudate (cotton wool spot) merupakan salah satu lesi penanda penting
+  pada retinopati diabetik, namun ukurannya yang kecil, batas tepi yang kabur,
+  serta kemiripan tampilannya dengan optic disc dan hard exudate membuat
+  segmentasi otomatisnya tetap menantang. Penelitian ini mengusulkan pipeline
+  segmentasi soft exudate bertingkat pada citra fundus yang menggabungkan
+  praproses berbasis penghapusan struktur pengganggu dengan model Attention
+  U-Net. Tahap praproses menghapus area optic disc (dideteksi Mask R-CNN) dan
+  hard exudate (disegmentasi U-Net) melalui blackout, kemudian menerapkan
+  Contrast Limited Adaptive Histogram Equalization (CLAHE) pada kanal hijau
+  untuk menonjolkan kontras lesi. Citra hasil praproses disegmentasi
+  menggunakan U-Net dengan encoder ResNet-34 terbobot ImageNet yang dilengkapi
+  modul atensi concurrent spatial and channel squeeze-and-excitation (scSE)
+  pada dekodernya, dilatih dengan fungsi gabungan Binary Cross-Entropy dan Dice
+  serta pembobotan kelas positif untuk mengatasi ketidakseimbangan piksel.
+  Eksperimen dilakukan pada dataset publik IDRiD. Model mencapai Intersection
+  over Union (IoU) terbaik sebesar 0,627 dengan sensitivitas 0,805 dan
+  spesifisitas 0,999 pada data uji, jauh melampaui konfigurasi awal tanpa
+  atensi. Hasil ini menunjukkan bahwa kombinasi penghapusan struktur pengganggu
+  dan mekanisme atensi scSE efektif meningkatkan kualitas segmentasi soft
+  exudate yang berukuran kecil dan tersebar.
+
+keywords-id: "soft exudate, segmentasi citra fundus, Attention U-Net, squeeze-and-excitation, retinopati diabetik, CLAHE, IDRiD"
+---
