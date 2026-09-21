@@ -1,0 +1,57 @@
+# Definisi grid eksperimen (Bab III proposal).
+#
+# Ubah daftar di bawah untuk menambah atau mengurangi arm; jumlah run dihitung
+# sebagai preprocessing x backbone x dataset.
+
+seed: 42
+image_size: 224
+work_size: 1024          # resolusi antara sebelum teknik preprocessing dijalankan
+
+# Faktor 1 (Bagian 3.4.2). baseline adalah arm pembanding tanpa enhancement:
+# tanpa arm ini, klaim bahwa preprocessing membantu tidak punya pembanding.
+# Hapus "baseline" bila ingin kembali ke grid 5 x 2 = 60 run seperti teks proposal.
+preprocessing:
+  - baseline
+  - clahe
+  - ben_graham
+  - adaptive_sigmoid
+  - lab_ace
+  - mcie
+
+# Faktor 2 (Bagian 3.5).
+backbones:
+  resnet50:
+    source: torchvision
+    weights: IMAGENET1K_V2
+    head_in: 2048
+  vit_b16:
+    source: timm
+    weights: vit_base_patch16_224.augreg_in21k
+    head_in: 768
+
+datasets: [idrid, deepdrid, messidor2, aptos2019, ddr, eyepacs]
+
+num_classes: 5
+
+# Bagian 3.6.
+training:
+  optimizer: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  betas: [0.9, 0.999]
+  warmup_epochs: 3
+  scheduler: cosine
+  min_lr: 1.0e-6
+  batch_size: 16
+  max_epochs: 50
+  early_stopping_patience: 10
+  monitor: val_qwk           # metrik pemilihan checkpoint
+  loss: class_weighted_ce    # bobot sebanding 1/sqrt(n_k), Bagian 3.2.2
+  sampler: weighted_random   # bobot sebanding 1/sqrt(n_k)
+
+# Bagian 3.4.3. Hanya dikenakan pada partisi train.
+augmentation:
+  hflip: 0.5
+  vflip: 0.5
+  rotate_limit: 30
+  brightness_contrast: 0.2

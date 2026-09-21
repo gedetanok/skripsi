@@ -20,3 +20,7 @@ yolo_dataset/
 1. Original Images/
 2. All Segmentation Groundtruths/
 DIARETDB1 V2.1
+
+# --- Eksperimen DR grading ---
+cache/
+qa_output/
