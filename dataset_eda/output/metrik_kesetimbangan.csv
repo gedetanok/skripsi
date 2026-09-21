@@ -1,0 +1,7 @@
+Dataset,Total,IR (maks/min),% mayoritas,Balance score,Kelas minoritas,Status
+IDRiD,516,6.7,32.6,0.9,Grade 1,timpang sedang
+DeepDRiD,994,8.1,45.6,0.87,Grade 4,timpang sedang
+Messidor-2,1744,29.1,58.3,0.71,Grade 4,sangat timpang (long-tailed)
+APTOS 2019,3662,9.4,49.3,0.8,Grade 3,timpang sedang
+DDR,12522,26.6,50.0,0.7,Grade 3,sangat timpang (long-tailed)
+EyePACS,88702,34.1,73.7,0.54,Grade 4,sangat timpang (long-tailed)

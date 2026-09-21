@@ -2,7 +2,15 @@
 
 % ========== Fonts (XeLaTeX) ==========
 \usepackage{fontspec}
-\setmainfont{Times New Roman}
+% NOTE: macOS "Times New Roman" under XeLaTeX embeds a broken ToUnicode map that
+% encodes every semicolon as U+037E (Greek question mark). The PDF looks correct
+% but text extraction (copy-paste, Turnitin) reads Greek homoglyphs, which trips
+% Turnitin's "replaced characters" integrity flag. TeX Gyre Termes is a
+% metric-compatible Times clone with a correct Unicode map and identical look.
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont       = texgyretermes-bold.otf,
+  ItalicFont     = texgyretermes-italic.otf,
+  BoldItalicFont = texgyretermes-bolditalic.otf ]
 
 % ========== Math ==========
 \usepackage{amsmath,amssymb,amsthm}
@@ -120,30 +128,33 @@ $endif$
 % ---------- COVER ----------
 \begin{titlepage}
 \begin{center}
-\singlespacing
-{\Large\bfseries PROPOSAL SKRIPSI\par}
-\vspace{1.5cm}
-{\large\bfseries\MakeUppercase{\thesistitle}\par}
+\bfseries
+\setstretch{1.5}
+\vspace*{0.4cm}
+{\large PROPOSAL SKRIPSI\par}
 \vspace{1cm}
+\MakeUppercase{\thesistitle}\par
+\vfill
 
 $if(logo-undiksha)$
 \includegraphics[width=4.5cm]{$logo-undiksha$}\par
 $else$
 \vspace{4.5cm}
 $endif$
+\vspace{0.7cm}
 
-\vspace{1cm}
-{\normalsize Oleh:\par}
-\vspace{0.3cm}
-{\large\bfseries\studentname\par}
-{\normalsize NIM. \studentnim\par}
+Oleh:\par
+\MakeUppercase{\studentname}\par
+NIM. \studentnim\par
 \vfill
 
-{\normalsize\bfseries PROGRAM STUDI \MakeUppercase{\programstudi}\par}
-{\normalsize\bfseries JURUSAN \MakeUppercase{\jurusan}\par}
-{\normalsize\bfseries FAKULTAS \MakeUppercase{\fakultas}\par}
-{\normalsize\bfseries \MakeUppercase{\universitas}\par}
-{\normalsize\bfseries \tahun\par}
+PROGRAM STUDI \MakeUppercase{\programstudi}\par
+JURUSAN \MakeUppercase{\jurusan}\par
+FAKULTAS \MakeUppercase{\fakultas}\par
+\MakeUppercase{\universitas}\par
+\MakeUppercase{\kota}\par
+\tahun\par
+\vspace*{0.4cm}
 \end{center}
 \end{titlepage}
 
@@ -175,56 +186,64 @@ Fakultas        & : & \fakultas \\
 \noindent \kota, \tahun
 \vspace{0.3cm}
 
-\noindent\begin{tabular}{@{}p{0.45\textwidth} @{\hfill} p{0.45\textwidth}@{}}
+\noindent\begin{tabular}{@{}p{0.46\textwidth} @{\hspace{0.08\textwidth}} p{0.46\textwidth}@{}}
 \centering Pembimbing I & \centering Pembimbing II \tabularnewline
 \\[2.5cm]
-\centering \underline{\pembimbingsatu} & \centering \underline{\pembimbingdua} \tabularnewline
-\centering NIP. \pembimbingsatunip & \centering NIP. \pembimbingduanip
+\centering {\small\underline{\pembimbingsatu}} & \centering {\small\underline{\pembimbingdua}} \tabularnewline
+\centering {\small NIP. \pembimbingsatunip} & \centering {\small NIP. \pembimbingduanip}
 \end{tabular}
 
 % ---------- ABSTRAK (Indonesia) ----------
 \newpage
-\chapter*{ABSTRAK}
-\addcontentsline{toc}{chapter}{ABSTRAK}
 \thispagestyle{plain}
+\addcontentsline{toc}{chapter}{ABSTRAK}
 
-\noindent
-\studentname. \studentnim. \tahun. \emph{\thesistitle}. Proposal Skripsi. \programstudi, \jurusan, \fakultas, \universitas.
+\begin{center}
+\begin{spacing}{1.5}
+{\bfseries\MakeUppercase{\thesistitle}\par}
+\end{spacing}
+\vspace{0.3cm}
+Oleh\par
+\vspace{0.2cm}
+{\bfseries \studentname, NIM \studentnim\par}
+{\bfseries Program Studi \programstudi\par}
+\vspace{0.5cm}
+{\bfseries ABSTRAK\par}
+\end{center}
+\vspace{0.2cm}
 
-\vspace{0.4cm}
-\noindent
-Pembimbing I: \pembimbingsatu\\
-Pembimbing II: \pembimbingdua
-
-\vspace{0.6cm}
 \begin{singlespace}
-$abstrak-id$
-\end{singlespace}
+\noindent $abstrak-id$
 
-\vspace{0.4cm}
+\vspace{0.3cm}
 \noindent\textbf{Kata Kunci:} $kata-kunci-id$
+\end{singlespace}
 
 % ---------- ABSTRACT (English) ----------
 \newpage
-\chapter*{ABSTRACT}
-\addcontentsline{toc}{chapter}{ABSTRACT}
 \thispagestyle{plain}
+\addcontentsline{toc}{chapter}{ABSTRACT}
 
-\noindent
-\studentname. \studentnim. \tahun. \emph{\thesistitle}. Thesis Proposal. \programstudi, \jurusan, \fakultas, \universitas.
+\begin{center}
+\begin{spacing}{1.5}
+{\bfseries\MakeUppercase{\thesistitle}\par}
+\end{spacing}
+\vspace{0.3cm}
+By\par
+\vspace{0.2cm}
+{\bfseries \studentname, Student ID Number \studentnim\par}
+{\bfseries Computer Science Study Program\par}
+\vspace{0.5cm}
+{\bfseries ABSTRACT\par}
+\end{center}
+\vspace{0.2cm}
 
-\vspace{0.4cm}
-\noindent
-Supervisor I: \pembimbingsatu\\
-Supervisor II: \pembimbingdua
-
-\vspace{0.6cm}
 \begin{singlespace}
-$abstract-en$
-\end{singlespace}
+\noindent\textit{$abstract-en$}
 
-\vspace{0.4cm}
-\noindent\textbf{Keywords:} $keywords-en$
+\vspace{0.3cm}
+\noindent\textbf{Keywords:} \textit{$keywords-en$}
+\end{singlespace}
 
 % ---------- DAFTAR ISI ----------
 \newpage

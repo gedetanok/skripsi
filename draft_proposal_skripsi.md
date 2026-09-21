@@ -1,7 +1,7 @@
 # PROPOSAL SKRIPSI
 
 **Judul:**
-Analisis Komparatif Teknik *Preprocessing* Citra Fundus dan Arsitektur *Deep Learning* untuk Klasifikasi Tingkat Keparahan *Diabetic Retinopathy* dengan Evaluasi Lintas *Dataset*
+Analisis Komparatif Teknik *Preprocessing* Citra Fundus dan Arsitektur *Deep Learning* untuk Klasifikasi Tingkat Keparahan *Diabetic Retinopathy* pada Berbagai Dataset Publik
 
 ---
 
@@ -9,71 +9,69 @@ Analisis Komparatif Teknik *Preprocessing* Citra Fundus dan Arsitektur *Deep Lea
 
 ### 1.1 Latar Belakang
 
-Diabetes melitus telah menjadi salah satu beban penyakit tidak menular paling mendesak pada abad ke-21, dan *diabetic retinopathy* (DR), sebuah komplikasi mikrovaskuler progresif dari penyakit tersebut, tetap menjadi penyebab utama kebutaan yang dapat dicegah pada kelompok dewasa usia produktif di mayoritas negara berpenghasilan menengah dan tinggi (American Diabetes Association, 2024). Teo et al. (2021) memproyeksikan jumlah orang dewasa yang terkena DR akan meningkat dari 103 juta pada tahun 2020 menjadi sekitar 161 juta pada tahun 2045, dengan DR yang mengancam penglihatan menjangkiti hampir 29 juta orang secara global. Situasi di Indonesia sangat mendesak: Sasongko et al. (2025), dalam studi kohort lima tahun terhadap 695 pasien diabetes tipe 2 di komunitas Yogyakarta, mencatat insidens DR sebesar 34,6 per 1.000 orang-tahun dan kebutaan terkait DR sebesar 8,3 per 1.000 orang-tahun, sementara Saputra et al. (2024) melaporkan prevalensi DR sebesar 55% di antara pasien diabetes di sebuah rumah sakit rujukan di Padang. Akan tetapi, rasio oftalmolog di Indonesia kurang dari dua spesialis per 100.000 penduduk dan terkonsentrasi di wilayah urban Pulau Jawa, sehingga secara struktural tidak memungkinkan pelaksanaan pemeriksaan fundus tahunan sebagaimana direkomendasikan oleh *Standards of Care in Diabetes* (American Diabetes Association, 2024). Strategi skrining yang layak secara operasional untuk Indonesia harus bersandar pada interpretasi otomatis citra fundus di layanan kesehatan tingkat primer.
+*Diabetic retinopathy* (DR), sebuah komplikasi mikrovaskuler progresif dari diabetes melitus, merupakan penyebab utama kebutaan yang dapat dicegah pada kelompok usia produktif (American Diabetes Association, 2024), dan skala persoalannya meluas dengan cepat: Teo et al. (2021) memproyeksikan 103 juta orang dewasa yang terdampak pada tahun 2020 akan mencapai sekitar 161 juta pada tahun 2045. Indonesia menghadapi tren ini secara akut. Insidens DR sebesar 34,6 per 1.000 orang-tahun (Sasongko et al., 2025) dan prevalensi 55% di antara pasien diabetes di sebuah rumah sakit rujukan (Saputra et al., 2024) terjadi bersamaan dengan ketersediaan oftalmolog yang kurang dari dua per 100.000 penduduk dan terkonsentrasi di wilayah urban Pulau Jawa, sehingga pemeriksaan fundus tahunan yang diamanatkan pedoman klinis mustahil dikerjakan secara manual pada skala yang dibutuhkan. Satu-satunya respons yang layak adalah mengotomatisasi interpretasi citra fundus di layanan kesehatan primer, dengan tugas relevan yang bukan sekadar menandai ada atau tidaknya penyakit, melainkan menetapkan tingkat keparahan pada skala lima tingkat *International Clinical DR* (ICDR) (Wilkinson et al., 2003), karena tingkat itulah yang menentukan apakah seorang pasien dirujuk. Kesalahan karena itu bersifat mahal pada kedua arah: tingkat yang terlalu rendah menunda rujukan yang dibutuhkan pasien, sedangkan tingkat yang terlalu tinggi menghabiskan waktu spesialis yang memang sudah langka, sehingga akurasi tepat pada batas-batas antartingkat itulah yang menentukan.
 
-Tugas yang perlu diotomatisasi bukan sekadar mendeteksi ada atau tidaknya penyakit, melainkan menentukan tingkat keparahannya. Secara klinis, DR distratifikasi menggunakan *International Clinical Diabetic Retinopathy* (ICDR) *severity scale* yang diajukan Wilkinson et al. (2003) ke dalam lima tingkat ordinal, mulai dari tidak ada retinopati (*no DR*), NPDR ringan, NPDR sedang, NPDR berat, hingga *proliferative DR* (PDR), dan tingkat inilah yang menentukan keputusan rujukan: pasien dengan NPDR sedang atau lebih berat dirujuk untuk evaluasi spesialis, sementara PDR menuntut intervensi segera untuk mencegah kehilangan penglihatan permanen. Karena setiap tingkat memetakan ke tindakan klinis yang berbeda, kesalahan klasifikasi tidak bersifat netral: menggrade pasien terlalu rendah berarti rujukan yang terlambat, sedangkan menggrade terlalu tinggi membebani kapasitas spesialis yang sudah langka. Sistem skrining otomatis karena itu dituntut akurat tepat pada batas-batas keputusan kelima kelas ini, bukan sekadar tinggi pada rata-rata akurasinya.
+*Deep learning* telah mengubah *grading* DR otomatis dari sekadar aspirasi menjadi kenyataan yang berfungsi sepanjang sepuluh tahun terakhir. Dengan *convolutional neural network* yang dilatih pada 128.175 citra fundus, Gulshan et al. (2016) melaporkan sensitivitas dan spesifisitas di atas 90% untuk *referable DR*; Abramoff et al. (2018) selanjutnya memperoleh izin dari FDA untuk IDx-DR, sistem DR otonom pertama; dan *foundation model* seperti RETFound (Zhou et al., 2023) sejak itu menutup sebagian besar jarak yang tersisa. Dengan mensurvei lebih dari lima puluh studi dan dua puluh dataset, Chopra et al. (2025) menegaskan kematangan ini tetapi mengamati bahwa tantangan utamanya telah bergeser menjauh dari kapabilitas mentah menuju validasi *multi-center* dan kepercayaan klinis. Dengan kata lain, pertanyaan yang belum terjawab bukan lagi apakah sebuah model mampu mengklasifikasikan DR, melainkan apakah angka-angka yang diperoleh pada data yang terkurasi rapi mampu bertahan pada kondisi yang jauh lebih tidak beraturan yang dijumpai di lapangan.
 
-*Deep learning* telah mengubah lanskap otomatisasi DR *grading* dalam satu dekade terakhir. Gulshan et al. (2016), dalam studi *landmark* yang dipublikasikan di *JAMA*, menunjukkan bahwa *convolutional neural network* (CNN) yang dilatih pada 128.175 citra fundus mampu mendeteksi *referable DR* dengan sensitivitas dan spesifisitas di atas 90%, setara dengan oftalmolog tersertifikasi pada data terkurasi. Abramoff et al. (2018) menerjemahkan pendekatan serupa menjadi IDx-DR, perangkat kecerdasan buatan pertama yang memperoleh izin *U.S. Food and Drug Administration* untuk penggunaan klinis mandiri, sementara *foundation model* berskala besar seperti RETFound (Zhou et al., 2023) semakin mempersempit jarak antara sistem penelitian dan sistem klinis. Survei komprehensif terkini yang mensintesis lebih dari lima puluh studi dan dua puluh dataset DR sepanjang 2016 hingga 2025 menegaskan kematangan teknis ini, tetapi sekaligus menggarisbawahi bahwa celah utama telah bergeser ke validasi *multi-center* dan kepercayaan klinis (Chopra et al., 2025). Dari sisi kemampuan teknis, dengan demikian, skrining DR otomatis bukan lagi persoalan yang terbuka. Persoalannya adalah hampir seluruh capaian tersebut diperoleh dan divalidasi pada data yang terkurasi rapi, sehingga belum tentu bertahan ketika sistem dipindahkan ke kondisi lapangan yang jauh lebih beragam.
+Celah pertama yang terabaikan terletak pada kualitas citra dan penanganannya. Pencahayaan yang tidak konsisten, kontras yang lemah, dan *noise* akuisisi menggerus akurasi *grading* secara sistematis (Anupama et al., 2025), sebuah efek yang paling parah pada kamera berbiaya rendah yang lazim dipakai di layanan kesehatan primer Indonesia; karena penurunan kualitas semacam itu menyembunyikan lesi awal seperti mikroaneurisma, hal itu mendorong model ke arah tingkat yang lebih rendah dari kondisi pasien sesungguhnya. Literatur menawarkan banyak metode *preprocessing* untuk membuat lesi lebih terlihat, mulai dari CLAHE, Ben Graham *preprocessing*, dan ekstraksi *green channel*, hingga usulan yang lebih baru seperti *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*, tetapi metode-metode itu diadopsi secara *ad-hoc*, dengan setiap studi berkomitmen pada satu metode dan tidak pernah menimbangnya terhadap metode lain pada arsitektur dan protokol yang sama. Anupama et al. (2025) mencatat persoalan yang sama dan meminta adanya studi sistematis atas pilihan *preprocessing*, sebab tanpa perbandingan yang setara keputusan itu bertumpu pada dugaan alih-alih bukti.
 
-Justru di titik inilah jarak antara capaian riset dan *deployment* klinis rutin terbuka, pada hal-hal yang kerap terabaikan dalam evaluasi akademik. Isu pertama adalah kualitas citra fundus. Pencahayaan yang tidak merata, kontras rendah, dan *noise* akuisisi secara sistematis menurunkan akurasi sistem *grading* otomatis (Anupama et al., 2025), dan persoalan ini paling parah pada perangkat fundus berbiaya rendah yang realistis digunakan di layanan kesehatan primer Indonesia. Ketika lesi awal seperti mikroaneurisma tidak terbaca akibat citra yang buruk, model cenderung menggrade pasien lebih rendah dari kondisi sebenarnya, tepat jenis kesalahan yang berujung pada rujukan yang terlambat. Berbagai teknik *preprocessing* telah diusulkan untuk memperbaiki visibilitas lesi, mulai dari *Contrast Limited Adaptive Histogram Equalization* (CLAHE), Ben Graham *preprocessing*, dan ekstraksi *green channel*, hingga teknik *enhancement* yang lebih baru seperti *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*. Akan tetapi, penerapannya dalam literatur cenderung bersifat *ad-hoc*: setiap penelitian memilih satu teknik tanpa membandingkannya secara setara dengan alternatif lain pada arsitektur dan protokol pelatihan yang sama. Anupama et al. (2025), dalam publikasi mereka di *Scientific Reports*, secara eksplisit menilai bahwa metode *preprocessing* untuk DR *grading* saat ini "masih terbatas pada fokus tunggal, seperti penerapan filter *noise* atau *contrast enhancement*, yang tidak memberikan solusi menyeluruh untuk menangani keragaman dan kompleksitas citra fundus" dan merekomendasikan eksplorasi sistematis terhadap kombinasi tekniknya. Selama komparasi *apple-to-apple* antarteknik *preprocessing* pada arsitektur yang sama belum tersedia, pemilihan *preprocessing* untuk sistem skrining masih bertumpu pada dugaan alih-alih bukti.
+Celah kedua menyangkut sejauh mana perbandingan-perbandingan tersebut dapat digeneralisasi. Hampir setiap perbandingan *preprocessing* untuk *grading* DR, termasuk studi acuan Anupama et al. (2025), dikonfirmasi hanya pada satu dataset, sehingga teknik atau *backbone* mana pun yang unggul di situ boleh jadi mencerminkan kamera, populasi, dan kualitas khas dataset tersebut alih-alih sifat yang dapat berpindah. Karena citra fundus berbeda secara mencolok dalam hal pencahayaan, warna, dan protokol akuisisi dari satu institusi ke institusi lain, sebuah metode yang unggul pada satu dataset belum tentu unggul pada dataset lain, dan rekomendasi yang dibangun di atas satu dataset merupakan landasan yang rapuh bagi sistem skrining yang dimaksudkan untuk menghadapi kondisi lapangan yang sangat bervariasi. Anupama et al. (2025) karena itu menyarankan pengujian temuan pada beberapa dataset yang mencakup perangkat dan demografi yang beragam; sampai hal itu dilakukan, validitas eksternal dari perbandingan semacam ini tetap belum terbukti.
 
-Isu kedua adalah generalisasi lintas-dataset. Chokuwa dan Khan (2025) menunjukkan bahwa model DR *grading* yang dilatih pada satu sumber dataset performanya merosot secara signifikan ketika dihadapkan pada data di luar distribusi dari *setting* akuisisi yang berbeda, bahkan ketika ontologi *grading* yang digunakan identik. Penurunan semacam ini bukan sekadar selisih statistik: model yang tampak layak pada data pengembangan dapat berubah menjadi tidak dapat diandalkan untuk keputusan rujukan ketika diterapkan pada populasi baru. Perbedaan perangkat kamera, populasi pasien, dan protokol pencahayaan antarinstitusi menjadi penyebab utamanya, dan kondisi inilah yang persis akan dihadapi di Indonesia, ketika model dioperasikan pada perangkat kamera fundus dan populasi pasien yang berbeda dari dataset publik tempatnya dilatih. Model yang salah mengklasifikasi pasien Indonesia tidak hanya berisiko melewatkan kasus yang seharusnya dirujuk, tetapi juga memboroskan kapasitas spesialis yang langka untuk rujukan yang keliru. Anupama et al. (2025) turut menggarisbawahi keterbatasan yang sama pada bagian *future work* mereka, dan merekomendasikan bahwa "penelitian selanjutnya perlu melibatkan dataset *multi-center* dengan variasi perangkat akuisisi, latar belakang etnis, dan distribusi demografis untuk meningkatkan ketahanan dan aplikabilitas dunia nyata". Tanpa bukti empiris mengenai seberapa besar penurunan performa lintas-dataset, klaim kelayakan klinis sebuah sistem skrining menjadi sulit dipertanggungjawabkan.
-
-Penelitian ini menjawab kedua celah tersebut dengan landasan pada rekomendasi *future work* Anupama et al. (2025). Penelitian ini membandingkan lima teknik *preprocessing* (CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) yang dipasangkan dengan dua arsitektur *backbone* (ResNet-50 sebagai *baseline* konvolusional dan *Vision Transformer* sebagaimana disarankan Anupama et al., 2025), sehingga menghasilkan sepuluh konfigurasi. Seluruh konfigurasi dilatih pada IDRiD (Porwal et al., 2020) sebagai data *in-distribution*, lalu diuji pada dua kondisi, yaitu IDRiD *test set* dan DDR (Li et al., 2019) sebagai evaluasi lintas-dataset tanpa adaptasi, dengan metrik akurasi, *quadratic-weighted kappa*, dan *macro-F1*. Grad-CAM diterapkan pada konfigurasi terbaik untuk memverifikasi dasar prediksi model. Kontribusi penelitian ini ada tiga: (i) perbandingan empiris yang *reproducible* antara teknik *preprocessing* dan *backbone* pada DR *grading*, yang belum tersedia dalam literatur; (ii) kuantifikasi penurunan kinerja lintas-dataset sebagai bukti yang relevan untuk *deployment* pada populasi klinis Indonesia; dan (iii) panduan berbasis bukti untuk membangun sistem skrining DR otomatis pada layanan kesehatan primer dengan sumber daya terbatas.
+Dengan mengambil agenda *future work* Anupama et al. (2025) sebagai titik awalnya, penelitian ini menggarap kedua celah tersebut secara bersamaan. Lima teknik *preprocessing* dipasangkan dengan dua *backbone* (ResNet-50 dan ViT-B/16) untuk menghasilkan sepuluh konfigurasi, yang dinilai secara terpisah pada enam dataset publik *grading* DR yang dibangun di atas ontologi ICDR lima tingkat yang sama (IDRiD, DDR, APTOS 2019, Messidor-2, EyePACS, dan DeepDRiD); dalam setiap dataset, setiap konfigurasi dilatih dan diuji pada partisi dataset itu sendiri di bawah satu protokol yang seragam dan dinilai dengan akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1*. Untuk menemukan konfigurasi yang unggul bukan pada satu dataset melainkan secara seragam pada keenam dataset, nilai QWK per dataset digabungkan melalui uji Friedman (Demsar, 2006), dan konfigurasi-konfigurasi terdepan dibandingkan dengan uji *Wilcoxon signed-rank* antardataset serta dengan uji McNemar per dataset, sementara Grad-CAM memeriksa dasar sesungguhnya dari prediksi konfigurasi terdepan. Kontribusi penelitian ini ada tiga: (i) perbandingan yang *reproducible* dan setara antara metode *preprocessing* dan *backbone* untuk *grading* DR di bawah satu protokol yang seragam; (ii) pengujian perbandingan tersebut pada enam dataset yang beragam untuk menentukan apakah konfigurasi terbaik bersifat stabil alih-alih terikat pada satu dataset tertentu; dan (iii) panduan berbasis bukti untuk membangun skrining DR otomatis pada layanan kesehatan primer dengan sumber daya terbatas.
 
 ### 1.2 Identifikasi Masalah
 
 Berdasarkan latar belakang yang diuraikan pada Bagian 1.1, masalah penelitian dapat diidentifikasi sebagai berikut.
 
-1. Beban *diabetic retinopathy* di Indonesia tinggi dan terus meningkat (insidens 34,6 per 1.000 orang-tahun; Sasongko et al., 2025), sementara rasio oftalmolog kurang dari dua spesialis per 100.000 penduduk dan terpusat di perkotaan Jawa, sehingga skrining fundus manual secara tahunan tidak layak secara struktural dan menuntut sistem interpretasi citra fundus otomatis pada layanan kesehatan primer.
+1. Beban *diabetic retinopathy* di Indonesia tinggi dan terus meningkat (insidens 34,6 per 1.000 orang-tahun; Sasongko et al., 2025), sementara rasio oftalmolog kurang dari dua spesialis per 100.000 penduduk dan terkonsentrasi di wilayah urban Pulau Jawa, sehingga skrining fundus tahunan secara manual tidak layak secara struktural dan menuntut sistem interpretasi citra fundus otomatis pada tingkat layanan kesehatan primer.
 
-2. Kualitas citra fundus yang dihasilkan perangkat berbiaya rendah di layanan primer sangat bervariasi (pencahayaan tidak merata, kontras rendah, dan *noise* akuisisi), dan penurunan kualitas ini menurunkan akurasi *grading* otomatis serta cenderung menyebabkan model menggrade pasien lebih rendah dari kondisi sebenarnya, yaitu jenis kesalahan yang berujung pada rujukan yang terlambat.
+2. Kualitas citra dari kamera berbiaya rendah yang digunakan di layanan primer sangat tidak konsisten (pencahayaan tidak merata, kontras lemah, dan *noise* akuisisi), dan penurunan kualitas ini menurunkan akurasi *grading* otomatis serta cenderung membuat model menetapkan tingkat di bawah kondisi pasien sesungguhnya, yaitu jenis kesalahan yang menunda rujukan.
 
-3. Pemilihan teknik *preprocessing* citra fundus pada literatur DR *grading* masih bersifat *ad-hoc*: tiap penelitian umumnya memilih satu teknik tanpa membandingkannya secara setara dengan teknik lain pada arsitektur dan protokol pelatihan yang sama, sehingga belum tersedia bukti komparatif *apple-to-apple* sebagai dasar pemilihan (Anupama et al., 2025).
+3. Cara pemilihan teknik *preprocessing* dalam literatur *grading* DR masih bersifat *ad-hoc*: sebuah studi biasanya memilih satu teknik tanpa mengukurnya terhadap alternatif lain pada arsitektur dan protokol pelatihan yang sama, sehingga bukti setara untuk menginformasikan pilihan tersebut masih belum tersedia (Anupama et al., 2025).
 
-4. Kinerja model DR *grading* menurun ketika diterapkan lintas-dataset akibat pergeseran domain (perbedaan perangkat kamera, populasi, dan protokol pencahayaan antarinstitusi), namun besarnya penurunan ini belum terkuantifikasi secara sistematis pada pasangan dataset yang berontologi label identik, padahal kondisi inilah yang akan dihadapi ketika sistem dioperasikan pada populasi Indonesia (Chokuwa dan Khan, 2025).
+4. Perbandingan *preprocessing* untuk *grading* DR yang ada, termasuk studi acuan Anupama et al. (2025), divalidasi pada satu dataset saja, sehingga belum diketahui apakah *preprocessing* dan *backbone* yang teridentifikasi terbaik pada satu dataset tetap terbaik pada dataset lain dengan kamera, populasi, dan profil kualitas yang berbeda, dan karenanya apakah kesimpulan semacam itu memiliki validitas eksternal alih-alih menjadi artefak dari satu dataset.
 
-5. Belum tersedia panduan berbasis bukti mengenai kombinasi teknik *preprocessing* dan arsitektur *backbone* yang paling tangguh terhadap pergeseran domain untuk pengembangan sistem skrining DR otomatis pada layanan kesehatan primer dengan sumber daya terbatas di Indonesia.
+5. Belum tersedia panduan berbasis bukti mengenai kombinasi teknik *preprocessing* dan arsitektur *backbone* yang berkinerja konsisten terbaik pada beragam dataset untuk pengembangan sistem skrining DR otomatis bagi layanan kesehatan primer dengan sumber daya terbatas di Indonesia.
 
-### 1.3 Pembatasan Masalah
+### 1.3 Rumusan Masalah
 
-Agar penelitian terfokus dan layak dikerjakan dalam waktu penyusunan skripsi, serta untuk mengisolasi pengaruh *preprocessing* dan *backbone* dari faktor lain, masalah yang teridentifikasi pada Bagian 1.2 dibatasi sebagai berikut.
+Berdasarkan identifikasi masalah pada Bagian 1.2, penelitian ini dirumuskan melalui tiga rumusan masalah berikut.
 
-1. Tugas klasifikasi dibatasi pada *grading* lima kelas tingkat keparahan *diabetic retinopathy* pada skala ICDR untuk tingkat citra, tanpa segmentasi atau deteksi lesi.
+1. Pada masing-masing dari keenam dataset, bagaimana lima teknik *preprocessing* (CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) dan dua arsitektur *backbone* (ResNet-50 dan *Vision Transformer*) memengaruhi kinerja klasifikasi tingkat keparahan *diabetic retinopathy* yang diukur dengan akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1*?
 
-2. Dataset yang digunakan hanya IDRiD *Disease Grading subset* (Porwal et al., 2020) untuk pelatihan dan evaluasi *in-distribution*, serta DDR (Li et al., 2019) untuk evaluasi lintas-dataset.
+2. Ketika hasil per dataset diagregasi pada keenam dataset menggunakan uji Friedman, didukung uji *Wilcoxon signed-rank* dan uji McNemar per dataset pada konfigurasi-konfigurasi terdepan, konfigurasi *preprocessing* dan *backbone* mana yang menempati peringkat konsisten tertinggi, dan seberapa stabil peringkat tersebut antardataset?
+
+3. Bagaimana *trade-off* antara kinerja prediktif dan biaya komputasi (jumlah parameter dan waktu inferensi) untuk setiap kombinasi *preprocessing* dan *backbone*, dan konfigurasi mana yang paling sesuai untuk menerapkan sistem skrining DR pada layanan kesehatan primer di Indonesia?
+
+### 1.4 Pembatasan Masalah
+
+Agar penelitian tetap terfokus dan layak diselesaikan dalam rentang waktu penyusunan skripsi, serta untuk mengisolasi pengaruh *preprocessing* dan *backbone* dari faktor lain, masalah yang teridentifikasi pada Bagian 1.2 dibatasi sebagai berikut.
+
+1. Tugas klasifikasi dibatasi pada *grading* lima kelas tingkat keparahan *diabetic retinopathy* pada skala ICDR di tingkat citra, tanpa segmentasi atau deteksi lesi.
+
+2. Dataset yang digunakan adalah enam dataset publik *grading* DR yang berbagi ontologi label ICDR lima kelas, yaitu IDRiD (Porwal et al., 2020), DDR (Li et al., 2019), APTOS 2019 (APTOS, 2019), Messidor-2 (Decenciere et al., 2014), EyePACS (Kaggle dan EyePACS, 2015), dan DeepDRiD (Liu et al., 2022). Setiap dataset diperlakukan sebagai *benchmark* independen tempat semua konfigurasi dilatih dan diuji menggunakan partisi dataset itu sendiri; penelitian ini tidak melakukan transfer lintas-dataset atau adaptasi domain.
 
 3. Teknik *preprocessing* yang dibandingkan dibatasi pada lima metode, yaitu CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*.
 
-4. Arsitektur *backbone* yang dibandingkan dibatasi pada ResNet-50 (CNN) dan ViT-B/16 (*Vision Transformer*), keduanya dilatih melalui *transfer learning* dari bobot ImageNet tanpa *pretraining* domain-spesifik.
+4. Arsitektur *backbone* yang dibandingkan dibatasi pada ResNet-50 (CNN) dan ViT-B/16 (*Vision Transformer*), keduanya dilatih melalui *transfer learning* dari bobot ImageNet tanpa *pretraining* khusus domain.
 
-5. Evaluasi bersifat kuantitatif (akurasi, *quadratic-weighted kappa*, *macro-F1*) dengan visualisasi Grad-CAM pada konfigurasi terbaik. Evaluasi lintas-dataset bersifat *zero-shot transfer* tanpa adaptasi pada DDR. Studi klinisi (*reader study*) dan *deployment* prospektif berada di luar cakupan.
-
-### 1.4 Rumusan Masalah
-
-Berdasarkan identifikasi dan pembatasan masalah pada Bagian 1.2 dan 1.3, penelitian ini dirumuskan melalui tiga pertanyaan penelitian berikut.
-
-1. Pada dataset IDRiD, bagaimana pengaruh lima teknik *preprocessing* (CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) dan dua arsitektur *backbone* (ResNet-50 dan *Vision Transformer*) terhadap kinerja klasifikasi tingkat keparahan *diabetic retinopathy* yang diukur dengan akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1*?
-
-2. Seberapa besar penurunan kinerja masing-masing konfigurasi *preprocessing* dan *backbone* ketika model yang dilatih pada IDRiD dievaluasi lintas-dataset pada DDR tanpa adaptasi, dan konfigurasi manakah yang menunjukkan ketahanan terbaik terhadap pergeseran domain antarinstitusi?
-
-3. Bagaimana *trade-off* antara akurasi prediktif, ketahanan lintas-dataset, dan biaya komputasi (jumlah parameter dan waktu inferensi) dari setiap kombinasi *preprocessing* dan *backbone*, serta konfigurasi manakah yang paling sesuai untuk *deployment* sistem skrining DR pada layanan kesehatan primer di Indonesia?
+5. Evaluasi bersifat kuantitatif (akurasi, *quadratic-weighted kappa*, *macro-F1*) per dataset, diagregasi pada keenam dataset dengan uji Friedman, dilengkapi uji *Wilcoxon signed-rank* antardataset dan uji McNemar per dataset (dengan koreksi Holm-Bonferroni) pada konfigurasi-konfigurasi terdepan, serta visualisasi Grad-CAM pada konfigurasi terbaik. Studi pembaca (*reader study*) dan *deployment* prospektif berada di luar cakupan.
 
 ### 1.5 Tujuan Penelitian
 
-Sejalan dengan rumusan masalah pada Bagian 1.4, penelitian ini memiliki tiga tujuan sebagai berikut.
+Sejalan dengan rumusan masalah pada Bagian 1.3, penelitian ini memiliki tiga tujuan berikut.
 
-1. Menganalisis pengaruh lima teknik *preprocessing* (CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) dan dua arsitektur *backbone* (ResNet-50 dan *Vision Transformer*) terhadap kinerja klasifikasi tingkat keparahan *diabetic retinopathy* pada dataset IDRiD, yang diukur melalui akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1*.
+1. Menganalisis pengaruh lima teknik *preprocessing* (CLAHE, Ben Graham *preprocessing*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) dan dua arsitektur *backbone* (ResNet-50 dan *Vision Transformer*) terhadap kinerja klasifikasi tingkat keparahan *diabetic retinopathy* pada masing-masing dari keenam dataset, yang diukur melalui akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1*.
 
-2. Mengkuantifikasi penurunan kinerja setiap konfigurasi *preprocessing* dan *backbone* ketika model yang dilatih pada IDRiD dievaluasi lintas-dataset pada DDR tanpa adaptasi, serta mengidentifikasi konfigurasi yang menunjukkan ketahanan terbaik terhadap pergeseran domain antarinstitusi.
+2. Mengagregasi hasil per dataset pada keenam dataset menggunakan uji Friedman, didukung uji *Wilcoxon signed-rank* dan uji McNemar per dataset pada konfigurasi-konfigurasi terdepan, untuk mengidentifikasi konfigurasi *preprocessing* dan *backbone* yang menempati peringkat konsisten tertinggi antardataset.
 
-3. Menganalisis *trade-off* antara akurasi prediktif, ketahanan lintas-dataset, dan biaya komputasi (jumlah parameter dan waktu inferensi) untuk memberikan rekomendasi konfigurasi yang paling sesuai untuk *deployment* sistem skrining *diabetic retinopathy* pada layanan kesehatan primer di Indonesia.
+3. Menganalisis *trade-off* antara kinerja prediktif dan biaya komputasi (jumlah parameter dan waktu inferensi) untuk merekomendasikan konfigurasi yang paling sesuai bagi penerapan sistem skrining *diabetic retinopathy* pada layanan kesehatan primer di Indonesia.
 
 ### 1.6 Manfaat Penelitian
 
-Secara teoretis, penelitian ini menghasilkan perbandingan empiris yang *reproducible* antara teknik *preprocessing* dan arsitektur *backbone* pada DR *grading* di bawah protokol yang terunifikasi, sekaligus memperluas literatur dengan evaluasi lintas-dataset pada pasangan IDRiD dan DDR yang berontologi label identik namun berbeda perangkat, populasi, dan pencahayaan. Hasilnya menjadi bukti sejauh mana performa pada satu dataset DR *grading* dapat dipertahankan pada dataset lain, sekaligus menjawab langsung rekomendasi *future work* Anupama et al. (2025).
+Dari sisi teoretis, penelitian ini menghasilkan perbandingan empiris yang *reproducible* antara teknik *preprocessing* dan arsitektur *backbone* untuk *grading* DR di bawah satu protokol yang seragam, yang diperkuat dengan menjalankan perbandingan tersebut pada enam dataset publik yang berbagi satu ontologi label namun berbeda dalam perangkat, populasi, dan pencahayaan. Menggabungkan hasil per dataset melalui uji Friedman, didukung uji *Wilcoxon signed-rank* dan uji McNemar per dataset pada konfigurasi-konfigurasi terdepan, memungkinkan penelitian ini menentukan apakah konfigurasi terdepan bertahan antardataset atau sekadar mencerminkan salah satunya, hal yang berbicara langsung kepada agenda *future work* Anupama et al. (2025).
 
-Secara praktis, penelitian ini memberikan panduan berbasis bukti bagi pengembangan sistem skrining DR otomatis pada layanan kesehatan primer di Indonesia, yang harus beroperasi pada perangkat dan populasi yang berbeda dari dataset pelatihan publik. Konfigurasi *preprocessing* dan *backbone* yang paling tangguh terhadap pergeseran domain dapat diadopsi sebagai titik awal pengembangan. Penelitian ini juga menghasilkan *pipeline* eksperimental terdokumentasi yang dapat digunakan ulang untuk menguji teknik *preprocessing*, *backbone*, atau dataset lain tanpa implementasi ulang.
+Dari sisi praktis, penelitian ini menyediakan panduan berbasis bukti untuk membangun skrining DR otomatis pada layanan kesehatan primer di Indonesia, sebuah *setting* yang perangkat dan populasinya sangat bervariasi di lapangan. Pasangan *preprocessing* dan *backbone* yang terbukti konsisten paling kuat pada beragam dataset dapat menjadi titik awal *default* bagi pengembangan. Penelitian ini juga menyampaikan *pipeline* eksperimen terdokumentasi yang dapat digunakan kembali untuk mengevaluasi teknik *preprocessing*, *backbone*, atau dataset lain tanpa membangunnya dari awal.
 
 ## KAJIAN TEORI
 
@@ -81,267 +79,352 @@ Secara praktis, penelitian ini memberikan panduan berbasis bukti bagi pengembang
 
 #### 2.1.1 Patofisiologi Singkat
 
-*Diabetic retinopathy* (DR) adalah komplikasi *microvascular* kronis dari *diabetes mellitus*. Hiperglikemia jangka panjang merusak kapiler retina melalui hilangnya sel *pericyte*, penebalan membran basal, dan kebocoran sawar darah-retina, yang berujung pada dua proses paralel, yaitu peningkatan permeabilitas kapiler (memicu *edema* dan penumpukan lipid) serta penyumbatan kapiler (memicu *ischaemia*); area iskemik kemudian memicu produksi *vascular endothelial growth factor* (VEGF) yang mendorong pembentukan pembuluh darah baru (Wong dan Sabanayagam, 2023). Secara klinis DR dibagi menjadi dua tahap. *Non-proliferative DR* (NPDR) ditandai oleh lesi seperti *microaneurysm*, perdarahan intraretinal, *hard exudate*, *cotton-wool spot*, *venous beading*, dan *intraretinal microvascular abnormalities* (IRMA), tanpa pembuluh darah baru. *Proliferative DR* (PDR) ditandai oleh *neovascularisation* yang berisiko menyebabkan perdarahan *vitreous* dan *tractional retinal detachment*. Jenis dan sebaran lesi inilah yang menjadi dasar penilaian tingkat keparahan pada skala ICDR (Subbab 2.1.3) sekaligus sasaran verifikasi visual Grad-CAM (Subbab 2.5.3).
+*Diabetic retinopathy* adalah konsekuensi mikrovaskuler kronis dari diabetes melitus. Hiperglikemia yang berkepanjangan melukai kapiler retina, yang menjadi lebih permeabel (menimbulkan edema dan eksudasi lipid) sekaligus mengalami oklusi (menimbulkan iskemia); iskemia itu pada gilirannya menstimulasi *vascular endothelial growth factor* (VEGF) dan pertumbuhan pembuluh darah baru (Wong dan Sabanayagam, 2023). Penyakit ini terbagi secara klinis ke dalam dua tahap. Tahap non-proliferatif (NPDR) menampilkan mikroaneurisma, eksudat keras, *cotton-wool spots*, perdarahan intraretina, *venous beading*, dan *intraretinal microvascular abnormalities* (IRMA) tetapi tanpa pembuluh darah baru, sedangkan tahap proliferatif (PDR) ditandai oleh neovaskularisasi, yang dapat berkembang menjadi perdarahan vitreous dan ablasio retina traksional. Lesi apa yang muncul, dan di mana letaknya, itulah yang mendasari skala keparahan ICDR (Bagian 2.1.3) dan itu pula yang secara persis menjadi sasaran pemeriksaan Grad-CAM (Bagian 2.5.3).
 
 #### 2.1.2 Beban Penyakit Global dan di Indonesia
 
-DR merupakan penyebab utama kebutaan yang dapat dicegah pada populasi usia produktif. Teo et al. (2021) memproyeksikan jumlah penderita DR meningkat dari 103 juta (2020) menjadi sekitar 161 juta pada 2045, tren yang disebut Wong dan Sabanayagam (2023) sebagai "pandemi DR". Di Indonesia, beban ini tidak seimbang dengan ketersediaan tenaga oftalmologi: insidens DR mencapai 34,6 per 1.000 orang-tahun (Sasongko et al., 2025) dan prevalensi DR pada pasien di rumah sakit rujukan mencapai 55% (Saputra et al., 2024), sementara kepadatan dokter spesialis mata kurang dari dua per 100.000 penduduk dan terpusat di perkotaan Jawa. Kesenjangan inilah yang mendasari kebutuhan sistem skrining DR otomatis di layanan kesehatan primer (American Diabetes Association, 2024).
+Sebagaimana dirinci pada Bagian 1.1, DR adalah penyebab utama kebutaan yang dapat dicegah yang beban globalnya diproyeksikan tumbuh dari 103 juta orang pada 2020 menjadi sekitar 161 juta pada 2045 (Teo et al., 2021), sebuah lintasan yang oleh Wong dan Sabanayagam (2023) disebut "pandemi DR". Di Indonesia beban ini diperberat oleh kelangkaan oftalmolog yang parah, kurang dari dua per 100.000 penduduk dan terkonsentrasi di wilayah urban Pulau Jawa, yang menjadi alasan struktural mengapa skrining DR otomatis pada tingkat layanan kesehatan primer dibutuhkan (Sasongko et al., 2025; Saputra et al., 2024; American Diabetes Association, 2024).
 
 #### 2.1.3 Skala International Clinical Diabetic Retinopathy (ICDR)
 
-Variabel target klinis pada penelitian ini adalah skala *International Clinical Diabetic Retinopathy* (ICDR) yang diusulkan Wilkinson et al. (2003) sebagai penyederhanaan skala ETDRS. ICDR membagi retinopati menjadi lima tingkat berurutan: *grade* 0 (tanpa retinopati), *grade* 1 (NPDR ringan, hanya *microaneurysm*), *grade* 2 (NPDR sedang, kondisi antara keduanya), *grade* 3 (NPDR berat, mengikuti aturan "4-2-1", yaitu perdarahan intraretinal pada empat kuadran, atau *venous beading* pada dua kuadran atau lebih, atau IRMA menonjol, tanpa *neovascularisation*), dan *grade* 4 (PDR, ditandai *neovascularisation* atau perdarahan *vitreous*/pre-retinal).
+Variabel luaran klinis dalam penelitian ini adalah skala *International Clinical Diabetic Retinopathy* (ICDR), yang diperkenalkan Wilkinson et al. (2003) sebagai bentuk sederhana dari skala ETDRS. Skala ini memilah retinopati ke dalam lima tingkat berurut: tingkat 0 untuk tidak ada retinopati; tingkat 1 untuk NPDR ringan dengan hanya mikroaneurisma; tingkat 2 untuk NPDR sedang, yang berada di antara ringan dan berat; tingkat 3 untuk NPDR berat, yang didefinisikan oleh aturan "4-2-1" (perdarahan intraretina di keempat kuadran, atau *venous beading* di dua kuadran atau lebih, atau IRMA yang menonjol, tanpa neovaskularisasi); dan tingkat 4 untuk PDR, yang ditandai oleh neovaskularisasi atau perdarahan vitreous/pra-retina.
 
-Skala ini bersifat ordinal: kelima kelas tersusun pada kontinum keparahan yang monoton, sehingga kesalahan klasifikasi berjarak dua *grade* lebih merugikan daripada satu *grade*. Sifat ini menuntut metrik yang sensitif terhadap urutan kelas seperti *quadratic-weighted kappa* (Subbab 2.5.2), bukan sekadar akurasi. Biaya klinis kesalahan pun asimetris: pasien *grade* 3 yang diprediksi *grade* 1 kehilangan rujukan yang seharusnya, sedangkan *grade* 0 yang diprediksi *grade* 1 memboroskan kapasitas spesialis.
+Skala ini bersifat ordinal: kelima kelasnya berjajar di sepanjang satu sumbu keparahan yang meningkat, sehingga kesalahan yang membentang dua tingkat lebih merugikan daripada yang membentang satu tingkat. Sifat berurut itu menuntut metrik yang peka terhadap urutan kelas, seperti *quadratic-weighted kappa* (Bagian 2.5.2), alih-alih akurasi semata. Biaya kesalahan juga asimetris: memprediksi tingkat 1 untuk pasien yang sesungguhnya tingkat 3 menolak rujukan yang seharusnya diberikan, sedangkan memprediksi tingkat 1 untuk pasien yang sesungguhnya tingkat 0 mengikat kapasitas spesialis tanpa alasan.
 
 ### 2.2 Citra Fundus dan Benchmark Dataset
 
 #### 2.2.1 Fotografi Fundus Berwarna
 
-Fotografi fundus berwarna adalah modalitas pencitraan utama pada skrining DR karena non-invasif, relatif murah, dan tersedia luas di layanan primer. Sebuah citra fundus merekam *optic disc*, *macula*, *fovea*, dan *vascular arcade* pada sudut pandang 30 sampai 50 derajat. Akuisisi *non-mydriatic* (tanpa pelebaran pupil) lebih disukai pada skrining karena lebih nyaman dan tidak memerlukan supervisi klinis langsung. Kualitas citra dipengaruhi oleh *cataract*, ukuran pupil, dan keseragaman pencahayaan, sehingga sebagian citra dunia nyata tidak dapat dinilai (*ungradable*); dataset skrining modern umumnya menyertakan label kualitas untuk menyaringnya.
+Karena bersifat non-invasif, murah, dan tersedia luas, fotografi fundus berwarna adalah modalitas utama untuk skrining DR; bentuk non-midriatik, yang diambil tanpa mendilatasi pupil, lebih disukai demi kenyamanan pasien dan kemudahan penggunaan. Seberapa dapat dinilainya (*gradable*) sebuah citra bergantung pada katarak, ukuran pupil, dan seberapa merata pencahayaannya, dan sebagian citra terbukti tidak dapat dinilai (*ungradable*), yang menjadi alasan dataset skrining terkini menyertakan label kualitas agar citra semacam itu dapat disaring keluar.
+
+Penelitian ini menggunakan enam dataset publik *grading* DR, masing-masing diperlakukan sebagai *benchmark* independen dan dijelaskan pada Bagian 2.2.2 hingga 2.2.7. Dataset-dataset itu dipilih karena berbagi ontologi label ICDR lima kelas yang sama namun berbeda dalam negara, perangkat akuisisi, populasi, dan kualitas citra; rasionalisasi pemilihannya diberikan pada Bagian 2.2.8, dan rincian partisinya pada Bagian 3.2.
 
 #### 2.2.2 Indian Diabetic Retinopathy Image Dataset (IDRiD)
 
-*Indian Diabetic Retinopathy Image Dataset* (IDRiD; Porwal et al., 2020), *benchmark* resmi tantangan IEEE ISBI 2018, menjadi data *in-distribution* pada penelitian ini. IDRiD berisi 516 citra fundus dari satu klinik di Nanded, India, dengan satu jenis kamera (Kowa VX-10α). Penelitian ini hanya memakai subset *Disease Grading*, yang setiap citranya berlabel *grade* ICDR 0 sampai 4. Partisi resmi latih dan uji diadopsi tanpa modifikasi agar hasil sebanding dengan *benchmark* lain; rincian pembagian disajikan pada Subbab 3.2.
+Sebagai *benchmark* resmi untuk tantangan IEEE ISBI 2018, *Indian Diabetic Retinopathy Image Dataset* (IDRiD; Porwal et al., 2020) menghimpun 516 citra fundus dari satu klinik di Nanded, India, yang diambil dengan satu model kamera (Kowa VX-10α). Hanya subset *Disease Grading* yang digunakan di sini, tempat setiap citra membawa tingkat ICDR dari 0 hingga 4, dan partisi latih dan uji resmi dipertahankan tanpa perubahan agar hasilnya selaras dengan *benchmark* lain.
 
 #### 2.2.3 Dataset for Diabetic Retinopathy (DDR)
 
-*Dataset for Diabetic Retinopathy* (DDR; Li et al., 2019) digunakan sebagai target evaluasi lintas-dataset. DDR berisi 13.673 citra dari 147 rumah sakit di 23 provinsi Tiongkok dengan beragam jenis kamera, sehingga heterogenitas perangkat, kualitas, dan demografinya jauh melampaui IDRiD. Labelnya memakai skala ICDR 0 sampai 4 yang identik dengan IDRiD, ditambah label kualitas untuk memisahkan citra *gradable* dan *ungradable*. Penelitian ini hanya memakai partisi uji DDR setelah penyaringan citra *ungradable*; rincian disajikan pada Subbab 3.2.
+*Dataset for Diabetic Retinopathy* (DDR; Li et al., 2019) menyusun 13.673 citra yang diambil dari 147 rumah sakit di 23 provinsi Tiongkok menggunakan beragam jenis kamera, sehingga memberinya variasi perangkat, kualitas, dan demografi yang jauh lebih besar daripada IDRiD. Label mengikuti skala ICDR dari 0 hingga 4 dan disertai label kualitas yang memisahkan citra *gradable* dari *ungradable*. Setelah citra *ungradable* disaring keluar, penelitian ini bekerja dari partisi latih dan uji resmi DDR.
 
-#### 2.2.4 Rasionalisasi Pemasangan IDRiD dan DDR
+#### 2.2.4 APTOS 2019 Blindness Detection Dataset
 
-Pemilihan pasangan IDRiD dan DDR didasari tiga pertimbangan. *Pertama*, keduanya berbagi ontologi label identik (skala ICDR lima kelas; Wilkinson et al., 2003), sehingga perubahan kinerja lintas-dataset dapat diatribusikan pada pergeseran domain (*domain shift*), bukan inkonsistensi anotasi. *Kedua*, keduanya berbeda pada dimensi yang relevan dengan *deployment*, yaitu negara, populasi, perangkat akuisisi (satu kamera satu lokasi versus banyak kamera di 147 lokasi), dan profil kualitas citra, sehingga model yang dilatih pada IDRiD dan diuji pada DDR menghadapi perkiraan realistis pergeseran distribusi antar sistem kesehatan. *Ketiga*, keduanya disertai *paper* deskriptor *peer-reviewed* (Porwal et al., 2020; Li et al., 2019) yang mendokumentasikan akuisisi, anotasi, dan partisi resmi, sehingga memenuhi syarat reproduktibilitas.
+Dirilis oleh *Asia Pacific Tele-Ophthalmology Society* bersama Aravind Eye Hospital di India, dataset APTOS 2019 (APTOS, 2019) memuat 3.662 citra fundus berlabel yang diambil di berbagai wilayah pedesaan India dengan beberapa kamera pada kondisi yang bervariasi. *Grading* mengikuti skala ICDR lima kelas; karena kompetisi menahan label pengujiannya, hanya *training set* yang berlabel publik yang digunakan.
+
+#### 2.2.5 Messidor-2
+
+Diakuisisi di Prancis, Messidor-2 (Decenciere et al., 2014) terdiri atas 1.748 citra fundus berpusat pada makula dari 874 pemeriksaan. Tingkat ICDR hasil adjudikasi pihak ketiga yang dirilis publik, yang ditetapkan oleh panel spesialis retina, mencakup 1.744 citra *gradable* dan itulah yang digunakan di sini. Messidor-2 menyumbang populasi Eropa dan perangkat akuisisi yang berbeda dari dataset-dataset Asia.
+
+#### 2.2.6 EyePACS (Kaggle Diabetic Retinopathy Detection)
+
+Sebagai sumber daya DR publik terbesar, dataset EyePACS (Kaggle dan EyePACS, 2015) menghimpun 88.702 citra fundus yang diambil di Amerika Serikat dengan banyak jenis kamera pada kondisi yang sangat bervariasi dan dinilai pada skala ICDR lima kelas. Mengingat sekitar seperempat citranya *ungradable* dan koleksinya sangat besar, penelitian ini mengambil subset yang telah disaring kualitasnya dan distratifikasi per kelas dari partisi resminya, sebagaimana dirinci pada Bagian 3.2.
+
+#### 2.2.7 DeepDRiD
+
+Dataset tantangan ISBI 2020, DeepDRiD (Liu et al., 2022), menyediakan 2.000 citra fundus reguler dari 500 pasien Tiongkok, masing-masing diberi tingkat ICDR lima kelas melalui adjudikasi di antara beberapa oftalmolog. Penelitian ini hanya mempertahankan citra reguler (non *ultra-widefield*) dan, untuk kasus tampilan ganda, menyimpan satu bidang per mata agar setiap masukan berpadanan dengan satu tingkat di tingkat citra.
+
+#### 2.2.8 Rasionalisasi Pemilihan Enam Dataset
+
+Tiga pertimbangan mendasari pemilihan keenam dataset ini. Pertama, semuanya menggunakan satu dan ontologi label yang sama (skala ICDR lima kelas; Wilkinson et al., 2003), yang menjaga kinerja tetap dapat dibandingkan antardataset dan memungkinkan setiap perubahan pada peringkat konfigurasi ditelusuri ke datanya sendiri alih-alih ke anotasi yang tidak konsisten. Kedua, dataset-dataset itu mencakup dimensi yang penting bagi *deployment*, yaitu negara (India, Tiongkok, Prancis, Amerika Serikat), perangkat akuisisi (dari satu kamera di satu lokasi hingga banyak kamera di 147 lokasi), populasi, dan profil kualitas citra, sehingga sebuah konfigurasi yang secara konsisten berkinerja baik pada keenamnya bertumpu pada validitas eksternal yang kokoh alih-alih pada keunikan satu dataset. Ketiga, setiap dataset bersifat publik dan terdokumentasi (Porwal et al., 2020; Li et al., 2019; APTOS, 2019; Decenciere et al., 2014; Kaggle dan EyePACS, 2015; Liu et al., 2022), memenuhi kebutuhan *reproducibility*. Di atas segalanya, setiap dataset berperan sebagai *benchmark* mandiri tempat setiap konfigurasi dilatih sekaligus diuji, sehingga perbandingannya tidak pernah terkontaminasi oleh pergeseran distribusi yang akan ditimbulkan oleh pemindahan model dari satu dataset ke dataset lain.
 
 ### 2.3 Teknik Preprocessing untuk Citra Fundus
 
-Kualitas citra fundus mentah bervariasi akibat perbedaan pencahayaan, pewarnaan sensor, dan kondisi optik mata. *Preprocessing* bertujuan menyeragamkan karakteristik citra agar lesi klinis (*microaneurysm*, *haemorrhage*, *hard exudate*) lebih konsisten dikenali model. Penelitian ini mengevaluasi lima teknik berikut yang mewakili spektrum pendekatan pada literatur DR *grading*.
-
-#### 2.3.1 Contrast Limited Adaptive Histogram Equalization (CLAHE)
-
-*Contrast Limited Adaptive Histogram Equalization* (CLAHE; Zuiderveld, 1994) menerapkan *histogram equalization* secara lokal pada *tile* kecil, sehingga mendistribusikan ulang intensitas piksel agar kontras meningkat di tiap wilayah. Untuk mencegah penguatan *noise*, tinggi *histogram* dibatasi oleh *clip limit*, dan kelebihan intensitas didistribusikan ulang secara merata. Pada citra fundus, CLAHE diterapkan pada kanal luminansi (ruang warna LAB) untuk mengungkap kontras lesi kecil seperti *microaneurysm* yang tersembunyi pada area berpencahayaan tidak merata.
-
-#### 2.3.2 Ben Graham Normalization
-
-Teknik *Ben Graham Normalization*, yang diperkenalkan pemenang kompetisi Kaggle *Diabetic Retinopathy Detection* (2015) dan menjadi *preprocessing* baku pada banyak studi DR *grading*, mengurangi komponen pencahayaan berskala besar dengan mengurangkan versi *Gaussian-blurred* dari citra asli, $I_{\mathrm{norm}} = \alpha I + \beta G_{\sigma}(I) + \gamma$, dengan $G_{\sigma}$ adalah *filter Gaussian* beradius $\sigma$. Akibatnya detail berskala kecil seperti lesi dan pembuluh darah lebih menonjol, sementara variasi pencahayaan global antar kamera berkurang.
-
-#### 2.3.3 Adaptive Sigmoid Enhancement
-
-*Adaptive Sigmoid Enhancement* meregangkan rentang intensitas dengan fungsi *sigmoid* $f(x) = 1 / (1 + \exp(-\alpha (x - \beta)))$, dengan $\alpha$ mengatur kemiringan dan $\beta$ titik tengah. Ketika $\alpha$ dan $\beta$ diambil dari rata-rata dan standar deviasi intensitas lokal, kontras diperkuat di area gelap tanpa memperbesar *noise* di area terang, sehingga lesi pucat lebih mudah dibedakan dari latar retina.
-
-#### 2.3.4 LAB Adaptive Contrast Enhancement (LAB-ACE)
-
-*LAB Adaptive Contrast Enhancement* (LAB-ACE) memisahkan luminansi (L) dari komponen warna (A dan B) pada ruang warna LAB, lalu meningkatkan kontras hanya pada kanal L (umumnya melalui CLAHE dan normalisasi lokal) dan merekonstruksinya kembali ke RGB. Dengan mempertahankan kanal A dan B, teknik ini memperbaiki kontras lesi tanpa distorsi warna yang dapat mengacaukan interpretasi.
-
-#### 2.3.5 Multi-channel Image Enhancement
-
-*Multi-channel Image Enhancement* (MCIE) menggabungkan beberapa representasi citra menjadi satu masukan tiga kanal, misalnya kanal hijau asli (peka terhadap *haemoglobin*), hasil CLAHE pada kanal L, dan hasil *Ben Graham Normalization*. Dengan demikian *feature extractor* memanfaatkan beberapa *enhancement* komplementer sekaligus, tidak bergantung pada satu jenis saja. Anupama et al. (2025) mengeksplorasi kombinasi semacam ini dan merekomendasikan kajian sistematis terhadap variasi *preprocessing* sebagai arah lanjutan.
-
-### 2.4 Arsitektur Deep Learning untuk Klasifikasi Citra
-
-Penelitian ini mengevaluasi dua *backbone deep learning* yang mewakili dua paradigma berbeda, yaitu *convolutional neural network* (CNN) yang diwakili ResNet-50 dan *Vision Transformer* (ViT) yang diwakili ViT-B/16. Arsitektur masing-masing diuraikan pada Subbab 2.4.1 dan 2.4.2.
-
-#### 2.4.1 Convolutional Neural Network dan ResNet-50
-
-*Convolutional neural network* (CNN) memetakan citra ke keluaran melalui konvolusi, aktivasi non-linear, dan *pooling* yang berlapis. Operasi konvolusi menerapkan *kernel* kecil pada tiap posisi spasial, sehingga jumlah parameter tidak bergantung pada ukuran citra (*weight sharing*) dan model bersifat *translation-equivariant*. Penumpukan konvolusi, aktivasi seperti $\mathrm{ReLU}(z) = \max(0, z)$, dan *down-sampling* menghasilkan hirarki *receptive field*, dari tepi dan tekstur pada lapisan awal hingga objek utuh pada lapisan dalam. Untuk klasifikasi $K$ kelas, vektor fitur akhir dipetakan ke *logit* $z \in \mathbb{R}^{K}$, diubah menjadi probabilitas melalui *softmax* $p_k = \exp(z_k) / \sum_{j=1}^{K} \exp(z_j)$, dan dilatih dengan *categorical cross-entropy* $\mathcal{L}_{\mathrm{CE}} = -\sum_{k=1}^{K} y_k \log p_k$.
-
-ResNet-50 (He et al., 2016) adalah salah satu CNN yang paling banyak dipakai pada pencitraan medis. Kontribusi utamanya adalah *residual connection* $y = F(x) + x$, yaitu jalur pintas yang mengatasi *vanishing gradient* dan memungkinkan pelatihan jaringan dalam. ResNet-50 menyusun 50 lapisan konvolusi (unit penyusunnya blok *bottleneck* tiga lapis dengan *residual connection*) dalam empat *stage* dengan resolusi spasial menurun, sebagaimana disajikan pada Gambar 2.1. Arsitektur ini dipilih sebagai *backbone* CNN karena mapan, berukuran parameter moderat (~25,5 juta), dan lazim menjadi *baseline* pada literatur DR *grading*.
+Citra fundus mentah berbeda kualitasnya karena pencahayaan, respons warna sensor, dan kondisi optik mata semuanya bervariasi. Tujuan *preprocessing* adalah menyeragamkan karakteristik citra ke dalam bentuk yang sama agar lesi klinis (mikroaneurisma, perdarahan, eksudat keras) tertangkap lebih konsisten oleh model. Lima teknik yang dinilai di bawah ini mencakup rentang pendekatan yang ditemukan dalam literatur *grading* DR, dan Gambar 2.1 mengilustrasikan efek visualnya pada sebuah citra fundus.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{gambar/resnet.png}
-\caption{Arsitektur ResNet-50 (He et al., 2016) dengan citra fundus sebagai masukan; \emph{inset} menampilkan blok \emph{bottleneck residual} ($y = F(x) + x$). Kepala klasifikasi ImageNet diganti menjadi lima kelas ICDR pada penelitian ini.}
+\includegraphics[width=\textwidth]{gambar/prep_demo.png}
+\caption{Lima teknik \emph{preprocessing} yang diterapkan pada satu citra fundus berwarna representatif. CLAHE dan LAB-ACE menguatkan kontras lokal, Ben Graham Normalization menstabilkan pencahayaan global, \emph{Adaptive Sigmoid Enhancement} meregangkan rentang intensitas, dan MCIE menggabungkan hasil \emph{green channel}, CLAHE, dan Ben Graham menjadi satu masukan tiga kanal.}
+\label{fig:prep}
+\end{figure}
+
+#### 2.3.1 Contrast Limited Adaptive Histogram Equalization (CLAHE)
+
+*Contrast Limited Adaptive Histogram Equalization* (CLAHE; Zuiderveld, 1994) menjalankan ekualisasi histogram petak demi petak (*tile*). Di dalam sebuah petak, nilai piksel $r$ dipetakan melalui distribusi kumulatif berbatas kontras $T(r) = (L-1)\sum_{j=0}^{r}\hat{p}(j)$, dengan $L$ menghitung banyaknya tingkat intensitas dan $\hat{p}$ adalah histogram petak setelah dipangkas pada suatu *clip limit* dan kelebihannya didistribusikan ulang; *clip limit* itulah yang menahan penguatan *noise*. Untuk citra fundus, CLAHE dijalankan pada kanal luminans (LAB) agar lesi samar seperti mikroaneurisma, yang jika tidak akan hilang di bawah pencahayaan tak merata, menjadi terlihat.
+
+#### 2.3.2 Ben Graham Normalization
+
+Ben Graham Normalization (Graham, 2015), yang diperkenalkan oleh pemenang kompetisi *Kaggle Diabetic Retinopathy Detection* dan sejak itu diadopsi sebagai langkah rutin *grading* DR, menghilangkan pencahayaan kasar dengan mengurangi versi citra yang dikaburkan Gaussian: $I_{\mathrm{norm}} = \alpha I + \beta G_{\sigma}(I) + \gamma$, dengan $G_{\sigma}$ menyatakan filter Gaussian berjari-jari $\sigma$. Struktur halus seperti lesi dan pembuluh darah menonjol lebih jelas, sementara perbedaan pencahayaan antarkamera diredam.
+
+#### 2.3.3 Adaptive Sigmoid Enhancement
+
+*Adaptive Sigmoid Enhancement* (Anupama et al., 2025) melewatkan intensitas melalui sebuah sigmoid $f(x) = 1 / (1 + \exp(-\alpha (x - \beta)))$, yang kemiringannya $\alpha$ dan titik tengahnya $\beta$ diturunkan secara adaptif dari rata-rata dan simpangan baku intensitas lokal. Transformasi ini menaikkan kontras pada area gelap sembari membiarkan *noise* pada area terang tak tersentuh, sehingga lesi yang pucat menonjol lebih tegas terhadap latar retina.
+
+#### 2.3.4 LAB Adaptive Contrast Enhancement (LAB-ACE)
+
+*LAB Adaptive Contrast Enhancement* (LAB-ACE; Anupama et al., 2025) memindahkan citra ke ruang LAB dan hanya memproses kanal luminans L (CLAHE bersama normalisasi lokal), membiarkan kanal warna A dan B apa adanya, lalu membangun kembali citra RGB. Bekerja pada L saja menaikkan kontras lesi namun menghindari pergeseran warna yang sebaliknya dapat menyesatkan *grading*.
+
+#### 2.3.5 Multi-channel Image Enhancement
+
+*Multi-channel Image Enhancement* (MCIE; Anupama et al., 2025) memadukan beberapa representasi komplementer ke dalam satu masukan tiga kanal, misalnya *green channel* (responsif terhadap hemoglobin), CLAHE yang diterapkan pada kanal L, dan keluaran Ben Graham Normalization. *Backbone* kemudian memanfaatkan beberapa *enhancement* sekaligus alih-alih satu jenis saja; Anupama et al. (2025) mengajukan kombinasi semacam ini sebagai arah masa depan yang menjanjikan.
+
+### 2.4 Arsitektur Deep Learning untuk Klasifikasi Citra
+
+Penelitian ini mengevaluasi dua *backbone* *deep learning* yang mewakili dua paradigma berbeda, yaitu *convolutional neural network* (CNN) yang diwakili ResNet-50 dan *Vision Transformer* (ViT) yang diwakili ViT-B/16. Masing-masing arsitektur dijelaskan pada Bagian 2.4.1 dan 2.4.2.
+
+#### 2.4.1 Convolutional Neural Network dan ResNet-50
+
+Sebuah *convolutional neural network* (CNN) menyisipkan konvolusi, aktivasi non-linear ($\mathrm{ReLU}(z) = \max(0, z)$), dan *pooling* secara berselang. Berbagi bobot menjaga jumlah parameter tetap independen terhadap ukuran citra dan membuat model bersifat ekuivarian-translasi, sementara kedalaman yang lebih besar merakit *receptive field* yang tumbuh dari tepi dan tekstur hingga ke struktur utuh. Fitur akhir menjadi *logit* $z \in \mathbb{R}^{K}$, yang diubah *softmax* $p_k = \exp(z_k) / \sum_{j=1}^{K} \exp(z_j)$ menjadi peluang kelas, dengan keseluruhannya dilatih menggunakan *categorical cross-entropy* $\mathcal{L}_{\mathrm{CE}} = -\sum_{k=1}^{K} y_k \log p_k$.
+
+ResNet-50 (He et al., 2016) termasuk salah satu CNN yang paling banyak digunakan dalam pencitraan medis. Gagasan utamanya adalah koneksi residual $y = F(x) + x$, sebuah jalur pintas yang melawan *vanishing gradient* sehingga membuat jaringan yang sangat dalam dapat dilatih. Jaringan ini menata 50 lapis konvolusi, yang unit berulangnya adalah blok *bottleneck* tiga lapis yang membawa koneksi residual, ke dalam empat tahap dengan resolusi spasial yang menurun secara bertahap, sebagaimana ditunjukkan Gambar 2.2. ResNet-50 diambil sebagai *backbone* CNN di sini karena telah mapan, memiliki jumlah parameter yang moderat (~25,5 juta), dan berulang kali muncul sebagai *baseline* di sepanjang literatur *grading* DR.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw, rounded corners=2pt, minimum height=1.9cm, text width=2.0cm, align=center, font=\scriptsize, inner sep=2pt},
+  arr/.style={-{Stealth[length=2mm]}, semithick},
+  dim/.style={font=\tiny, text=gray}
+]
+\node[box, fill=gray!12] (in) {Input fundus\\$224{\times}224{\times}3$};
+\node[box, fill=cyan!12, right=0.4cm of in] (c1) {conv1\\$7{\times}7$, 64, /2};
+\node[box, fill=gray!8, right=0.4cm of c1] (mp) {max pool\\$3{\times}3$, /2};
+\node[box, fill=orange!12, right=0.4cm of mp] (c2) {conv2\_x\\$\left[\begin{smallmatrix}1{\times}1,\,64\\[1pt]3{\times}3,\,64\\[1pt]1{\times}1,\,256\end{smallmatrix}\right]{\times}3$};
+\node[box, fill=orange!18, right=0.4cm of c2] (c3) {conv3\_x\\$[\,\cdots,512\,]{\times}4$};
+\node[box, fill=orange!24, right=0.4cm of c3] (c4) {conv4\_x\\$[\,\cdots,1024\,]{\times}6$};
+\node[box, fill=orange!32, right=0.4cm of c4] (c5) {conv5\_x\\$[\,\cdots,2048\,]{\times}3$};
+\node[box, fill=green!12, right=0.4cm of c5] (gap) {global\\avg pool};
+\node[box, fill=red!12, right=0.4cm of gap] (fc) {FC\\5 (ICDR)};
+\foreach \a/\b in {in/c1,c1/mp,mp/c2,c2/c3,c3/c4,c4/c5,c5/gap,gap/fc}{\draw[arr] (\a)--(\b);}
+\foreach \n/\d in {c1/{$112^2$},mp/{$56^2$},c3/{$28^2$},c4/{$14^2$},c5/{$7^2$},gap/{2048-d}}{\node[dim, below=2pt of \n] {\d};}
+\coordinate (bc) at ($(c2.south)+(0,-1.9)$);
+\begin{scope}[font=\tiny,
+   cb/.style={draw, rounded corners=1.5pt, fill=blue!12, text width=1.7cm, align=center, minimum height=0.5cm, inner sep=1.5pt},
+   ar/.style={-{Stealth[length=1.5mm]}, semithick}]
+\node (x) at (bc) {$x$};
+\node[cb, below=2.5mm of x] (l1) {$1{\times}1$ conv, 64};
+\node[cb, below=2.5mm of l1] (l2) {$3{\times}3$ conv, 64};
+\node[cb, below=2.5mm of l2] (l3) {$1{\times}1$ conv, 256};
+\node[draw, circle, below=2.5mm of l3, inner sep=0.8pt] (sum) {$+$};
+\node[below=2.5mm of sum] (out) {ReLU};
+\foreach \a/\b in {x/l1,l1/l2,l2/l3,l3/sum,sum/out}{\draw[ar] (\a)--(\b);}
+\draw[ar] (x.east) -- ++(1.0,0) |- (sum.east);
+\node[right=1.05cm of l2, align=left] {identity\\shortcut $x$};
+\node[below=3pt of out, font=\scriptsize] {Blok residual bottleneck: $y=\mathcal{F}(x)+x$};
+\end{scope}
+\draw[arr, dashed, gray] (c2.south) -- (x.north);
+\end{tikzpicture}%
+}
+\caption{Arsitektur ResNet-50: konvolusi $7\times7$ dan \emph{max pooling} yang diikuti empat tahap residual (conv2\_x hingga conv5\_x) yang dibangun dari blok \emph{bottleneck}, lalu \emph{global average pooling} dan satu lapis \emph{fully connected}. Sisipan menunjukkan blok residual \emph{bottleneck} dengan \emph{identity shortcut}-nya, $y=\mathcal{F}(x)+x$. Dalam penelitian ini kepala klasifikasi mengeluarkan lima kelas ICDR. Sumber: diadaptasi dari He et al. (2016).}
 \label{fig:resnet}
 \end{figure}
 
 #### 2.4.2 Vision Transformer (ViT)
 
-*Vision Transformer* (ViT; Dosovitskiy et al., 2021) mengadopsi arsitektur *Transformer* (Vaswani et al., 2017) ke pengenalan citra. ViT membagi citra menjadi *patch* berukuran tetap ($16 \times 16$ piksel pada ViT-B/16), melinearisasi tiap *patch* menjadi *token*, menambahkan *positional embedding*, lalu memprosesnya dengan beberapa blok *Transformer encoder*. Komponen intinya adalah *self-attention*, yang membuat setiap *token* menimbang relevansi seluruh *token* lain melalui proyeksi *query* $Q$, *key* $K$, dan *value* $V$: $\mathrm{Attention}(Q, K, V) = \mathrm{softmax}(QK^{\top}/\sqrt{d_k}) V$. Kemampuan memodelkan hubungan jangka jauh (*long-range dependencies*) ini relevan untuk DR *grading* karena lesi dapat tersebar di berbagai kuadran retina. Arsitektur ViT-B/16 beserta struktur blok *Transformer encoder* dan mekanisme *multi-head self-attention*-nya disajikan pada Gambar 2.2. Anupama et al. (2025) secara eksplisit mengusulkan ViT sebagai arah pengembangan untuk DR *grading*.
+*Vision Transformer* (ViT; Dosovitskiy et al., 2021) membawa arsitektur Transformer (Vaswani et al., 2017) ke pengenalan citra. ViT memotong citra menjadi *patch* berukuran tetap ($16 \times 16$ piksel untuk ViT-B/16), meratakan setiap *patch* menjadi sebuah *token*, menyematkan *positional embedding*, dan melewatkan *token* melalui tumpukan blok *Transformer encoder*. Di jantungnya terdapat *self-attention*, yang memungkinkan setiap *token* mengukur seberapa relevan semua *token* lainnya melalui proyeksi *query* $Q$, *key* $K$, dan *value* $V$: $\mathrm{Attention}(Q, K, V) = \mathrm{softmax}(QK^{\top}/\sqrt{d_k}) V$. Memodelkan dependensi jarak jauh semacam itu cocok untuk *grading* DR, tempat lesi dapat tersebar di kuadran retina yang berbeda-beda. Gambar 2.3 memaparkan arsitektur ViT-B/16 beserta blok *Transformer encoder* dan *multi-head self-attention*-nya. Anupama et al. (2025) menyebut ViT secara tegas sebagai arah yang layak ditempuh untuk *grading* DR.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{gambar/vit-pas.png}
-\caption{Arsitektur ViT-B/16 (Dosovitskiy et al., 2021; Vaswani et al., 2017) dengan citra fundus sebagai masukan; \emph{inset} menampilkan blok \emph{Transformer encoder} dan mekanisme \emph{multi-head self-attention}. Kepala klasifikasi ImageNet diganti menjadi lima kelas ICDR pada penelitian ini.}
+\includegraphics[width=\textwidth]{gambar/vit_paper.png}
+\caption{Arsitektur \emph{Vision Transformer}. Sebuah citra dipecah menjadi \emph{patch} berukuran tetap yang, bersama \emph{position embedding} dan sebuah \emph{token} [class] yang dapat dipelajari, diproses oleh sebuah \emph{Transformer encoder}; panel kanan menunjukkan blok \emph{encoder} dengan \emph{multi-head self-attention}. Dalam penelitian ini masukannya adalah citra fundus dan kepala klasifikasi mengeluarkan lima kelas ICDR. Sumber: Dosovitskiy et al. (2021); blok \emph{encoder} mengikuti Vaswani et al. (2017).}
 \label{fig:vit}
 \end{figure}
 
 #### 2.4.3 Transfer Learning
 
-Dataset DR *grading* publik relatif kecil (IDRiD hanya memiliki beberapa ratus citra latih), sehingga melatih ResNet-50 atau ViT dari inisialisasi acak hampir pasti *overfitting*. *Transfer learning* mengatasinya dengan menginisialisasi *backbone* dari bobot hasil *pretraining* pada dataset besar (ImageNet), yang telah mempelajari fitur visual umum seperti tepi, tekstur, dan bentuk, lalu melakukan *fine-tuning* pada dataset target dengan *classifier head* yang diganti sesuai jumlah kelas. Pendekatan ini mengurangi kebutuhan data dan mempercepat konvergensi, sehingga pelatihan kedua *backbone* pada IDRiD menjadi layak secara komputasional.
+Dataset DR publik berukuran kecil (IDRiD hanya menawarkan beberapa ratus citra latih), sehingga memulai salah satu *backbone* dari bobot acak akan mengundang *overfitting*. Sebagai gantinya, *transfer learning* memulai dari bobot pra-latih ImageNet yang telah menangkap fitur visual umum dan melakukan *fine-tuning* pada data target setelah mengganti kepala pengklasifikasi menjadi lima kelas, yang menurunkan kebutuhan data dan mempercepat konvergensi cukup jauh untuk membuat pelatihan pada IDRiD menjadi praktis.
 
 ### 2.5 Metrik Evaluasi Klasifikasi DR Grading
 
 #### 2.5.1 Akurasi, Presisi, Recall, dan Macro-F1
 
-Akurasi adalah proporsi prediksi benar, $\mathrm{Akurasi} = (1/N) \sum_{i=1}^{N} \mathbb{1}[\hat{y}_{i} = y_{i}]$, namun bias pada data tak seimbang yang didominasi *grade* 0 seperti IDRiD dan DDR. Karena itu dilaporkan pula presisi dan *recall* per kelas beserta *macro-F1*, yaitu rata-rata aritmatik dari $F1 = 2\,(\mathrm{presisi} \cdot \mathrm{recall}) / (\mathrm{presisi} + \mathrm{recall})$ atas seluruh kelas. *Macro-F1* memberi bobot setara pada tiap kelas, sehingga sensitif terhadap kinerja pada kelas minoritas.
+Akurasi, yaitu proporsi prediksi benar $\mathrm{Accuracy} = (1/N) \sum_{i=1}^{N} \mathbb{1}[\hat{y}_{i} = y_{i}]$, menyesatkan pada data yang tidak seimbang tempat tingkat 0 mendominasi, seperti pada IDRiD dan DDR. Karena itu penelitian ini juga melaporkan presisi dan *recall* per kelas bersama *macro-F1*, yaitu rata-rata tak berbobot atas semua kelas dari $F1 = 2\,(\mathrm{precision} \cdot \mathrm{recall}) / (\mathrm{precision} + \mathrm{recall})$. Dengan membobot setiap kelas secara setara, *macro-F1* tetap responsif terhadap seberapa baik kelas minoritas ditangani.
 
 #### 2.5.2 Quadratic-weighted Kappa (QWK)
 
-Karena ICDR ordinal, kesalahan berjarak dua *grade* lebih parah daripada satu *grade*, padahal akurasi dan *F1* tidak membedakannya. *Quadratic-weighted kappa* (Cohen, 1968) memberi penalti sebanding dengan kuadrat jarak antar-kelas,
+Karena ICDR bersifat ordinal, kesalahan dua tingkat lebih buruk daripada kesalahan satu tingkat, sebuah perbedaan yang diabaikan akurasi dan F1. *Quadratic-weighted kappa* (Cohen, 1968) menerapkan penalti yang tumbuh seiring kuadrat jarak antarkelas,
 
 $$
 \kappa_{w} \;=\; 1 - \frac{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} O_{ij}}{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} E_{ij}},
 \qquad w_{ij} = \frac{(i - j)^{2}}{(K - 1)^{2}},
 $$
 
-dengan $O$ sebagai *confusion matrix* observasi dan $E$ sebagai *confusion matrix* harapan jika prediksi dan label independen. Nilai $\kappa_w = 1$ berarti prediksi sempurna dan $\kappa_w = 0$ setara tebakan acak. QWK adalah metrik standar pada tantangan DR *grading* (Kaggle *Diabetic Retinopathy Detection*, APTOS 2019) dan menjadi metrik utama penelitian ini.
+dengan $O$ adalah matriks konfusi teramati dan $E$ adalah matriks konfusi yang diharapkan seandainya prediksi dan label saling bebas. Di sini $\kappa_w = 1$ menandakan kesepakatan sempurna dan $\kappa_w = 0$ berpadanan dengan tebakan setingkat kebetulan. Karena telah mapan sebagai skor standar dalam tantangan *grading* DR (*Kaggle Diabetic Retinopathy Detection*, APTOS 2019), QWK menjadi metrik utama penelitian ini.
 
 #### 2.5.3 Gradient-weighted Class Activation Mapping (Grad-CAM)
 
-*Gradient-weighted Class Activation Mapping* (Grad-CAM; Selvaraju et al., 2017) menghasilkan *heatmap* yang menandai wilayah citra paling berpengaruh terhadap keputusan klasifikasi, dengan membobot *feature map* lapisan konvolusi terakhir memakai gradien skor kelas target. Pada DR *grading*, Grad-CAM dipakai untuk memverifikasi apakah model mendasarkan prediksi pada lesi yang relevan secara klinis (misalnya *microaneurysm* atau *haemorrhage*) atau pada artefak seperti tepi lensa. Pada penelitian ini, Grad-CAM berperan sebagai alat interpretasi tambahan pada konfigurasi terbaik, bukan fokus kuantitatif utama, sejalan dengan rekomendasi Anupama et al. (2025).
+*Gradient-weighted Class Activation Mapping* (Grad-CAM; Selvaraju et al., 2017) menghasilkan peta panas (*heatmap*) atas wilayah yang paling memengaruhi klasifikasi, yang diperoleh dengan membobot peta fitur lapis konvolusi terakhir menggunakan gradien skor kelas target. Untuk *grading* DR, Grad-CAM membantu memastikan apakah sebuah prediksi berlandaskan lesi yang bermakna secara klinis (seperti mikroaneurisma atau perdarahan) alih-alih artefak seperti tepi lensa. Penelitian ini memperlakukan Grad-CAM sebagai alat interpretasi pendukung yang diterapkan pada konfigurasi terbaik alih-alih sebagai perhatian kuantitatif utama, sejalan dengan rekomendasi Anupama et al. (2025).
 
 ### 2.6 Penelitian Terkait
 
-Era modern klasifikasi DR berbasis *deep learning* dimulai dari Gulshan et al. (2016), yang melatih CNN pada 128.175 citra retina dan melaporkan sensitivitas 90,3% serta spesifisitas 98,1% untuk DR yang perlu rujukan, setara ahli. Abramoff et al. (2018) membawanya ke ranah regulasi melalui IDx-DR, sistem AI pertama yang disetujui FDA untuk keputusan diagnostik di layanan primer tanpa supervisi spesialis. Keduanya menunjukkan DR *grading* otomatis layak secara teknis, bermanfaat klinis, dan dapat disetujui regulator.
+Sebagaimana dicatat pada Bagian 1.1, *grading* DR berbasis *deep learning* mencapai kematangan klinis dan regulatori melalui sistem-sistem tonggak (Gulshan et al., 2016; Abramoff et al., 2018); pelepasan *benchmark* publik berikutnya seperti IDRiD (Porwal et al., 2020) dan DDR (Li et al., 2019) kemudian mengalihkan perhatian ke perbandingan terbuka antar-*backbone* (ResNet, DenseNet, Inception, EfficientNet) dan, yang lebih baru, ke *foundation model* seperti RETFound (Zhou et al., 2023). Penelitian ini termasuk dalam tradisi *open-benchmark* itu tetapi berpusat pada dua pertanyaan yang masih kurang tereksplorasi: bagaimana *preprocessing* dan *backbone* berinteraksi, dan apakah perbandingan yang dihasilkan berlaku antardataset.
 
-Rilis dataset publik seperti IDRiD (Porwal et al., 2020) dan DDR (Li et al., 2019) menggeser fokus ke *benchmark* terbuka, tempat berbagai *backbone* (ResNet, DenseNet, Inception, EfficientNet) dievaluasi. Zhou et al. (2023) mengembangkan RETFound, *foundation model* berbasis ViT yang dilatih secara *self-supervised* pada 1,6 juta citra retina dan konsisten lebih unggul daripada bobot ImageNet pada tugas retina, terutama saat data terbatas.
+Chokuwa dan Khan (2025) menunjukkan bahwa model *grading* DR kehilangan kinerja secara substansial ketika model yang dilatih pada satu dataset diuji pada dataset lain yang pengaturan akuisisinya berbeda, dengan penyebabnya adalah pergeseran domain (kamera, pencahayaan, demografi) alih-alih anotasi yang tidak konsisten. Hasil itulah yang membuat penelitian ini menolak memindahkan satu model antardataset dan sebaliknya memperlakukan setiap dataset sebagai *benchmark* mandiri, dengan menanyakan apakah putusan komparatifnya, yaitu *preprocessing* dan *backbone* mana yang keluar sebagai terbaik, tetap sama antardataset.
 
-Chokuwa dan Khan (2025) menunjukkan model DR *grading* mengalami penurunan performa yang nyata ketika dievaluasi pada dataset dengan pengaturan akuisisi berbeda, akibat pergeseran domain (kamera, pencahayaan, demografi), bukan inkonsistensi anotasi. Temuan ini mendasari pilihan penelitian ini untuk menjadikan evaluasi lintas-dataset sebagai ukuran kinerja yang lebih realistis.
-
-*Paper* anchor penelitian ini adalah Anupama et al. (2025) di *Scientific Reports*, yang mengevaluasi beberapa *backbone* untuk DR *grading* pada dataset tunggal dan, pada bagian *future work*, mengidentifikasi tiga arah: (i) eksplorasi sistematis kombinasi *preprocessing*; (ii) validasi pada *multi-center datasets* dengan perangkat dan demografi beragam; serta (iii) integrasi alat interpretasi seperti Grad-CAM. Penelitian ini mengambil ketiganya sebagai landasan, yaitu membandingkan lima teknik *preprocessing* (Subbab 2.3) pada dua *backbone* berbeda paradigma (Subbab 2.4), mengevaluasi lintas-dataset IDRiD dan DDR (Subbab 2.2), serta memakai Grad-CAM pada konfigurasi terbaik (Subbab 2.5.3).
+Makalah acuan penelitian ini adalah Anupama et al. (2025) di *Scientific Reports*, yang menilai beberapa *backbone* untuk *grading* DR pada satu dataset dan, pada bagian *future work*-nya, menunjuk tiga arah: (i) studi sistematis atas kombinasi *preprocessing*; (ii) validasi pada dataset *multi-center* yang mencakup perangkat dan demografi yang beragam; dan (iii) penambahan alat interpretasi seperti Grad-CAM. Penelitian ini membangun di atas ketiganya, dengan membandingkan lima teknik *preprocessing* (Bagian 2.3) pada dua *backbone* dari paradigma yang berbeda (Bagian 2.4), mengevaluasinya secara independen pada enam dataset publik (Bagian 2.2), dan menerapkan Grad-CAM pada konfigurasi terbaik (Bagian 2.5.3).
 
 ### 2.7 Kerangka Berpikir
 
-Citra fundus mentah memiliki variasi pencahayaan, kontras, dan pewarnaan sensor (Subbab 2.2.1), sedangkan lesi awal *diabetic retinopathy* seperti *microaneurysm* berukuran kecil dan berkontras rendah terhadap latar retina (Subbab 2.1.1). Kelima teknik *preprocessing* (Subbab 2.3) bekerja dengan mekanisme yang berbeda: CLAHE dan LAB-ACE memperkuat kontras lokal, Ben Graham *Normalization* menstabilkan pencahayaan global antar-kamera, *Adaptive Sigmoid Enhancement* meregangkan rentang intensitas secara adaptif, dan *Multi-channel Image Enhancement* menggabungkan beberapa representasi sekaligus. Karena mekanismenya berbeda, dampak tiap teknik terhadap visibilitas lesi, proses ekstraksi fitur, dan kinerja klasifikasi diperkirakan juga berbeda, sehingga pemilihan teknik *preprocessing* bukan hal yang netral terhadap kinerja akhir.
-
-Pada sisi arsitektur, kedua *backbone* mewakili dua paradigma dengan *inductive bias* yang berbeda (Subbab 2.4). ResNet-50 sebagai *convolutional neural network* menangkap fitur lokal melalui *receptive field* berlapis, sehingga peka terhadap lesi kecil yang terlokalisasi, sedangkan ViT-B/16 sebagai *Vision Transformer* memodelkan hubungan jangka jauh antar-wilayah melalui *self-attention*, yang relevan karena lesi DR dapat tersebar di berbagai kuadran retina dan menentukan tingkat keparahan pada skala ICDR (Subbab 2.1.3). Perbedaan *inductive bias* ini diperkirakan menghasilkan kinerja dan ketahanan terhadap pergeseran domain yang berbeda pula.
-
-Ketika model yang dilatih pada satu sumber data (IDRiD) diuji pada sumber lain (DDR), model menghadapi pergeseran domain akibat perbedaan kamera, populasi, dan pencahayaan, yang menurunkan kinerja meskipun ontologi label identik (Subbab 2.6; Chokuwa dan Khan, 2025). Besar penurunan ini diperkirakan bergantung pada seberapa baik *preprocessing* menyeragamkan tampilan citra antar-sumber dan seberapa tangguh *backbone* terhadap variasi yang tersisa. Dengan demikian, kinerja klasifikasi DR *grading* dipandang sebagai fungsi dari interaksi faktor *preprocessing* dan faktor *backbone*. Desain faktorial $5 \times 2$ pada penelitian ini (Subbab 3.1) ditujukan untuk mengisolasi pengaruh kedua faktor tersebut, sementara sifat ordinal ICDR dan ketidakseimbangan kelas menuntut evaluasi dengan QWK dan *macro-F1*, bukan akurasi semata (Subbab 2.5). Kerangka berpikir inilah yang mendasari hipotesis pada Subbab 2.8.
+Citra fundus mentah bervariasi dalam pencahayaan, kontras, dan warna, dan lesi DR paling awal berukuran kecil serta berkontras rendah (Bagian 2.1 dan 2.2). Karena kelima teknik *preprocessing* (Bagian 2.3) dan kedua *backbone* (Bagian 2.4) beroperasi melalui mekanisme dan *inductive bias* yang berbeda, kinerja dipandang sebagai fungsi dari interaksi *preprocessing* $\times$ *backbone*, yang justru dirancang untuk diisolasi oleh desain faktorial $5 \times 2$ (Bagian 3.1). Untuk memeriksa apakah interaksi itu melampaui satu dataset, kesepuluh konfigurasi dilatih dan dievaluasi secara independen pada enam dataset yang berbeda dalam kamera, populasi, dan pencahayaan namun berbagi ontologi ICDR, sehingga sebuah konfigurasi yang menempati peringkat pertama secara konsisten pada keenamnya dapat mengklaim validitas eksternal. Karena skala ICDR bersifat ordinal dan kelasnya tidak seimbang, perbandingannya bersandar pada QWK dan *macro-F1* alih-alih akurasi semata (Bagian 2.5) dan menggabungkan QWK per dataset melalui uji Friedman, dengan konfigurasi-konfigurasi terdepan kemudian dibandingkan lewat uji *Wilcoxon signed-rank* dan uji McNemar per dataset (Bagian 3.7). Pertimbangan-pertimbangan ini mengarah pada hipotesis yang dirumuskan pada Bagian 2.8.
 
 ### 2.8 Hipotesis Penelitian
 
-Berdasarkan kerangka berpikir di atas, dirumuskan tiga hipotesis penelitian yang sejalan dengan ketiga rumusan masalah. Hipotesis ini bersifat terarah dan akan diuji secara empiris; signifikansi perbedaan antar-konfigurasi dinilai melalui interval kepercayaan berbasis *bootstrap* (Subbab 3.7).
+Mengikuti rumusan masalah, penelitian ini dipandu oleh satu hipotesis statistik, yang diuji sebagaimana dijelaskan pada Bagian 3.7. Untuk sepasang konfigurasi mana pun, yang dilambangkan Konfigurasi A dan Konfigurasi B, hipotesisnya didefinisikan sebagai berikut.
 
-1. **H1.** Terdapat perbedaan kinerja klasifikasi (akurasi, *quadratic-weighted kappa*, dan *macro-F1*) yang bermakna antar lima teknik *preprocessing* dan antar dua arsitektur *backbone* pada dataset IDRiD. Secara terarah, teknik yang menstabilkan pencahayaan global dan menggabungkan beberapa representasi (Ben Graham *Normalization* dan *Multi-channel Image Enhancement*) diperkirakan mengungguli teknik kontras-lokal tunggal, dan ViT-B/16 diperkirakan setidaknya menyamai ResNet-50 karena kemampuannya memodelkan lesi yang tersebar.
+- $H_{0(A,B)}$: median selisih antara skor QWK Konfigurasi A dan Konfigurasi B pada keenam dataset adalah nol; artinya, tidak ada konfigurasi yang cenderung mengungguli yang lain, dan setiap selisih yang teramati disebabkan oleh kebetulan.
+- $H_{1(A,B)}$: median selisih antara skor QWK Konfigurasi A dan Konfigurasi B pada keenam dataset tidak sama dengan nol; artinya, satu konfigurasi secara sistematis berkinerja lebih baik daripada yang lain pada seluruh dataset.
 
-2. **H2.** Seluruh konfigurasi mengalami penurunan kinerja ketika dievaluasi lintas-dataset pada DDR akibat pergeseran domain, tetapi besar penurunannya berbeda antar-konfigurasi. Konfigurasi dengan *preprocessing* yang menstandarkan pencahayaan dan warna (Ben Graham *Normalization*, LAB-ACE, dan *Multi-channel Image Enhancement*) yang dipasangkan dengan *backbone* ViT-B/16 diperkirakan mengalami penurunan terkecil, sehingga paling tahan terhadap pergeseran domain antarinstitusi.
-
-3. **H3.** Terdapat *trade-off* antara akurasi prediktif, ketahanan lintas-dataset, dan biaya komputasi: konfigurasi dengan kinerja tertinggi pada IDRiD belum tentu paling tahan lintas-dataset maupun paling efisien. Konfigurasi yang menyeimbangkan ketiga aspek tersebut diperkirakan paling sesuai untuk *deployment* sistem skrining DR pada layanan kesehatan primer di Indonesia.
+*Trade-off* antara kinerja prediktif dan biaya komputasi (RM3) dikaji secara deskriptif melalui pengukuran langsung dan karena itu tidak dinyatakan sebagai hipotesis statistik.
 
 ## METODE PENELITIAN
 
 ### 3.1 Desain Penelitian
 
-Penelitian ini menggunakan desain eksperimen kuantitatif berbasis kerangka analisis komparatif faktorial. Variabel independen terdiri atas dua faktor, yaitu teknik *preprocessing* citra fundus pada lima tingkat (CLAHE, Ben Graham *Normalization*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*) dan arsitektur *backbone deep learning* pada dua tingkat (ResNet-50 dan ViT-B/16). Kombinasi kedua faktor menghasilkan sepuluh konfigurasi eksperimen. Definisi operasional seluruh variabel diuraikan pada Subbab 3.3. Setiap konfigurasi dilatih pada dataset IDRiD menggunakan protokol pelatihan yang identik, kemudian dievaluasi pada dua partisi uji yang berbeda, yaitu partisi uji IDRiD (*in-distribution*) dan partisi uji DDR (lintas-dataset). Perbandingan antar-konfigurasi dilakukan melalui metrik akurasi, *quadratic-weighted kappa* (QWK), *macro-F1*, serta *confusion matrix* per kelas.
+Penelitian ini mengadopsi desain eksperimen faktorial kuantitatif. Dua faktor bebasnya adalah teknik *preprocessing* citra fundus pada lima taraf (CLAHE, Ben Graham Normalization, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan MCIE) dan arsitektur *backbone* pada dua taraf (ResNet-50 dan ViT-B/16), yang berpadu menjadi sepuluh konfigurasi ($5 \times 2$); definisi operasionalnya tampil pada Bagian 3.3. Masing-masing dari keenam dataset (IDRiD, DDR, APTOS 2019, Messidor-2, EyePACS, dan DeepDRiD) berperan sebagai *benchmark* independen: pada setiap dataset, kesepuluh konfigurasi dilatih dan diuji pada partisi dataset itu sendiri di bawah satu protokol yang identik dan dinilai dengan akurasi, *quadratic-weighted kappa* (QWK), *macro-F1*, serta matriks konfusi per kelas. Luarannya adalah sebuah matriks skor QWK per dataset berukuran $10 \times 6$.
 
-Alur eksperimen terdiri atas enam tahap berurutan, yaitu akuisisi dan pembagian dataset, penerapan salah satu dari lima teknik *preprocessing* pada seluruh citra (Subbab 3.4), inisialisasi *backbone* ResNet-50 atau ViT-B/16 dari bobot ImageNet (Subbab 3.5), pelatihan model dengan *random seed* yang tetap (Subbab 3.6), evaluasi pada IDRiD *test* dan DDR *test* (Subbab 3.7), serta analisis statistik dan visualisasi Grad-CAM pada konfigurasi terbaik. Seluruh *hyperparameter* pelatihan dan *pipeline* augmentasi bersifat identik antar-konfigurasi, sehingga perbedaan kinerja yang teramati dapat diatribusikan pada teknik *preprocessing* dan pilihan *backbone*, bukan pada faktor perancangan lain. Bobot model, *seed*, skrip, dan log metrik disimpan pada repositori Git publik untuk menjamin reproduktibilitas. Gambar 3.1 menyajikan alur eksperimen secara keseluruhan.
+Untuk menentukan konfigurasi yang terbaik bukan pada satu dataset melainkan secara konsisten pada keenamnya, skor QWK per dataset diagregasi dengan uji Friedman (Demsar, 2006) sebagai uji *omnibus*, dan dua konfigurasi terdepan kemudian dibandingkan antardataset dengan uji *Wilcoxon signed-rank* serta di dalam setiap dataset dengan uji McNemar berkoreksi Holm-Bonferroni pada prediksi berpasangan (Bagian 3.7). Seluruh *hyperparameter*, *pipeline* augmentasi, pembagian data per dataset, dan *seed* acak dijaga identik antarkonfigurasi, sehingga perbedaan yang teramati di dalam satu dataset dapat diatribusikan semata pada teknik *preprocessing* dan pilihan *backbone*. Bobot model, *seed*, skrip, dan catatan metrik disimpan dalam repositori Git publik demi *reproducibility*. Gambar 3.1 menyajikan alur enam tahap, mulai dari pembagian per dataset melalui *preprocessing*, pelatihan, dan evaluasi hingga ke agregasi statistik dan Grad-CAM pada konfigurasi terbaik.
 
 \begin{figure}[htbp]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  font=\small,
-  ttl/.style={font=\itshape, align=center},
-  item/.style={draw, rectangle, fill=white, align=center, font=\scriptsize, inner sep=3pt, minimum height=0.55cm, text width=3.3cm},
-  grp/.style={draw, rectangle, fill=gray!4, inner sep=4pt},
-  db/.style={draw, cylinder, shape border rotate=90, aspect=0.28, fill=gray!8, align=center, font=\scriptsize, minimum width=2.0cm, minimum height=1.5cm},
-  arr/.style={-Stealth, thick}
+  font=\footnotesize,
+  db/.style={draw, cylinder, shape border rotate=90, aspect=0.25, fill=gray!10, align=center, font=\scriptsize, minimum width=1.5cm, minimum height=1.4cm},
+  pbox/.style={draw, rounded corners=2pt, fill=orange!15, align=center, font=\scriptsize, text width=2.1cm, minimum height=0.55cm, inner sep=2pt},
+  bbox/.style={draw, rounded corners=2pt, fill=cyan!18, align=center, font=\scriptsize, text width=2.0cm, minimum height=0.7cm, inner sep=2pt},
+  sbox/.style={draw, rounded corners=2pt, fill=gray!8, align=center, font=\scriptsize, text width=2.4cm, minimum height=0.7cm, inner sep=2pt},
+  obox/.style={draw, rounded corners=2pt, fill=green!14, align=center, font=\scriptsize, text width=2.4cm, minimum height=0.7cm, inner sep=2pt},
+  arr/.style={-{Stealth[length=1.8mm]}, semithick},
+  fan/.style={-{Stealth[length=1.4mm]}, thin, gray!65}
 ]
-\node[db] (data) at (0,-1.7) {Dataset\\\emph{IDRiD}\\$+$ \emph{DDR}};
-
-\node[ttl] (prep_t) at (4.7,0) {Preprocessing};
-\node[item, below=1.4mm of prep_t] (prep1) {Cropping $+$ Resize $224{\times}224$};
-\node[item, below=1mm of prep1] (prep2) {5 teknik \emph{enhancement} (Faktor 1)};
-\begin{scope}[on background layer]\node[grp, fit=(prep_t)(prep1)(prep2)] (prep) {};\end{scope}
-
-\node[ttl] (aug_t) at (4.7,-3.6) {Augmentasi};
-\node[item, below=1.4mm of aug_t] (aug1) {\emph{Flip}, rotasi $\pm 30^{\circ}$, \emph{brightness/contrast jitter}};
-\begin{scope}[on background layer]\node[grp, fit=(aug_t)(aug1)] (aug) {};\end{scope}
-
-\node[ttl] (back_t) at (9.4,0) {Backbone (Faktor 2)};
-\node[item, below=1.4mm of back_t] (back1) {ResNet-50 (ImageNet-1k)};
-\node[item, below=1mm of back1] (back2) {ViT-B/16 (ImageNet-21k)};
-\begin{scope}[on background layer]\node[grp, fit=(back_t)(back1)(back2)] (back) {};\end{scope}
-
-\node[ttl] (pel_t) at (9.4,-3.6) {Pelatihan};
-\node[item, below=1.4mm of pel_t] (pel1) {$5 \times 2 = 10$ konfigurasi};
-\node[item, below=1mm of pel1] (pel2) {AdamW, \emph{class-weighted} CE};
-\begin{scope}[on background layer]\node[grp, fit=(pel_t)(pel1)(pel2)] (pel) {};\end{scope}
-
-\node[ttl] (eval_t) at (14.1,0) {Evaluasi};
-\node[item, below=1.4mm of eval_t] (eval1) {IDRiD \emph{test} (\emph{in-distribution})};
-\node[item, below=1mm of eval1] (eval2) {DDR \emph{test} (lintas-\emph{dataset}, \emph{zero-shot})};
-\begin{scope}[on background layer]\node[grp, fit=(eval_t)(eval1)(eval2)] (eval) {};\end{scope}
-
-\node[ttl] (metr_t) at (14.1,-3.6) {Metrik \& Interpretasi};
-\node[item, below=1.4mm of metr_t] (metr1) {Akurasi, QWK, \emph{Macro-F1}};
-\node[item, below=1mm of metr1] (metr2) {Grad-CAM (konfigurasi terbaik)};
-\begin{scope}[on background layer]\node[grp, fit=(metr_t)(metr1)(metr2)] (metr) {};\end{scope}
-
-\draw[arr] (data.east) -- ++(0.4,0) |- (prep.west);
-\draw[arr] (prep.south) -- (aug.north);
-\draw[arr] (aug.east) -- ++(0.4,0) |- (back.west);
-\draw[arr] (back.south) -- (pel.north);
-\draw[arr] (pel.east) -- ++(0.4,0) |- (eval.west);
-\draw[arr] (eval.south) -- (metr.north);
+% ---- Baris 1: eksperimen faktorial per dataset ----
+\node[db] (data) at (0,0) {Masing-masing\\6 dataset};
+\node[sbox] (basic) at (2.7,0) {Pipeline dasar:\\crop, resize\\$224^2$, augment};
+\node[pbox] (p1) at (5.9, 3.0) {CLAHE};
+\node[pbox] (p2) at (5.9, 1.5) {Ben Graham};
+\node[pbox] (p3) at (5.9, 0.0) {Adaptive Sigmoid};
+\node[pbox] (p4) at (5.9,-1.5) {LAB-ACE};
+\node[pbox] (p5) at (5.9,-3.0) {MCIE};
+\node[bbox] (b1) at (9.4, 1.1) {ResNet-50};
+\node[bbox] (b2) at (9.4,-1.1) {ViT-B/16};
+\node[sbox] (conf) at (12.4,0) {$5 \times 2 = 10$\\konfigurasi};
+\node[sbox] (perds) at (15.3,0) {Latih \& uji\\di tiap dataset\\$\to$ QWK};
+\node[font=\scriptsize\itshape, text=gray] at (5.9,3.95) {Faktor 1: preprocessing};
+\node[font=\scriptsize\itshape, text=gray] at (9.4,2.15) {Faktor 2: backbone};
+\draw[arr] (data) -- (basic);
+\foreach \p in {p1,p2,p3,p4,p5}{\draw[fan] (basic.east) -- (\p.west);}
+\foreach \p in {p1,p2,p3,p4,p5}{\draw[fan] (\p.east) -- (b1.west); \draw[fan] (\p.east) -- (b2.west);}
+\draw[arr] (b1.east) -- (conf.north west);
+\draw[arr] (b2.east) -- (conf.south west);
+\draw[arr] (conf) -- (perds);
+% ---- Baris 2: agregasi pada keenam dataset ----
+\node[sbox] (matrix) at (15.3,-5.3) {Matriks QWK\\$10 \times 6$};
+\node[sbox] (fried) at (11.1,-5.3) {Uji Friedman\\(omnibus)};
+\node[obox] (cd) at (7.0,-5.3) {Wilcoxon $+$ McNemar\\pada 2 konfig teratas};
+\node[obox] (best) at (2.9,-5.3) {Konfigurasi terbaik\\$+$ Grad-CAM};
+\node[font=\scriptsize\itshape, text=gray] at (15.3,-3.9) {ulangi untuk keenam dataset};
+\draw[arr] (perds.south) -- (matrix.north);
+\draw[arr] (matrix) -- (fried);
+\draw[arr] (fried) -- (cd);
+\draw[arr] (cd) -- (best);
 \end{tikzpicture}%
 }
-\caption{Alur penelitian: kombinasi lima teknik \emph{preprocessing} (Faktor 1) dan dua \emph{backbone} (Faktor 2) membentuk sepuluh konfigurasi ($5 \times 2$) yang dievaluasi pada IDRiD \emph{test} (\emph{in-distribution}) dan DDR \emph{test} (lintas-\emph{dataset}).}
+\caption{Desain penelitian. Untuk masing-masing dari keenam dataset, sebuah citra melewati \emph{pipeline} dasar lalu bercabang ke lima teknik \emph{preprocessing} (Faktor 1); setiap cabang dipasangkan dengan kedua \emph{backbone} (Faktor 2), membentuk sepuluh konfigurasi yang dilatih dan diuji pada dataset itu untuk menghasilkan QWK-nya. Mengulang hal ini untuk keenam dataset menghasilkan matriks QWK $10 \times 6$, yang diagregasi dengan uji Friedman lalu dikaji dengan uji \emph{Wilcoxon signed-rank} dan McNemar pada dua konfigurasi terdepan untuk mengidentifikasi konfigurasi terbaik, yang akhirnya diverifikasi dengan Grad-CAM.}
 \label{fig:pipeline}
 \end{figure}
 
 ### 3.2 Dataset
 
-#### 3.2.1 IDRiD Disease Grading Subset
+#### 3.2.1 Partisi Latih, Validasi, dan Uji per Dataset
 
-Dari partisi resmi IDRiD (413 citra latih, 103 citra uji; Porwal et al., 2020), penelitian ini menyisihkan 15% citra latih (62 citra) sebagai partisi validasi melalui pengambilan acak bertingkat (*stratified*) di bawah *seed* tetap, menyisakan 351 citra latih. Partisi validasi dipakai untuk *early stopping* dan pemilihan *checkpoint*, sedangkan partisi uji 103 citra hanya diakses sekali pada akhir eksperimen untuk menghasilkan metrik *in-distribution*.
+Masing-masing dari keenam dataset dibagi menjadi partisi latih, validasi, dan uji secara independen, dan kesepuluh konfigurasi dilatih serta dievaluasi di dalam setiap dataset menggunakan partisi-partisi tersebut. Partisi validasi digunakan untuk *early stopping* dan pemilihan *checkpoint*; partisi uji diakses hanya sekali per konfigurasi, di akhir pelatihan, untuk menghasilkan metrik yang dilaporkan. Untuk dataset yang menyediakan partisi resmi, partisi itu diadopsi tanpa perubahan; untuk yang lain, digunakan pembagian terstratifikasi di bawah *seed* tetap.
 
-#### 3.2.2 DDR untuk Evaluasi Lintas-Dataset
+Untuk **IDRiD**, partisi resmi (413 citra latih, 103 uji; Porwal et al., 2020) digunakan, dengan 15% citra latih (62 citra) disisihkan sebagai partisi validasi terstratifikasi di bawah *seed* tetap, menyisakan 351 citra latih. Untuk **DDR** (Li et al., 2019), partisi latih, validasi, dan uji resmi digunakan setelah citra *ungradable* disaring keluar. Untuk **DeepDRiD** (Liu et al., 2022) dan **EyePACS** (Kaggle dan EyePACS, 2015), partisi resmi juga diadopsi; untuk EyePACS, citra *ungradable* dihilangkan dan sebuah subset terstratifikasi per kelas diambil agar biaya pelatihan tetap terkelola sembari mempertahankan distribusi kelas. Untuk **APTOS 2019** (APTOS, 2019) dan **Messidor-2** (Decenciere et al., 2014), yang tidak menyediakan partisi latih dan uji resmi, digunakan pembagian terstratifikasi 70/15/15 latih/validasi/uji di bawah *seed* tetap. Semua pembagian dirilis dalam repositori publik agar dapat direproduksi secara persis.
 
-DDR (Li et al., 2019) diperlakukan sebagai *set* evaluasi *zero-shot transfer*: hanya partisi uji resmi yang dipakai, setelah citra *ungradable* disaring agar ruang label tetap lima kelas, menghasilkan sekitar 3.759 citra. Partisi latih dan validasi DDR tidak digunakan sama sekali.
+#### 3.2.2 Distribusi Kelas dan Penanganan Ketidakseimbangan
 
-#### 3.2.3 Distribusi Kelas dan Penanganan Ketidakseimbangan
-
-Kedua dataset berdistribusi tidak seimbang (*long-tailed*): *grade* 0 dan 2 mendominasi, sedangkan *grade* 1, 3, dan 4 minoritas. Ketidakseimbangan ditangani pada dua level, yaitu (i) *weighted random sampler* dengan bobot $\propto 1/\sqrt{n_k}$ ($n_k$ adalah jumlah citra latih kelas $k$) pada tiap *mini-batch*, dan (ii) *class-weighted categorical cross-entropy* dengan bobot $\propto 1/\sqrt{n_k}$ yang dinormalisasi agar berjumlah $K$. QWK dipilih sebagai metrik pemilihan *checkpoint* karena sensitif terhadap jarak ordinal dan relatif tahan terhadap distribusi marginal.
+Keenam dataset tidak seimbang (*long-tailed*): tingkat 0 mendominasi sementara tingkat yang lebih tinggi, terutama tingkat 3 dan 4, merupakan minoritas. Di dalam setiap dataset, ketidakseimbangan ditangani secara identik pada dua tingkat, yaitu (i) *weighted random sampler* dengan bobot $\propto 1/\sqrt{n_k}$ ($n_k$ adalah jumlah citra latih kelas $k$ pada dataset tersebut) di setiap *mini-batch*, dan (ii) *categorical cross-entropy* berbobot kelas dengan bobot $\propto 1/\sqrt{n_k}$ yang dinormalkan agar berjumlah $K$. QWK dipilih sebagai metrik pemilihan *checkpoint* karena peka terhadap jarak ordinal dan relatif tahan terhadap distribusi marginal.
 
 ### 3.3 Variabel dan Definisi Operasional Variabel
 
-Penelitian ini melibatkan dua variabel bebas, satu kelompok variabel terikat, dan sejumlah variabel kontrol. Definisi operasional masing-masing variabel diuraikan sebagai berikut.
+Penelitian ini melibatkan dua variabel bebas, tiga variabel terikat, dan sekumpulan variabel kontrol, yang didefinisikan secara operasional pada Tabel 3.1.
 
-**Variabel bebas.** Variabel bebas pertama adalah *teknik preprocessing* citra fundus, yaitu variabel kategorikal dengan lima taraf (CLAHE, Ben Graham *Normalization*, *Adaptive Sigmoid Enhancement*, LAB-ACE, dan *Multi-channel Image Enhancement*); secara operasional, teknik ini adalah transformasi intensitas atau warna yang diterapkan pada setiap citra setelah *cropping* dan sebelum *resize*, dengan parameter yang dirinci pada Subbab 3.4. Variabel bebas kedua adalah *arsitektur backbone*, yaitu variabel kategorikal dengan dua taraf (ResNet-50 dan ViT-B/16); secara operasional, *backbone* adalah jaringan ekstraksi fitur yang diinisialisasi dari bobot ImageNet lalu di-*fine-tune* pada data DR *grading*, sebagaimana dirinci pada Subbab 3.5. Kombinasi kedua variabel bebas membentuk sepuluh konfigurasi eksperimen ($5 \times 2$).
-
-**Variabel terikat.** Variabel terikat utama adalah kinerja klasifikasi tingkat keparahan DR, yang secara operasional diukur dengan tiga metrik, yaitu akurasi, *quadratic-weighted kappa* (QWK), dan *macro-F1* (rumus pada Subbab 2.5), dihitung pada partisi uji. Selain itu diturunkan dua variabel terikat pelengkap, yaitu (a) penurunan kinerja lintas-dataset, didefinisikan sebagai selisih tiap metrik antara IDRiD *test* dan DDR *test* (Subbab 3.7) sebagai ukuran ketahanan terhadap pergeseran domain, dan (b) biaya komputasi, didefinisikan sebagai jumlah parameter model dan waktu inferensi rata-rata per citra.
-
-**Variabel kontrol.** Agar perbedaan kinerja yang teramati dapat diatribusikan murni pada kedua variabel bebas, faktor-faktor berikut dibuat identik antar-konfigurasi: *pipeline* dasar *preprocessing* (Subbab 3.4.1), protokol augmentasi (Subbab 3.4.3), *optimiser* dan *hyperparameter* pelatihan (Subbab 3.6), partisi data dan *random seed*, serta perangkat dan lingkungan komputasi (Subbab 3.8).
+\begin{table}[htbp]
+\caption{Variabel penelitian dan definisi operasionalnya.}
+\label{tab:variabel}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{3.1cm}|p{2.5cm}|p{7.2cm}|}
+\hline
+\textbf{Variabel} & \textbf{Jenis} & \textbf{Definisi operasional} \\
+\hline
+Teknik \emph{preprocessing} (bebas) & Kategorikal, 5 taraf & Transformasi intensitas atau warna yang diterapkan pada setiap citra setelah \emph{cropping} dan sebelum \emph{resizing}; taraf dan parameter pada Bagian 3.4. \\
+\hline
+Arsitektur \emph{backbone} (bebas) & Kategorikal, 2 taraf & Jaringan ekstraksi fitur (ResNet-50 atau ViT-B/16) yang diinisialisasi dari bobot ImageNet dan di-\emph{fine-tune} pada data \emph{grading} DR; Bagian 3.5. \\
+\hline
+Kinerja klasifikasi (terikat) & Kontinu & Akurasi, QWK, dan \emph{macro-F1} pada partisi uji (Bagian 2.5). \\
+\hline
+Konsistensi lintas-dataset (terikat) & Ordinal/Kontinu & Peringkat rata-rata setiap konfigurasi pada keenam dataset dan signifikansinya di bawah uji Friedman, uji \emph{Wilcoxon signed-rank}, serta uji McNemar per dataset, sebagai ukuran seberapa konsisten sebuah konfigurasi berkinerja antardataset (Bagian 3.7). \\
+\hline
+Biaya komputasi (terikat) & Kontinu & Jumlah parameter model dan rata-rata waktu inferensi per citra. \\
+\hline
+Kontrol & Tetap & Pipeline dasar (Bagian 3.4.1), augmentasi (Bagian 3.4.3), \emph{optimizer} dan \emph{hyperparameter} (Bagian 3.6), pembagian data, \emph{seed} acak, dan lingkungan komputasi (Bagian 3.8), dijaga identik antarkonfigurasi. \\
+\hline
+\end{tabular}
+\end{center}\end{table}
 
 ### 3.4 Preprocessing Data
 
 #### 3.4.1 Pipeline Dasar
 
-Sebelum teknik spesifik diterapkan, setiap citra IDRiD dan DDR melewati *pipeline* dasar yang identik, yaitu (i) estimasi *mask* retina via *threshold* adaptif pada kanal hijau lalu *cropping* ke *bounding box* minimum untuk membuang bingkai hitam; (ii) *resize* ke $224 \times 224$ piksel (interpolasi *bilinear*) sesuai masukan baku bobot ImageNet; dan (iii) normalisasi ke $[0, 1]$ diikuti normalisasi per kanal dengan rata-rata dan standar deviasi ImageNet ($\mu = (0{,}485, 0{,}456, 0{,}406)$, $\sigma = (0{,}229, 0{,}224, 0{,}225)$). *Pipeline* ini identik pada pelatihan, validasi, uji, dan antar-dataset, agar pergeseran domain antara IDRiD dan DDR tidak tersamarkan oleh perbedaan *preprocessing*.
+Sebelum langkah spesifik teknik apa pun, setiap citra pada keenam dataset melewati satu *pipeline* dasar bersama: (i) *mask* retina diestimasi dengan *adaptive thresholding* pada *green channel* lalu dipangkas ke kotak pembatas minimumnya untuk menghilangkan bingkai hitam; (ii) citra di-*resize* menjadi $224 \times 224$ piksel dengan interpolasi bilinear agar sesuai dengan masukan yang diharapkan bobot ImageNet; dan (iii) nilai diskalakan ke $[0, 1]$ lalu distandarkan per kanal dengan rata-rata dan simpangan baku ImageNet ($\mu = (0.485, 0.456, 0.406)$, $\sigma = (0.229, 0.224, 0.225)$). *Pipeline* yang sama mengatur pelatihan, validasi, dan pengujian pada setiap dataset, sehingga tidak ada perbedaan konfigurasi yang tersembunyi di balik perbedaan *preprocessing* dasar.
 
 #### 3.4.2 Penerapan Lima Teknik Preprocessing
 
-Teknik *preprocessing* diterapkan antara *cropping* dan *resize*; parameter tiap teknik (konsep pada Subbab 2.3) sebagai berikut. **CLAHE**: *clip limit* 2,0 dan *tile* $8 \times 8$ pada kanal L (LAB). **Ben Graham Normalization**: $\alpha = 4$, radius *Gaussian* $\sigma$ sebesar 10% diameter retina, dan $\gamma = 128$, mengikuti resep asli Kaggle 2015. **Adaptive Sigmoid Enhancement**: $\alpha$ dan $\beta$ dihitung adaptif dari rata-rata dan standar deviasi intensitas *patch* lokal. **LAB-ACE**: CLAHE pada kanal L lalu rekonstruksi ke RGB. **MCIE**: gabungan kanal hijau asli, hasil CLAHE pada kanal L, dan hasil *Ben Graham Normalization* menjadi citra tiga kanal.
+Teknik *preprocessing* diterapkan di antara *cropping* dan *resizing*; parameter setiap teknik (konsepnya pada Bagian 2.3) adalah sebagai berikut. **CLAHE**: *clip limit* 2,0 dan *tile* $8 \times 8$ pada kanal L (LAB). **Ben Graham Normalization**: $\alpha = 4$, jari-jari Gaussian $\sigma$ sebesar 10% diameter retina, dan $\gamma = 128$, mengikuti resep asli Kaggle 2015. **Adaptive Sigmoid Enhancement**: $\alpha$ dan $\beta$ dihitung secara adaptif dari rata-rata dan simpangan baku intensitas *patch* lokal. **LAB-ACE**: CLAHE pada kanal L yang diikuti rekonstruksi ke RGB. **MCIE**: kombinasi *green channel* asli, hasil CLAHE pada kanal L, dan hasil Ben Graham Normalization menjadi satu citra tiga kanal.
 
 #### 3.4.3 Augmentasi Data
 
-Augmentasi daring diterapkan hanya pada partisi pelatihan IDRiD, setelah *preprocessing*. Augmentasi geometri berupa *horizontal* dan *vertical flip* (probabilitas 0,5) serta rotasi acak $[-30^{\circ}, +30^{\circ}]$, yang mempertahankan label karena *grade* ICDR tidak bergantung pada orientasi spasial. Augmentasi fotometri berupa *brightness* dan *contrast jitter* acak $[-0{,}2, +0{,}2]$ untuk mensimulasikan variasi pencahayaan antar-lokasi. Partisi validasi dan uji (IDRiD maupun DDR) tidak diaugmentasi.
+Augmentasi *online* diterapkan hanya pada partisi latih setiap dataset, setelah *preprocessing*. Augmentasi geometris terdiri atas *flip* horizontal dan vertikal (peluang 0,5) dan rotasi acak $[-30^{\circ}, +30^{\circ}]$, yang mempertahankan label karena tingkat ICDR tidak bergantung pada orientasi spasial. Augmentasi fotometrik terdiri atas *jitter* kecerahan dan kontras acak $[-0.2, +0.2]$ untuk mensimulasikan variasi pencahayaan antarlokasi. Partisi validasi dan uji setiap dataset tidak diaugmentasi.
 
 ### 3.5 Arsitektur Model
 
-Konsep kedua *backbone* beserta diagram arsitekturnya telah diuraikan pada Subbab 2.4 (Gambar 2.1 dan 2.2); bagian ini hanya merinci konfigurasi eksperimennya. ResNet-50 dimuat dengan bobot *pretrained* ImageNet-1k melalui *torchvision* 0.18, sedangkan ViT-B/16 dengan bobot *pretrained* ImageNet-21k melalui *timm* 1.0. Pada kedua *backbone*, *classification head* asli diganti dengan *linear layer* baru menuju lima *logit* ICDR (ResNet-50: $2048 \to 5$ dari vektor *global average pooling*; ViT-B/16: $768 \to 5$ dari *token* CLS). Seluruh parameter dilatih bersama (*full fine-tuning*) tanpa pembekuan lapisan, dengan keluaran *softmax* yang dioptimasi memakai *class-weighted categorical cross-entropy* (Subbab 3.2.3 dan 3.6).
+Konsep kedua *backbone* dan diagram arsitekturnya telah dijelaskan pada Bagian 2.4 (Gambar 2.2 dan 2.3); bagian ini merinci hanya konfigurasi eksperimennya. ResNet-50 dimuat dengan bobot pra-latih ImageNet-1k melalui torchvision 0.18, sedangkan ViT-B/16 dimuat dengan bobot pra-latih ImageNet-21k melalui timm 1.0. Pada kedua *backbone*, kepala klasifikasi asli diganti dengan satu lapis linear baru menuju lima *logit* ICDR (ResNet-50: $2048 \to 5$ dari vektor *global average pooling*; ViT-B/16: $768 \to 5$ dari *token* CLS). Semua parameter dilatih bersama (*full fine-tuning*) tanpa membekukan lapis mana pun, dengan keluaran *softmax* yang dioptimalkan menggunakan *categorical cross-entropy* berbobot kelas (Bagian 3.2.2 dan 3.6).
 
 ### 3.6 Protokol Pelatihan
 
-Seluruh model dilatih dengan *optimiser* AdamW (Loshchilov dan Hutter, 2019), *learning rate* awal $\eta_{0} = 1 \times 10^{-4}$, *weight decay* $1 \times 10^{-4}$, $\beta_{1} = 0{,}9$, dan $\beta_{2} = 0{,}999$. *Learning rate* mengikuti jadwal *cosine* hingga $\eta_{\min} = 1 \times 10^{-6}$, didahului *warm-up* linear tiga *epoch*. Ukuran *batch* 16 citra, sesuai memori satu GPU NVIDIA T4 pada Google Colab Pro. Pelatihan berlangsung hingga 50 *epoch* dengan *early stopping* berbasis QWK validasi (kesabaran 10 *epoch*); *checkpoint* ber-QWK validasi tertinggi dipakai untuk evaluasi uji.
+Setiap model dioptimalkan dengan AdamW (Loshchilov dan Hutter, 2019) pada *learning rate* awal $\eta_{0} = 1 \times 10^{-4}$, *weight decay* $1 \times 10^{-4}$, $\beta_{1} = 0.9$, dan $\beta_{2} = 0.999$. Setelah *warm-up* linear selama tiga *epoch*, *learning rate* meluruh pada jadwal kosinus hingga $\eta_{\min} = 1 \times 10^{-6}$. Setiap *batch* memuat 16 citra, yang muat dalam memori satu GPU kelas menengah (sekitar 16 GB). Setiap proses berlangsung paling lama 50 *epoch* dan berhenti dini berdasarkan QWK validasi (*patience* 10 *epoch*), dan *checkpoint* dengan QWK validasi terbaik adalah yang dibawa ke evaluasi uji.
 
-Fungsi kerugian adalah *class-weighted categorical cross-entropy* (bobot sesuai Subbab 3.2.3). *Mixup*, *label smoothing*, dan *focal loss* sengaja tidak dipakai agar perbedaan kinerja antar-konfigurasi murni berasal dari teknik *preprocessing* dan pilihan *backbone*. Seluruh *random number generator* diinisialisasi dengan *seed* yang sama agar hasil dapat direproduksi. Pelatihan satu konfigurasi memakan waktu sekitar 2 jam pada GPU T4, sehingga sepuluh konfigurasi membutuhkan sekitar 20 jam.
+Fungsi rugi (*loss*) adalah *categorical cross-entropy* berbobot kelas (bobot seperti pada Bagian 3.2.2). Mixup, *label smoothing*, dan *focal loss* sengaja tidak digunakan, sehingga perbedaan kinerja antarkonfigurasi murni berasal dari teknik *preprocessing* dan pilihan *backbone*. Semua *random number generator* diinisialisasi dengan *seed* yang sama agar hasilnya dapat direproduksi. Karena desainnya melatih setiap konfigurasi pada setiap dataset, terdapat sepuluh konfigurasi pada enam dataset, sehingga totalnya enam puluh proses pelatihan. Agar tetap terkelola, dataset EyePACS yang sangat besar dilatih pada subset terstratifikasi per kelas (Bagian 3.2.1), dan dataset yang lebih kecil menyumbang sebagian besar proses dengan biaya rendah; anggaran pelatihan total secara indikatif karena itu berada pada orde ratusan GPU-jam pada satu GPU, yang dijadwalkan sepanjang bulan-bulan pelatihan dalam rencana kerja (Bagian 3.9).
 
 ### 3.7 Protokol Evaluasi
 
-Partisi uji IDRiD (103 citra) dievaluasi sekali per konfigurasi dengan akurasi, QWK, *macro-F1*, dan *confusion matrix* per kelas. Partisi uji DDR (setelah penyaringan *ungradable*) dievaluasi dengan *metric suite* identik pada *setting zero-shot transfer*, yaitu tanpa *fine-tuning*, *batch-normalisation recalibration*, atau adaptasi *threshold*. Penurunan tiap metrik pada DDR relatif terhadap IDRiD mencerminkan ketahanan domain konfigurasi.
+Pada masing-masing dari keenam dataset, partisi uji dievaluasi satu kali per konfigurasi dengan akurasi, QWK, *macro-F1*, dan matriks konfusi per kelas, semuanya dilaporkan dalam tabel hasil per dataset. Hal ini menghasilkan sebuah matriks skor QWK berukuran $10 \times 6$, satu per konfigurasi per dataset, yang menjadi dasar analisis statistik.
 
-Setiap metrik dilaporkan dengan interval kepercayaan 95% via *bootstrap* ($B = 1.000$ *resample*); perbandingan antar-konfigurasi memakai *paired bootstrap* dengan indeks *resample* yang sama agar variabilitas tingkat sampel terkendali. Dua konfigurasi dianggap berbeda bermakna bila interval kepercayaannya tidak tumpang tindih. Selain itu, Grad-CAM (Selvaraju et al., 2017) dihasilkan pada konfigurasi terbaik tiap *backbone* untuk verifikasi visual dasar prediksi.
+Analisis statistik berjalan dalam tiga tahap: uji *omnibus*, pemeringkatan deskriptif, dan uji berpasangan konfirmatori pada konfigurasi-konfigurasi terdepan. Sebagai tahap *omnibus*, kesepuluh konfigurasi dibandingkan antardataset dengan uji Friedman (Demsar, 2006), prosedur non-parametrik standar untuk membandingkan beberapa metode pada banyak dataset. Di dalam setiap dataset, kesepuluh konfigurasi diperingkat berdasarkan QWK, dan uji Friedman menguji apakah peringkat rata-ratanya berbeda secara signifikan secara keseluruhan,
+
+$$\chi_F^2 = \frac{12N}{k(k+1)}\left[\sum_{j=1}^{k} R_j^2 - \frac{k(k+1)^2}{4}\right],$$
+
+dengan $N=6$ dataset, $k=10$ konfigurasi, dan $R_j$ adalah peringkat rata-rata konfigurasi $j$. QWK adalah metrik yang menjadi dasar uji karena merupakan metrik utama yang peka-ordinal untuk *grading* DR; akurasi dan *macro-F1* dilaporkan secara deskriptif di sampingnya. Ketika uji Friedman signifikan, urutan peringkat rata-rata kesepuluh konfigurasi dilaporkan secara deskriptif untuk menunjukkan konfigurasi mana yang berkinerja terbaik antardataset. Karena enam dataset memberi uji *omnibus* daya yang terbatas untuk memilah kesepuluh konfigurasi, pemeringkatan ini diperlakukan sebagai bukti deskriptif atas konsistensi alih-alih sebagai sekumpulan klaim signifikansi berpasangan, dan pengujian konfirmatori di bawah ini dibatasi pada dua konfigurasi terdepan.
+
+Dua konfigurasi terdepan (yang memiliki peringkat rata-rata terbaik antardataset) kemudian dibandingkan secara langsung pada dua tingkat. Antardataset, keduanya dibandingkan dengan uji *Wilcoxon signed-rank* (Wilcoxon, 1945) pada enam nilai QWK berpasangan per datasetnya,
+
+$$W = \min(W^+, W^-), \qquad W^+ = \sum_{d_i > 0} \operatorname{rank}(|d_i|),$$
+
+dengan $d_i$ adalah selisih QWK antara kedua konfigurasi pada dataset $i$ dan peringkat diambil atas $|d_i|$; hipotesis nolnya adalah median selisih sama dengan nol. Ini adalah satu perbandingan terencana atas dua metode, yang untuknya enam dataset berpasangan memberikan daya yang memadai. Di dalam setiap dataset, kedua konfigurasi yang sama dibandingkan dengan uji McNemar (McNemar, 1947) pada prediksi per citra berpasangan dari partisi uji dataset tersebut,
+
+$$\chi^2 = \frac{(b - c)^2}{b + c},$$
+
+dengan $b$ dan $c$ menghitung citra yang diklasifikasikan benar oleh satu konfigurasi dan salah oleh yang lain; karena beroperasi pada ribuan sampel berpasangan, uji ini memiliki daya yang jauh lebih tinggi di dalam satu dataset. Karena diterapkan sekali per dataset, keluarga enam uji McNemar per dataset dikoreksi dengan prosedur Holm-Bonferroni (Holm, 1979) untuk mengendalikan *family-wise error rate*.
+
+Selain membandingkan konfigurasi secara utuh, desain faktorial juga memungkinkan setiap faktor diuji secara terpisah, yang memetakan langsung ke RM1 dan menjaga jumlah perbandingan tetap cukup kecil agar enam dataset mempertahankan daya yang berguna. Untuk faktor *backbone*, skor QWK per dataset dirata-ratakan atas lima teknik *preprocessing* untuk memberi satu nilai per *backbone* pada setiap dataset, lalu ResNet-50 dan ViT-B/16 dibandingkan antar keenam dataset dengan uji *Wilcoxon signed-rank*, sebuah perbandingan terencana tunggal. Untuk faktor *preprocessing*, skor QWK per dataset dirata-ratakan atas dua *backbone* untuk memberi matriks $5 \times 6$, yang di atasnya kelima teknik *preprocessing* dibandingkan dengan uji Friedman; ketika signifikan, setiap teknik dibandingkan terhadap *baseline* dengan uji *Wilcoxon signed-rank* berpasangan di bawah koreksi Holm-Bonferroni. Interaksi *preprocessing* $\times$ *backbone*, yaitu apakah teknik *preprocessing* terbaik berbeda di antara kedua *backbone*, dikaji secara deskriptif dengan membandingkan pemeringkatan *preprocessing* di dalam setiap *backbone* secara terpisah.
+
+Pembagian tugasnya eksplisit: uji Wilcoxon antardataset menjawab apakah konfigurasi terdepan konsisten lebih baik pada keenam dataset, sedangkan uji McNemar dalam-dataset menjawab apakah kedua konfigurasi berbeda pada suatu dataset tertentu. Sebuah konfigurasi dianggap unggul secara kokoh hanya ketika ia sekaligus memimpin pemeringkatan lintas-dataset dan memenangkan perbandingan McNemar dalam-dataset. Mengikuti prinsip menetapkan luaran di muka, jika tidak ada konfigurasi yang memisahkan diri dari kelompoknya, kesimpulan bahwa konfigurasi terbaik bersifat spesifik-dataset dilaporkan sebagai hasil substantif yang konsisten dengan motivasi penelitian (Bagian 1.1), bukan sebagai temuan yang tidak konklusif.
+
+Analisis diimplementasikan dengan pustaka \texttt{scipy.stats} dan \texttt{statsmodels} (uji Friedman dan *Wilcoxon signed-rank*, uji McNemar, serta koreksi Holm-Bonferroni). Selain itu, Grad-CAM (Selvaraju et al., 2017) dibangkitkan pada konfigurasi terbaik untuk verifikasi visual atas dasar prediksinya.
 
 ### 3.8 Alat dan Lingkungan Implementasi
 
-*Pipeline* eksperimen diimplementasikan dalam Python 3.11 menggunakan pustaka berikut: PyTorch 2.3 sebagai *backend tensor* dan *autodiff*; *torchvision* 0.18 untuk ResNet-50 dan bobot *pretrained* ImageNet-1k; *timm* 1.0 (Wightman, 2019) untuk ViT-B/16 dan bobot *pretrained* ImageNet-21k; OpenCV 4.9 dan *scikit-image* 0.22 untuk implementasi lima teknik *preprocessing*; Albumentations 1.4 untuk *pipeline* augmentasi; *scikit-learn* 1.4 untuk implementasi silang metrik evaluasi; serta Matplotlib 3.8 dan seaborn 0.13 untuk visualisasi matriks kebingungan dan *heatmap* Grad-CAM. Eksperimen dijalankan pada Google Colab Pro dengan GPU NVIDIA T4 atau A100 sesuai ketersediaan. Seluruh kode, skrip pelatihan, skrip evaluasi, berkas konfigurasi, dan log metrik disimpan pada repositori Git publik yang disertai *README* reproduksi dengan versi pustaka, *seed*, dan perintah eksekusi yang eksplisit.
+*Pipeline* eksperimen diimplementasikan dalam Python 3.11 menggunakan pustaka berikut: PyTorch 2.3 sebagai *backend* tensor dan *autodiff*; torchvision 0.18 untuk ResNet-50 dan bobot pra-latih ImageNet-1k; timm 1.0 (Wightman, 2019) untuk ViT-B/16 dan bobot pra-latih ImageNet-21k; OpenCV 4.9 dan scikit-image 0.22 untuk mengimplementasikan lima teknik *preprocessing*; Albumentations 1.4 untuk *pipeline* augmentasi; scikit-learn 1.4 untuk menghitung metrik evaluasi; SciPy 1.13 dan statsmodels 0.14 untuk uji statistik (Friedman, *Wilcoxon signed-rank*, McNemar, dan koreksi Holm-Bonferroni); serta Matplotlib 3.8 dan seaborn 0.13 untuk memvisualisasikan matriks konfusi dan *heatmap* Grad-CAM. Eksperimen dijalankan pada lingkungan satu GPU; sebuah GPU kelas menengah dengan memori sekitar 16 GB memadai untuk ukuran *batch* dan resolusi masukan yang dipilih, dan perangkat keras persisnya dapat bervariasi menurut sumber daya komputasi yang tersedia pada saat pelatihan. Seluruh kode, skrip pelatihan, skrip evaluasi, berkas konfigurasi, dan catatan metrik disimpan dalam repositori Git publik yang disertai README reproduksi dengan versi pustaka, *seed*, dan perintah eksekusi yang eksplisit.
 
 ### 3.9 Jadwal Penelitian
 
-Kegiatan penelitian direncanakan berlangsung selama dua belas bulan, yaitu dari Maret 2026 sampai Februari 2027, mencakup studi literatur dan penyusunan proposal, seminar proposal dan revisinya, persiapan lingkungan dan pengumpulan data, implementasi *pipeline preprocessing*, pelatihan sepuluh konfigurasi model, evaluasi *in-distribution* dan lintas-*dataset*, analisis statistik dan visualisasi Grad-CAM, penulisan BAB IV dan BAB V, seminar hasil, serta ujian skripsi dan pengumpulan skripsi final. Rincian jadwal bulanan disajikan pada Tabel 3.1; kolom bulan Maret sampai Desember merupakan bulan pada tahun 2026, sedangkan Januari dan Februari merupakan bulan pada tahun 2027. Jadwal tersebut bersifat indikatif dan dapat menyesuaikan dengan hasil konsultasi dosen pembimbing serta ketersediaan sumber daya komputasi pada Google Colab Pro.
+Kegiatan penelitian direncanakan berlangsung selama dua belas bulan, dari Maret 2026 hingga Februari 2027, mencakup studi literatur dan penulisan proposal, seminar proposal dan revisinya, penyiapan lingkungan dan pengumpulan keenam dataset, implementasi *pipeline* *preprocessing*, pelatihan kesepuluh konfigurasi pada masing-masing dari keenam dataset, evaluasi per dataset, analisis statistik Friedman dan visualisasi Grad-CAM, penulisan Bab IV dan Bab V, seminar hasil, serta sidang skripsi dan penyerahan akhir. Jadwal bulanannya dirinci pada Tabel 3.2; kolom dari Maret hingga Desember adalah bulan-bulan pada 2026, sedangkan Januari dan Februari adalah bulan-bulan pada 2027. Jadwal ini bersifat indikatif dan dapat disesuaikan menurut hasil konsultasi dengan para pembimbing serta ketersediaan sumber daya komputasi.
 
 \begin{table}[htbp]
-\caption{Jadwal penelitian periode Maret 2026 sampai Februari 2027.}
+\caption{Jadwal penelitian untuk periode Maret 2026 hingga Februari 2027.}
 \label{tab:jadwal}
 \begin{center}
 \small
@@ -349,78 +432,95 @@ Kegiatan penelitian direncanakan berlangsung selama dua belas bulan, yaitu dari 
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{|c|p{3.3cm}|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-\textbf{No} & \textbf{Kegiatan} & \textbf{Mar} & \textbf{Apr} & \textbf{Mei} & \textbf{Jun} & \textbf{Jul} & \textbf{Ags} & \textbf{Sep} & \textbf{Okt} & \textbf{Nov} & \textbf{Des} & \textbf{Jan} & \textbf{Feb} \\
+\textbf{No} & \textbf{Kegiatan} & \textbf{Mar} & \textbf{Apr} & \textbf{Mei} & \textbf{Jun} & \textbf{Jul} & \textbf{Agu} & \textbf{Sep} & \textbf{Okt} & \textbf{Nov} & \textbf{Des} & \textbf{Jan} & \textbf{Feb} \\
 \hline
-1 & Studi literatur dan penyusunan proposal & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  &  &  &  \\
+1 & Studi literatur dan penulisan proposal & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  &  &  &  \\
 \hline
 2 & Seminar proposal dan revisi &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  &  &  \\
 \hline
-3 & Persiapan \emph{dataset} dan lingkungan &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  &  \\
+3 & Penyiapan \emph{dataset} dan lingkungan &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  &  \\
 \hline
 4 & Implementasi \emph{preprocessing} (5 teknik) &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  &  &  \\
 \hline
-5 & Pelatihan 10 konfigurasi ($5 \times 2$) &  &  &  &  & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  \\
+5 & Pelatihan 10 konfig pada 6 dataset &  &  &  &  & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} &  &  &  &  &  \\
 \hline
-6 & Evaluasi \emph{in-distribution} &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  \\
+6 & Evaluasi per \emph{dataset} &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  &  \\
 \hline
-7 & Evaluasi lintas-\emph{dataset} dan Grad-CAM &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  \\
+7 & Analisis Friedman dan Grad-CAM &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  &  \\
 \hline
-8 & Penulisan BAB IV &  &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  \\
+8 & Penulisan Bab IV &  &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  &  \\
 \hline
-9 & Penulisan BAB V dan revisi &  &  &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  \\
+9 & Penulisan Bab V dan revisi &  &  &  &  &  &  &  &  &  & \cellcolor{black} & \cellcolor{black} &  \\
 \hline
-10 & Bimbingan Pembimbing I dan II & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} &  \\
+10 & Bimbingan (Pembimbing I dan II) & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} & \cellcolor{black} &  \\
 \hline
 11 & Seminar hasil &  &  &  &  &  &  &  &  &  &  & \cellcolor{black} &  \\
 \hline
-12 & Ujian skripsi dan pengumpulan final &  &  &  &  &  &  &  &  &  &  &  & \cellcolor{black} \\
+12 & Sidang skripsi dan penyerahan akhir &  &  &  &  &  &  &  &  &  &  &  & \cellcolor{black} \\
 \hline
 \end{tabular}
-\end{center}
-\end{table}
+\end{center}\end{table}
 
-## DAFTAR RUJUKAN {.unnumbered}
 
-\refitem{Abramoff, M.~D., Lavin, P.~T., Birch, M., Shah, N., \& Folk, J.~C. (2018). Pivotal trial of an autonomous AI-based diagnostic system for detection of diabetic retinopathy in primary care offices. \emph{NPJ Digital Medicine}, 1(1), 39.}
 
-\refitem{American Diabetes Association. (2024). Standards of Care in Diabetes: 2024. \emph{Diabetes Care}, 47(Suppl.~1), S1--S322.}
+## DAFTAR PUSTAKA {.unnumbered}
 
-\refitem{Anupama, B.~C., Rao, S.~N., Malini, M.~B., \& Athreya, V.~V. (2025). Comparative analysis of novel preprocessing techniques and deep learning based multi-modal feature fusion for diabetic retinopathy grading. \emph{Scientific Reports}, 15, 31339.}
+\refitem{Abramoff, M. D., Lavin, P. T., Birch, M., Shah, N., \& Folk, J. C. (2018). Pivotal Trial of an Autonomous AI-Based Diagnostic System for Detection of Diabetic Retinopathy in Primary Care Offices. \emph{NPJ Digital Medicine}, \emph{1}(1), 39.}
 
-\refitem{Chokuwa, S., \& Khan, M.~H. (2025). Divergent domains, convergent grading: Enhancing generalization in diabetic retinopathy grading. In \emph{IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)}.}
+\refitem{American Diabetes Association. (2024). Standards of Care in Diabetes: 2024. \emph{Diabetes Care}, \emph{47}(Suppl. 1), S1--S322.}
 
-\refitem{Chopra, M., Sparrenberg, L., Berger, A., Khanna, S., Terheyden, J.~H., \& Sifa, R. (2025). From retinal pixels to patients: Evolution of deep learning research in diabetic retinopathy screening. In \emph{2025 IEEE International Conference on Big Data (IEEE BigData)}. arXiv:2511.11065.}
+\refitem{Anupama, B. C., Rao, S. N., Malini, M. B., \& Athreya, V. V. (2025). Comparative Analysis of Novel Preprocessing Techniques and Deep Learning Based Multi-Modal Feature Fusion for Diabetic Retinopathy Grading. \emph{Scientific Reports}, \emph{15}, 31339.}
 
-\refitem{Cohen, J. (1968). Weighted kappa: Nominal scale agreement provision for scaled disagreement or partial credit. \emph{Psychological Bulletin}, 70(4), 213--220.}
+\refitem{Asia Pacific Tele-Ophthalmology Society (APTOS). (2019). \emph{APTOS 2019 Blindness Detection} [Data set]. Kaggle. \texttt{https://www.kaggle.com/c/aptos2019-blindness-detection}}
 
-\refitem{Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., \& Houlsby, N. (2021). An image is worth 16$\times$16 words: Transformers for image recognition at scale. In \emph{International Conference on Learning Representations (ICLR)}.}
+\refitem{Chokuwa, S., \& Khan, M. H. (2025). Divergent Domains, Convergent Grading: Enhancing Generalization in Diabetic Retinopathy Grading. \emph{IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)}.}
 
-\refitem{Gulshan, V., Peng, L., Coram, M., Stumpe, M.~C., Wu, D., Narayanaswamy, A., \ldots\ \& Webster, D.~R. (2016). Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. \emph{JAMA}, 316(22), 2402--2410.}
+\refitem{Chopra, M., Sparrenberg, L., Berger, A., Khanna, S., Terheyden, J. H., \& Sifa, R. (2025). From Retinal Pixels to Patients: Evolution of Deep Learning Research in Diabetic Retinopathy Screening. \emph{2025 IEEE International Conference on Big Data (IEEE BigData)}. arXiv:2511.11065}
 
-\refitem{He, K., Zhang, X., Ren, S., \& Sun, J. (2016). Deep residual learning for image recognition. In \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)} (pp. 770--778).}
+\refitem{Cohen, J. (1968). Weighted Kappa: Nominal Scale Agreement Provision for Scaled Disagreement or Partial Credit. \emph{Psychological Bulletin}, \emph{70}(4), 213--220.}
 
-\refitem{Li, T., Gao, Y., Wang, K., Guo, S., Liu, H., \& Kang, H. (2019). Diagnostic assessment of deep learning algorithms for diabetic retinopathy screening. \emph{Information Sciences}, 501, 511--522.}
+\refitem{Decenciere, E., Zhang, X., Cazuguel, G., Lay, B., Cochener, B., Trone, C., et al. (2014). Feedback on a Publicly Distributed Image Database: The Messidor Database. \emph{Image Analysis \& Stereology}, \emph{33}(3), 231--234.}
 
-\refitem{Loshchilov, I., \& Hutter, F. (2019). Decoupled weight decay regularization. In \emph{International Conference on Learning Representations (ICLR)}.}
+\refitem{Demsar, J. (2006). Statistical Comparisons of Classifiers over Multiple Data Sets. \emph{Journal of Machine Learning Research}, \emph{7}, 1--30.}
 
-\refitem{Porwal, P., Pachade, S., Kokare, M., Deshmukh, G., Son, J., Bae, W., \ldots\ \& Meriaudeau, F. (2020). IDRiD: Diabetic retinopathy segmentation and grading challenge. \emph{Medical Image Analysis}, 59, 101561.}
+\refitem{Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., \& Houlsby, N. (2021). An Image Is Worth 16$\times$16 Words: Transformers for Image Recognition at Scale. \emph{International Conference on Learning Representations (ICLR)}.}
 
-\refitem{Saputra, N.~A., Helvinda, W., \& Rahman, K. (2024). Prevalence and risk factors of diabetic retinopathy in a tertiary hospital in Padang, Indonesia. \emph{Bioscientia Medicina: Journal of Biomedicine and Translational Research}, 9(1), 219--231.}
+\refitem{Graham, B. (2015). \emph{Kaggle Diabetic Retinopathy Detection Competition Report}. University of Warwick.}
 
-\refitem{Sasongko, M.~B., Widyaputri, F., Agni, A.~N., Wardhana, F.~S., Kotha, S., Gupta, P., Widayanti, T.~W., Haryanto, S., Widyaningrum, R., Wong, T.~Y., Kawasaki, R., \& Wang, J.~J. (2025). Incidence and progression of diabetic retinopathy and blindness in Indonesian adults with type 2 diabetes. \emph{PLoS ONE}, 20, e0322093.}
+\refitem{Gulshan, V., Peng, L., Coram, M., Stumpe, M. C., Wu, D., Narayanaswamy, A., \ldots\ \& Webster, D. R. (2016). Development and Validation of a Deep Learning Algorithm for Detection of Diabetic Retinopathy in Retinal Fundus Photographs. \emph{JAMA}, \emph{316}(22), 2402--2410.}
 
-\refitem{Selvaraju, R.~R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual explanations from deep networks via gradient-based localization. In \emph{Proceedings of the IEEE International Conference on Computer Vision (ICCV)} (pp. 618--626).}
+\refitem{He, K., Zhang, X., Ren, S., \& Sun, J. (2016). Deep Residual Learning for Image Recognition. \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 770--778.}
 
-\refitem{Teo, Z.~L., Tham, Y.~C., Yu, M., Chee, M.~L., Rim, T.~H., Cheung, N., \ldots\ \& Cheng, C.~Y. (2021). Global prevalence of diabetic retinopathy and projection of burden through 2045: Systematic review and meta-analysis. \emph{Ophthalmology}, 128(11), 1580--1591.}
+\refitem{Holm, S. (1979). A Simple Sequentially Rejective Multiple Test Procedure. \emph{Scandinavian Journal of Statistics}, \emph{6}(2), 65--70.}
 
-\refitem{Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.~N., Kaiser, L., \& Polosukhin, I. (2017). Attention is all you need. In \emph{Advances in Neural Information Processing Systems (NeurIPS)} (pp. 5998--6008).}
+\refitem{Kaggle, \& EyePACS. (2015). \emph{Diabetic Retinopathy Detection} [Data set]. Kaggle. \texttt{https://www.kaggle.com/c/diabetic-retinopathy-detection}}
 
-\refitem{Wightman, R. (2019). PyTorch Image Models (timm). GitHub repository. \texttt{https://github.com/huggingface/pytorch-image-models}}
+\refitem{Li, T., Gao, Y., Wang, K., Guo, S., Liu, H., \& Kang, H. (2019). Diagnostic Assessment of Deep Learning Algorithms for Diabetic Retinopathy Screening. \emph{Information Sciences}, \emph{501}, 511--522.}
 
-\refitem{Wilkinson, C.~P., Ferris~III, F.~L., Klein, R.~E., Lee, P.~P., Agardh, C.~D., Davis, M., \ldots\ \& Verdaguer, J.~T. (2003). Proposed international clinical diabetic retinopathy and diabetic macular edema disease severity scales. \emph{Ophthalmology}, 110(9), 1677--1682.}
+\refitem{Liu, R., Wang, X., Wu, Q., Dai, L., Fang, X., Yan, T., et al. (2022). DeepDRiD: Diabetic Retinopathy-Grading and Image Quality Estimation Challenge. \emph{Patterns}, \emph{3}(6), 100512.}
 
-\refitem{Wong, T.~Y., \& Sabanayagam, C. (2023). The war on diabetic retinopathy: Where are we now? \emph{Asia-Pacific Journal of Ophthalmology}, 12(3), 213--221.}
+\refitem{Loshchilov, I., \& Hutter, F. (2019). Decoupled Weight Decay Regularization. \emph{International Conference on Learning Representations (ICLR)}.}
 
-\refitem{Zhou, Y., Chia, M.~A., Wagner, S.~K., Ayhan, M.~S., Williamson, D.~J., Struyven, R.~R., \ldots\ \& Keane, P.~A. (2023). A foundation model for generalizable disease detection from retinal images. \emph{Nature}, 622(7981), 156--163.}
+\refitem{McNemar, Q. (1947). Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages. \emph{Psychometrika}, \emph{12}(2), 153--157.}
 
-\refitem{Zuiderveld, K. (1994). Contrast Limited Adaptive Histogram Equalization. In P.~S. Heckbert (Ed.), \emph{Graphics Gems IV} (pp. 474--485). Academic Press.}
+\refitem{Porwal, P., Pachade, S., Kokare, M., Deshmukh, G., Son, J., Bae, W., \ldots\ \& Meriaudeau, F. (2020). IDRiD: Diabetic Retinopathy Segmentation and Grading Challenge. \emph{Medical Image Analysis}, \emph{59}, 101561.}
+
+\refitem{Saputra, N. A., Helvinda, W., \& Rahman, K. (2024). Prevalence and Risk Factors of Diabetic Retinopathy in a Tertiary Hospital in Padang, Indonesia. \emph{Bioscientia Medicina: Journal of Biomedicine and Translational Research}, \emph{9}(1), 219--231.}
+
+\refitem{Sasongko, M. B., Widyaputri, F., Agni, A. N., Wardhana, F. S., Kotha, S., Gupta, P., Widayanti, T. W., Haryanto, S., Widyaningrum, R., Wong, T. Y., Kawasaki, R., \& Wang, J. J. (2025). Incidence and Progression of Diabetic Retinopathy and Blindness in Indonesian Adults with Type 2 Diabetes. \emph{PLoS ONE}, \emph{20}, e0322093.}
+
+\refitem{Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. \emph{Proceedings of the IEEE International Conference on Computer Vision (ICCV)}, 618--626.}
+
+\refitem{Teo, Z. L., Tham, Y. C., Yu, M., Chee, M. L., Rim, T. H., Cheung, N., \ldots\ \& Cheng, C. Y. (2021). Global Prevalence of Diabetic Retinopathy and Projection of Burden through 2045: Systematic Review and Meta-Analysis. \emph{Ophthalmology}, \emph{128}(11), 1580--1591.}
+
+\refitem{Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., \& Polosukhin, I. (2017). Attention Is All You Need. \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 5998--6008.}
+
+\refitem{Wightman, R. (2019). \emph{PyTorch Image Models (timm)} [Computer software]. GitHub. \texttt{https://github.com/huggingface/pytorch-image-models}}
+
+\refitem{Wilcoxon, F. (1945). Individual Comparisons by Ranking Methods. \emph{Biometrics Bulletin}, \emph{1}(6), 80--83.}
+
+\refitem{Wilkinson, C. P., Ferris III, F. L., Klein, R. E., Lee, P. P., Agardh, C. D., Davis, M., \ldots\ \& Verdaguer, J. T. (2003). Proposed International Clinical Diabetic Retinopathy and Diabetic Macular Edema Disease Severity Scales. \emph{Ophthalmology}, \emph{110}(9), 1677--1682.}
+
+\refitem{Wong, T. Y., \& Sabanayagam, C. (2023). The War on Diabetic Retinopathy: Where Are We Now? \emph{Asia-Pacific Journal of Ophthalmology}, \emph{12}(3), 213--221.}
+
+\refitem{Zhou, Y., Chia, M. A., Wagner, S. K., Ayhan, M. S., Williamson, D. J., Struyven, R. R., \ldots\ \& Keane, P. A. (2023). A Foundation Model for Generalizable Disease Detection from Retinal Images. \emph{Nature}, \emph{622}(7981), 156--163.}

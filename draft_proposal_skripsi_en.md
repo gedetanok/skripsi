@@ -9,15 +9,15 @@ Comparative Analysis of Fundus Image Preprocessing Techniques and Deep Learning 
 
 ### 1.1 Research Background
 
-A progressive microvascular complication of diabetes mellitus, diabetic retinopathy (DR) stands as the foremost preventable cause of blindness in the working-age population (American Diabetes Association, 2024), and the scale of the problem is widening quickly: Teo et al. (2021) project that the 103 million adults affected in 2020 will reach roughly 161 million by 2045. Indonesia confronts this trend acutely. A DR incidence of 34.6 per 1,000 person-years (Sasongko et al., 2025) and a 55% prevalence among diabetic patients at a referral hospital (Saputra et al., 2024) occur alongside an ophthalmologist supply of fewer than two per 100,000 population that is clustered in urban Java, leaving the yearly fundus examination called for by clinical guidelines impossible to deliver by hand at the required scale. The only workable response is to automate fundus-image interpretation within primary care, where the relevant task is not simply flagging disease but assigning a severity grade on the five-level International Clinical DR (ICDR) scale (Wilkinson et al., 2003), because that grade determines whether a patient is referred. Errors are consequently costly in either direction: too low a grade postpones a referral the patient needs, whereas too high a grade consumes specialist time that is already scarce, so accuracy precisely at the grade boundaries is what counts.
+Diabetic retinopathy (DR), a progressive microvascular complication of diabetes mellitus, is the foremost preventable cause of blindness in the working-age population (American Diabetes Association, 2024), and the problem is widening quickly: Teo et al. (2021) project that the 103 million adults affected in 2020 will reach roughly 161 million by 2045. Indonesia confronts this acutely. A DR incidence of 34.6 per 1,000 person-years (Sasongko et al., 2025) and a 55% prevalence among diabetic patients at a referral hospital (Saputra et al., 2024) meet an ophthalmologist supply of fewer than two per 100,000 population clustered in urban Java, making the yearly fundus examination that guidelines call for impossible to deliver by hand at scale. Automating fundus-image interpretation in primary care is the only workable response, and the clinically relevant task is not merely flagging disease but assigning a severity grade on the five-level International Clinical DR (ICDR) scale (Wilkinson et al., 2003), since that grade decides referral. Errors are costly either way: too low a grade delays a needed referral, too high a grade consumes scarce specialist time, so accuracy at the grade boundaries is what counts.
 
-Deep learning has turned automated DR grading from an aspiration into a working reality over the last ten years. Using a convolutional neural network trained on 128,175 fundus images, Gulshan et al. (2016) reported sensitivity and specificity above 90% for referable DR; Abramoff et al. (2018) subsequently secured FDA clearance for IDx-DR, the first autonomous DR system; and foundation models such as RETFound (Zhou et al., 2023) have since closed much of the remaining distance. Surveying more than fifty studies and twenty datasets, Chopra et al. (2025) confirm this maturity yet observe that the central challenge has moved away from raw capability and toward multi-center validation and clinical trust. The unresolved question, put differently, is no longer whether a model can grade DR at all, but whether the numbers obtained on carefully curated data survive the far messier conditions met in practice.
+Deep learning has turned automated DR grading from an aspiration into a working reality over the last ten years. Using a convolutional neural network trained on 128,175 fundus images, Gulshan et al. (2016) reported sensitivity and specificity above 90% for referable DR; Abramoff et al. (2018) subsequently secured FDA clearance for IDx-DR, the first autonomous DR system; and foundation models such as RETFound (Zhou et al., 2023) have since closed much of the remaining distance. Surveying more than fifty studies and twenty datasets, Chopra et al. (2025) confirm this maturity yet observe that the central challenge has moved away from raw capability and toward multi-center validation and clinical trust.
 
 The first neglected gap lies in image quality and its treatment. Inconsistent illumination, weak contrast, and capture noise erode grading accuracy in a systematic way (Anupama et al., 2025), an effect that is worst on the inexpensive cameras typical of Indonesian primary care; because such degradation hides early lesions like microaneurysms, it pushes the model toward grades that fall below the patient's true condition. The literature offers many preprocessing methods for making lesions more visible, ranging from CLAHE, Ben Graham preprocessing, and green-channel extraction to more recent proposals such as Adaptive Sigmoid Enhancement, LAB-ACE, and Multi-channel Image Enhancement, yet they are adopted in an ad-hoc fashion, with each study committing to one method and never weighing it against the others under a shared architecture and protocol. Anupama et al. (2025) note the same problem and ask for a systematic study of preprocessing options, since without a like-for-like comparison the decision rests on guesswork instead of evidence.
 
-The second gap concerns how far these comparisons generalise. Nearly every preprocessing comparison for DR grading, the anchor study of Anupama et al. (2025) included, is confirmed on just one dataset, so whichever technique or backbone comes out ahead there may reflect that dataset's particular cameras, population, and quality rather than a property that travels. Since fundus images differ markedly in illumination, colour, and acquisition protocol from one institution to the next, a method that prevails on one dataset will not necessarily prevail on another, and a recommendation built on a single dataset is a fragile basis for a screening system meant to face field conditions that vary widely. Anupama et al. (2025) therefore advise testing findings across several datasets that span different devices and demographics; until that is done, the external validity of any comparison of this kind stays unproven.
+The second gap concerns how far these comparisons generalise. Nearly every preprocessing comparison for DR grading, the anchor study of Anupama et al. (2025) included, is confirmed on just one dataset, so whichever technique or backbone comes out ahead there may reflect that dataset's particular cameras, population, and quality rather than a property that travels. Since fundus images differ markedly in illumination, colour, and acquisition protocol from one institution to the next, a method that prevails on one dataset will not necessarily prevail on another, and a recommendation built on a single dataset is a fragile basis for a screening system meant to face field conditions that vary widely. Anupama et al. (2025) therefore advise testing findings across several datasets that span different devices and demographics; until that is done, the external validity of any comparison of this kind stays unproven. Taken together, these two gaps leave an empty cell in the literature: no prior study has compared a set of preprocessing techniques head-to-head, across more than one backbone paradigm, over several datasets, and with a formal statistical test of whether the resulting verdict holds across them (Section 2.6).
 
-Taking the future-work agenda of Anupama et al. (2025) as its starting point, this study tackles both gaps together. Five preprocessing techniques are paired with two backbones (ResNet-50 and ViT-B/16) to give ten configurations, which are assessed separately on six public DR grading datasets built on the same five-grade ICDR ontology (IDRiD, DDR, APTOS 2019, Messidor-2, EyePACS, and DeepDRiD); within each dataset, every configuration is trained and tested on that dataset's own partition under one common protocol and scored by accuracy, quadratic-weighted kappa (QWK), and macro-F1. To locate the configuration that excels not on a single dataset but uniformly across all six, the per-dataset QWK values are combined through the Friedman test (Demsar, 2006) and the leading configurations are compared with the Wilcoxon signed-rank test across datasets and with per-dataset McNemar tests, while Grad-CAM checks what the leading configuration's predictions actually rest on. The contributions are threefold: (i) a reproducible, like-for-like comparison of preprocessing methods and backbones for DR grading under one unified protocol; (ii) a test of that comparison over six varied datasets to determine whether the best configuration is stable rather than tied to a particular dataset; and (iii) evidence-based guidance for building automated DR screening in resource-limited primary care.
+This study is designed to fill that cell, and in doing so takes up the future-work agenda of Anupama et al. (2025), tackling both gaps together. Five preprocessing techniques are paired with two backbones (ResNet-50 and ViT-B/16) to give ten configurations, which are assessed separately on six public DR grading datasets built on the same five-grade ICDR ontology (IDRiD, DDR, APTOS 2019, Messidor-2, EyePACS, and DeepDRiD); within each dataset, every configuration is trained and tested on that dataset's own partition under one common protocol and scored by accuracy, quadratic-weighted kappa (QWK), and macro-F1. To locate the configuration that excels not on a single dataset but uniformly across all six, the per-dataset QWK values are combined through the Friedman test (Demsar, 2006) and the leading configurations are compared with the Wilcoxon signed-rank test across datasets and with per-dataset McNemar tests, while Grad-CAM checks what the leading configuration's predictions actually rest on. The contributions are threefold: (i) a reproducible, like-for-like comparison of preprocessing methods and backbones for DR grading under one unified protocol; (ii) a formal, cross-dataset assessment of that comparison, aggregating the per-dataset results with non-parametric statistical tests (the Friedman, Wilcoxon signed-rank, and McNemar tests) to establish whether the best configuration is genuinely stable across datasets rather than tied to a particular one, which is the methodological step that separates this work from earlier single-dataset comparisons; and (iii) evidence-based guidance for building automated DR screening in resource-limited primary care.
 
 ### 1.2 Problem Identification
 
@@ -69,7 +69,7 @@ c. To analyse the trade-off between predictive performance and computational cos
 
 ### 1.6 Research Significances
 
-On the theoretical side, the study yields a reproducible empirical comparison of preprocessing techniques against backbone architectures for DR grading under one unified protocol, reinforced by running that comparison over six public datasets that share a single label ontology yet differ in device, population, and illumination. Combining the per-dataset results through the Friedman test, supported by the Wilcoxon signed-rank test and per-dataset McNemar tests on the leading configurations, lets the study determine whether the leading configuration holds up across datasets or merely reflects one of them, which speaks directly to the future-work agenda of Anupama et al. (2025).
+On the theoretical side, the study yields a reproducible empirical comparison of preprocessing techniques against backbone architectures for DR grading under one unified protocol, reinforced by running that comparison over six public datasets that share a single label ontology yet differ in device, population, and illumination. Aggregating the per-dataset results across datasets (Section 3.7) lets the study determine whether the leading configuration holds up across datasets or merely reflects one of them, which speaks directly to the future-work agenda of Anupama et al. (2025).
 
 On the practical side, the study supplies evidence-based guidance for building automated DR screening in Indonesian primary care, a setting whose devices and populations vary widely in the field. The preprocessing-and-backbone pairing that proves consistently strongest across diverse datasets can serve as a default starting point for development. The work additionally delivers a documented experimental pipeline that can be reused to evaluate further preprocessing techniques, backbones, or datasets without rebuilding it from scratch.
 
@@ -83,7 +83,7 @@ Diabetic retinopathy is a chronic microvascular consequence of diabetes mellitus
 
 #### 2.1.2 Global and Indonesian Disease Burden
 
-As detailed in Section 1.1, DR is a leading cause of preventable blindness whose global burden is projected to grow from 103 million people in 2020 to about 161 million by 2045 (Teo et al., 2021), a trajectory that Wong and Sabanayagam (2023) call the "DR pandemic". In Indonesia this burden is compounded by a severe shortage of ophthalmologists, fewer than two per 100,000 population and concentrated in urban Java, which is the structural reason automated DR screening at the primary-care level is needed (Sasongko et al., 2025; Saputra et al., 2024; American Diabetes Association, 2024).
+As detailed in Section 1.1, DR is a leading cause of preventable blindness whose global burden is projected to reach about 161 million people by 2045 (Teo et al., 2021), a trajectory Wong and Sabanayagam (2023) call the "DR pandemic". In Indonesia this is compounded by a severe shortage of ophthalmologists (fewer than two per 100,000, concentrated in urban Java), the structural reason automated DR screening at the primary-care level is needed (Sasongko et al., 2025; Saputra et al., 2024; American Diabetes Association, 2024).
 
 #### 2.1.3 The International Clinical Diabetic Retinopathy (ICDR) Scale
 
@@ -127,6 +127,10 @@ The dataset of the ISBI 2020 challenge, DeepDRiD (Liu et al., 2022), supplies 2,
 
 Three considerations underpin the choice of these six datasets. First, they all use one and the same label ontology (the five-class ICDR scale; Wilkinson et al., 2003), which keeps performance comparable across datasets and lets any change in the ranking of configurations be traced to the data itself rather than to inconsistent annotation. Second, they cover dimensions that matter for deployment, namely country (India, China, France, United States), acquisition device (from a single camera at one site up to many cameras across 147 sites), population, and image-quality profile, so that a configuration which does consistently well on all six rests on solid external validity rather than the quirks of one dataset. Third, every one is public and documented (Porwal et al., 2020; Li et al., 2019; APTOS, 2019; Decenciere et al., 2014; Kaggle and EyePACS, 2015; Liu et al., 2022), meeting reproducibility needs. Above all, each dataset acts as a self-contained benchmark on which every configuration is both trained and tested, so the comparison is never contaminated by the distribution shift that transferring a model from one dataset to another would introduce.
 
+A concern that naturally follows is whether a given ICDR grade means the same thing across datasets graded by different people: is a grade 1 (mild) in the Indian IDRiD the same as a grade 1 in the Chinese DDR? Two points address this. First, the grades are not idiosyncratic per-dataset scales but are all defined against a single published clinical standard, the ICDR severity scale of Wilkinson et al. (2003), which fixes what each grade means (for instance, grade 1 is mild NPDR with microaneurysms only, and grade 3 follows the 4-2-1 rule set out in Section 2.1.3). The label semantics are therefore shared by construction, even where the graders differ. Second, several of the datasets go beyond single-grader labelling and use adjudicated reference standards: the Messidor-2 grades used here were produced by the adjudication protocol of Krause et al. (2018), and the DeepDRiD grades come from adjudication among several ophthalmologists, an approach that Krause et al. (2018) show reduces grader variability and yields higher-quality labels than single readings. Grader variability nonetheless remains a known property of DR datasets, more pronounced for large single-grader sources such as EyePACS, and the study does not claim it away.
+
+Crucially, the experimental design is robust to whatever inter-dataset differences remain, because it never pools the datasets. Each of the ten configurations is trained and tested on a single dataset against that dataset's own labels, and the cross-dataset analysis is rank-based (Section 3.7): within each dataset the ten configurations are ranked on that dataset's own labels, and only those ranks are aggregated across datasets with the Friedman and Wilcoxon tests. A systematic difference in grading strictness between two datasets therefore shifts all ten configurations on a dataset by the same amount and cancels out of the ranking; one dataset's labels can never contaminate another dataset's training. The study thus does not compare grades across datasets or assume that grades are equivalent between them; it asks only which configuration ranks most consistently when each dataset is judged on its own terms. Should any single dataset nonetheless prove anomalous in practice, the same design permits reporting the comparison on the largest and most reliably graded datasets (for example EyePACS) alone, without changing the protocol.
+
 ### 2.3 Preprocessing Techniques for Fundus Images
 
 Raw fundus images differ in quality because illumination, sensor colour response, and the optical state of the eye all vary. The purpose of preprocessing is to bring image characteristics into a common form so that clinical lesions (microaneurysms, haemorrhages, hard exudates) are picked up more consistently by the model. The five techniques assessed below span a range of approaches found in the DR grading literature, and Figure 2.1 illustrates their visual effect on a fundus image.
@@ -158,9 +162,42 @@ LAB Adaptive Contrast Enhancement (LAB-ACE; Anupama et al., 2025) moves the imag
 
 Multi-channel Image Enhancement (MCIE; Anupama et al., 2025) combines several complementary representations into a single three-channel input, for instance the green channel (responsive to haemoglobin), CLAHE applied to the L channel, and the Ben Graham Normalization output. The backbone then draws on multiple enhancements at once rather than a single type; Anupama et al. (2025) put forward such combinations as a promising future direction.
 
+#### 2.3.6 Rationale for Selecting the Five Techniques
+
+The five techniques are not an arbitrary selection; they fall into two groups, summarised in Table 2.1. The first group holds the two preprocessing steps most widely adopted in DR grading. Ben Graham Normalization (Graham, 2015) is the method that won the Kaggle Diabetic Retinopathy Detection competition and has since become a de-facto default, while CLAHE (Zuiderveld, 1994) recurs across DR pipelines and is used by Anupama et al. (2025) themselves as a component of their composite pipeline, chosen there to raise local contrast so that microaneurysms become easier to see. These two are the established baselines against which any newer method must prove itself.
+
+The second group holds the three techniques introduced by Anupama et al. (2025), the paper this study builds on. On the APTOS 2019 dataset they reported Adaptive Sigmoid Enhancement as their strongest pipeline (96.39\% accuracy using ResNet-50 features and an XGBoost classifier), followed by LAB-ACE (91.84\%) and MCIE (86.62\%). Two features of that work motivate the present design. First, the three techniques were assessed only within Anupama et al.'s (2025) own multi-modal fusion pipeline and against one another, not benchmarked like-for-like against the established methods across different backbones; the authors themselves flag a component-level study as a direction to pursue and put MCIE-style multi-channel combinations forward as promising. Second, because the evaluation rested on the single APTOS 2019 dataset, it is unknown whether the ranking transfers, which is why the same authors list multi-center validation among their future-work directions. This study takes up both points: it places the three novel techniques head-to-head with the two field standards under one uniform protocol and across six datasets, so the comparison is like-for-like rather than tied to a single pipeline and a single dataset. Across the set, the five techniques also span the main mechanisms found in the literature, from local-contrast enhancement (CLAHE, LAB-ACE) through global-illumination correction (Ben Graham) and adaptive intensity stretching (Adaptive Sigmoid) to multi-representation compositing (MCIE), so that they interact differently with each backbone's inductive bias.
+
+\begin{table}[htbp]
+\caption{The five preprocessing techniques and the rationale for their selection. The accuracy figures are those reported by Anupama et al. (2025) on APTOS 2019 with ResNet-50 features and an XGBoost classifier.}
+\label{tab:prepselection}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{2.8cm}|p{3.4cm}|p{2.9cm}|p{3.4cm}|}
+\hline
+\textbf{Technique} & \textbf{Origin / representative study} & \textbf{What it standardises} & \textbf{Role in this study} \\
+\hline
+CLAHE & Zuiderveld (1994); used in DR by Anupama et al. (2025) & Local contrast (luminance) & Field-standard baseline \\
+\hline
+Ben Graham Normalization & Graham (2015), Kaggle DR winner & Global illumination & Field-standard baseline \\
+\hline
+Adaptive Sigmoid Enhancement & Anupama et al. (2025) & Adaptive intensity and contrast & Best novelty of the baseline paper (96.39\%) \\
+\hline
+LAB-ACE & Anupama et al. (2025) & Lesion contrast without colour shift & Baseline-paper novelty (91.84\%) \\
+\hline
+MCIE & Anupama et al. (2025) & Multi-representation composite & Baseline-paper novelty (86.62\%), proposed as a future direction \\
+\hline
+\end{tabular}
+\end{center}\end{table}
+
 ### 2.4 Deep Learning Architectures for Image Classification
 
-This study evaluates two deep learning backbones representing two different paradigms, namely the convolutional neural network (CNN) represented by ResNet-50 and the Vision Transformer (ViT) represented by ViT-B/16. Each architecture is described in Sections 2.4.1 and 2.4.2.
+This study evaluates two deep learning backbones representing two different paradigms, namely the convolutional neural network (CNN) represented by ResNet-50 and the Vision Transformer (ViT) represented by ViT-B/16. Neither is chosen arbitrarily. ResNet-50 is the very network Anupama et al. (2025) used as the deep feature extractor in their fusion pipeline, and it recurs as a standard baseline across the DR grading literature, so retaining it keeps this study directly comparable to the baseline paper. ViT-B/16 is chosen because Anupama et al. (2025), among their future-work directions, name Vision Transformers explicitly, for modelling long-range dependencies and global context in fundus images, as a direction to pursue; that transformers transfer well to retinal images is already evidenced by ViT-based foundation models such as RETFound (Zhou et al., 2023). Pairing a CNN with a ViT turns the question of which backbone to use from an untested assumption into a controlled variable, which is what lets the study separate the effect of preprocessing from the effect of the backbone. The Base rather than the Large ViT is used so that the model stays within the same order of magnitude and compute budget as ResNet-50 (about 25.5 million parameters) and fits a single mid-range GPU of about 16 GB, keeping the comparison both fair and feasible; Anupama et al. (2025) recommend ViT in general terms without prescribing a scale.
+
+These choices are backed by how the two paradigms have actually performed on the kind of data used here. ResNet-50 is not merely conventional: it is the backbone Chokuwa and Khan (2025) adopt for domain-generalization experiments across seven DR grading datasets, the CNN whose features drive Anupama et al.'s (2025) best pipeline on APTOS 2019, and the network behind Kumar et al.'s (2025) ordinal-regression model that reaches a QWK of 0.899 on APTOS 2019; it recurs as the strong, reproducible baseline on exactly this class of data, which is why it anchors the CNN side of the comparison. On the Transformer side, the case for ViT rests on capability rather than novelty. Its self-attention models relationships across the whole image, which suits DR grading, where the lesions that set the grade (microaneurysms, haemorrhages, neovascularisation) can lie in different retinal quadrants; and ViT-based models have already delivered leading results on retinal images, with RETFound (Zhou et al., 2023) attaining state-of-the-art disease detection on fundus photographs including DR. ViT-B/16 is therefore expected to be genuinely competitive with ResNet-50 rather than a placeholder, and the study is designed to measure that head to head.
+
+A reasonable follow-up is why ViT-B/16 rather than a later Transformer such as the Swin Transformer, whose hierarchical local windows were introduced to address ViT's limitations, and which Mok et al. (2024) indeed use as the backbone for referable-DR classification. Swin is not adopted here for two reasons: its hierarchical, higher-resolution design is markedly heavier to train under the single mid-range GPU budget of this study, and its parameter count and scale do not line up with ResNet-50, which would confound the like-for-like CNN-versus-Transformer contrast that motivates the pairing. ViT-B/16 keeps that contrast clean while remaining feasible. Each architecture is described in Sections 2.4.1 and 2.4.2.
 
 #### 2.4.1 Convolutional Neural Network and ResNet-50
 
@@ -233,12 +270,13 @@ Accuracy, the share of correct predictions $\mathrm{Accuracy} = (1/N) \sum_{i=1}
 
 #### 2.5.2 Quadratic-weighted Kappa (QWK)
 
-Since ICDR is ordinal, an error of two grades is worse than an error of one, a distinction that accuracy and F1 ignore. Quadratic-weighted kappa (Cohen, 1968) applies a penalty that grows with the square of the gap between classes,
+Since ICDR is ordinal, an error of two grades is worse than an error of one, a distinction that accuracy and F1 ignore. Quadratic-weighted kappa (Cohen, 1968) applies a penalty that grows with the square of the gap between classes, as defined in Equation 2.1,
 
-$$
-\kappa_{w} \;=\; 1 - \frac{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} O_{ij}}{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} E_{ij}},
+\begin{equation}
+\kappa_{w} = 1 - \frac{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} O_{ij}}{\sum_{i=1}^{K} \sum_{j=1}^{K} w_{ij} E_{ij}},
 \qquad w_{ij} = \frac{(i - j)^{2}}{(K - 1)^{2}},
-$$
+\label{eq:qwk}
+\end{equation}
 
 in which $O$ is the observed confusion matrix and $E$ is the confusion matrix expected were predictions and labels independent. Here $\kappa_w = 1$ signals perfect agreement and $\kappa_w = 0$ corresponds to chance-level guessing. Established as the standard score in DR grading challenges (Kaggle Diabetic Retinopathy Detection, APTOS 2019), QWK is the primary metric of this study.
 
@@ -254,16 +292,73 @@ Chokuwa and Khan (2025) demonstrated that DR grading models lose substantial per
 
 This study's anchor paper is Anupama et al. (2025) in Scientific Reports, which assesses several backbones for DR grading on one dataset and, in its future-work section, points to three directions: (i) a systematic study of preprocessing combinations; (ii) validation on multi-center datasets covering diverse devices and demographics; and (iii) the addition of interpretation tools such as Grad-CAM. The present work builds on all three, comparing five preprocessing techniques (Section 2.3) across two backbones from different paradigms (Section 2.4), evaluating them independently over six public datasets (Section 2.2), and applying Grad-CAM to the best configuration (Section 2.5.3).
 
+To make the study's position explicit, Table 2.2 situates it among representative deep-learning DR works of the past decade, compared on the axes that bear on its research questions: whether preprocessing techniques are benchmarked like-for-like under one protocol, which backbone is used, how many datasets are involved, and whether a formal test compares methods across datasets. Two gaps stand out. First, no prior study compares a set of preprocessing techniques head-to-head under one fixed protocol: preprocessing is either a single fixed pipeline (Tusfiqur et al., 2022; Chokuwa and Khan, 2025; Kumar et al., 2025) or, in the anchor paper, a set of novel methods assessed only within one fusion pipeline on one dataset (Anupama et al., 2025). Second, the evaluations that do span several datasets (Zhou et al., 2023; Chokuwa and Khan, 2025) do so to build or stress-test a single model rather than to ask whether a preprocessing-and-backbone verdict is stable, and only RETFound reports a cross-dataset significance test. This study fills the empty cell in Table 2.2: a like-for-like comparison of five preprocessing techniques across two backbone paradigms (CNN and ViT), evaluated on six datasets and aggregated with formal non-parametric tests (Friedman, Wilcoxon signed-rank, and McNemar).
+
+\begin{table}[htbp]
+\caption{Positioning of this study among representative deep-learning DR works. "Preproc. compared" indicates whether several preprocessing techniques are benchmarked like-for-like under one protocol; "Cross-dataset test" indicates a formal significance test used to compare methods across datasets.}
+\label{tab:relatedwork}
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{2.5cm}|p{2.0cm}|p{1.5cm}|p{2.3cm}|c|p{2.4cm}|}
+\hline
+\textbf{Study (Year)} & \textbf{Task} & \textbf{Preproc. compared} & \textbf{Backbone(s)} & \textbf{Data-sets} & \textbf{Cross-dataset test} \\
+\hline
+Gulshan et al. (2016) & Referable DR detection & No & Inception-v3 & 2 & No \\
+\hline
+Abramoff et al. (2018) & Autonomous DR detection & No & CNN (IDx-DR) & 1 & No \\
+\hline
+Tusfiqur et al. (2022), DRG-Net & Lesion seg. $+$ grading & No & ResNet-50, ViT & 3 & No \\
+\hline
+Zhou et al. (2023), RETFound & Foundation model (incl. DR) & No & ViT (MAE) & 3 & t-test (per task) \\
+\hline
+Mok et al. (2024) & Referable DR $+$ lesion maps & No & Swin Transformer & 2 & No \\
+\hline
+Chokuwa \& Khan (2025) & Grading (domain gen.) & No & ResNet-50 & 7 & No \\
+\hline
+Anupama et al. (2025) (anchor) & Grading $+$ fusion & Partly & ResNet-50 $+$ XGBoost & 1 & No \\
+\hline
+Kumar et al. (2025) & Grading (ordinal) & No & ResNet-50 & 1 & No \\
+\hline
+\textbf{This study (2026)} & Grading (5-class) & \textbf{Yes (5)} & ResNet-50 $+$ ViT-B/16 & \textbf{6} & \textbf{Friedman, Wilcoxon, McNemar} \\
+\hline
+\end{tabular}
+\end{center}\end{table}
+
 ### 2.7 Conceptual Framework
 
-Raw fundus images vary in illumination, contrast, and colour, and the earliest DR lesions are small and low in contrast (Sections 2.1 and 2.2). Since the five preprocessing techniques (Section 2.3) and the two backbones (Section 2.4) operate through different mechanisms and inductive biases, performance is viewed as a function of the preprocessing $\times$ backbone interaction, which the $5 \times 2$ factorial design (Section 3.1) is constructed to isolate. To check whether the interaction extends past a single dataset, the ten configurations are trained and evaluated independently on six datasets that differ in camera, population, and illumination yet share the ICDR ontology, so that a configuration ranking first consistently on all six can claim external validity. Because the ICDR scale is ordinal and the classes are imbalanced, the comparison leans on QWK and macro-F1 instead of accuracy alone (Section 2.5) and pools the per-dataset QWK through the Friedman test, with the leading configurations then compared by the Wilcoxon signed-rank test and per-dataset McNemar tests (Section 3.7). These considerations lead to the hypotheses set out in Section 2.8.
+Raw fundus images vary in illumination, contrast, and colour, and the earliest DR lesions are small and low in contrast (Sections 2.1 and 2.2). Because the five preprocessing techniques (Section 2.3) and the two backbones (Section 2.4) act through different mechanisms and inductive biases, performance is viewed as a function of the preprocessing $\times$ backbone interaction, which the $5 \times 2$ factorial design (Section 3.1) is built to isolate. To test whether that interaction holds beyond a single dataset, the ten configurations are trained and evaluated independently on six datasets that differ in camera, population, and illumination yet share the ICDR ontology, so that a configuration ranking first on all six can claim external validity. Because the ICDR scale is ordinal and imbalanced, the comparison relies on QWK and macro-F1 rather than accuracy alone (Section 2.5) and aggregates the per-dataset QWK with the tests detailed in Section 3.7. These considerations lead to the hypotheses in Section 2.8.
 
 ### 2.8 Research Hypotheses
 
-Following the research questions, this study is guided by a single statistical hypothesis, tested as described in Section 3.7. For any pair of configurations, denoted Configuration A and Configuration B, the hypotheses are defined as follows.
+Following the research questions, this study is guided by four statistical hypotheses, each mapped to one aspect of the $5 \times 2$ design and to the test that evaluates it in Section 3.7. Throughout, a *configuration* denotes one (preprocessing technique, backbone) pair, so there are $5 \times 2 = 10$ configurations, and QWK is the metric on which the hypotheses are tested. The first two hypotheses isolate each factor, the third addresses their interaction, and the fourth compares the two leading configurations directly; together they answer RQ1 (H1 to H3) and RQ2 (H4).
 
-- $H_{0(A,B)}$: the median difference between the QWK scores of Configuration A and Configuration B across the six datasets is zero; that is, neither configuration tends to outperform the other, and any observed difference is due to random chance.
-- $H_{1(A,B)}$: the median difference between the QWK scores of Configuration A and Configuration B across the six datasets is not zero; that is, one configuration systematically performs better than the other across the datasets.
+**Hypothesis 1 (effect of preprocessing).** Averaging QWK over the two backbones to give one value per technique on each dataset:
+
+- $H1_0$: across the six datasets the five preprocessing techniques (CLAHE, Ben Graham Normalization, Adaptive Sigmoid Enhancement, LAB-ACE, and MCIE) have equal median QWK; the choice of preprocessing has no systematic effect.
+- $H1_1$: at least one preprocessing technique has a different median QWK; the choice of preprocessing systematically affects grading performance across datasets.
+- Tested with the Friedman test over the resulting $5 \times 6$ matrix, followed, when significant, by pairwise Wilcoxon signed-rank tests against the baseline under Holm-Bonferroni correction.
+
+**Hypothesis 2 (effect of backbone).** Averaging QWK over the five preprocessing techniques to give one value per backbone on each dataset:
+
+- $H2_0$: across the six datasets the median difference in QWK between ResNet-50 and ViT-B/16 is zero; neither backbone consistently outperforms the other.
+- $H2_1$: that median difference is not zero; one backbone systematically outperforms the other across datasets.
+- Tested with the Wilcoxon signed-rank test on the six paired per-dataset QWK values.
+
+**Hypothesis 3 (preprocessing $\times$ backbone interaction).**
+
+- $H3_0$: the best-performing preprocessing technique is the same for both backbones; the ranking of preprocessing techniques is consistent across ResNet-50 and ViT-B/16 (no interaction).
+- $H3_1$: the best preprocessing technique differs between the two backbones; the effect of preprocessing depends on the backbone (an interaction is present).
+- Examined descriptively by comparing the preprocessing ranking within each backbone separately, because six datasets give a formal interaction test little power (Section 3.7).
+
+**Hypothesis 4 (comparison of the two leading configurations).** Let the two leading configurations be those with the best average Friedman rank across datasets:
+
+- $H4_0$: across the six datasets the median difference in their QWK is zero, and within each dataset their paired per-image predictions do not differ.
+- $H4_1$: the two configurations differ, one attaining a higher median QWK across datasets or a significant within-dataset difference.
+- Tested across datasets with the Wilcoxon signed-rank test and within each dataset with Holm-Bonferroni-corrected McNemar tests; this is what decides whether a numerically small gap (for example 0.80 versus 0.82 in QWK) is statistically real.
+
+All four hypotheses are framed on medians and ranks rather than means, because they are tested with non-parametric procedures, the Friedman and Wilcoxon signed-rank tests, which compare the median of the paired per-dataset differences rather than their average. The choice is deliberate and follows the standard methodology for comparing methods over multiple datasets. Demsar (2006), whose work is the reference procedure for exactly this setting, recommends against averaging a performance score across datasets and instead prescribes these rank-based non-parametric tests. Two properties of the present study make that recommendation apply directly. First, a mean assumes that QWK values are commensurable across datasets and is easily dominated by outliers, yet the six datasets differ by more than two orders of magnitude in size (516 to 88,702 images) and in difficulty, so one unusually hard or easy dataset could distort a mean, whereas the median and the ranks the tests use are robust to such outliers. Second, with only six datasets the normality that a mean-based paired t-test assumes cannot be established, whereas these tests make no normality assumption. The median therefore reports the typical cross-dataset advantage of one method over another, which is the quantity of interest for judging consistency.
 
 The trade-off between predictive performance and computational cost (RQ3) is examined descriptively through direct measurement and is therefore not stated as a statistical hypothesis.
 
@@ -324,6 +419,29 @@ To determine which configuration is best not on a single dataset but consistentl
 \label{fig:pipeline}
 \end{figure}
 
+Complementing the design view of Figure 3.1, Figure 3.2 lays out the research as a linear sequence of stages (the research procedure), which is the order that the twelve-month schedule in Section 3.9 follows.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  stage/.style={draw, rounded corners=3pt, fill=blue!8, align=center, text width=2.6cm, minimum height=1.5cm, inner sep=3pt, font=\scriptsize},
+  arr/.style={-{Stealth[length=2mm]}, semithick}
+]
+\node[stage] (s1) {1. Literature study and problem formulation};
+\node[stage, right=0.5cm of s1] (s2) {2. Six-dataset collection and per-dataset partitioning};
+\node[stage, right=0.5cm of s2] (s3) {3. Preprocessing implementation (five techniques)};
+\node[stage, right=0.5cm of s3] (s4) {4. Training the ten configurations on each dataset};
+\node[stage, right=0.5cm of s4] (s5) {5. Per-dataset evaluation (accuracy, QWK, macro-F1)};
+\node[stage, right=0.5cm of s5] (s6) {6. Statistical analysis (Friedman, Wilcoxon, McNemar) and Grad-CAM};
+\foreach \a/\b in {s1/s2,s2/s3,s3/s4,s4/s5,s5/s6}{\draw[arr] (\a)--(\b);}
+\end{tikzpicture}%
+}
+\caption{The end-to-end research procedure as a sequence of six stages, from literature study through data preparation, preprocessing, training, and evaluation to statistical analysis and Grad-CAM. Whereas Figure 3.1 shows the logic of the $5 \times 2$ factorial design, this figure shows the chronological workflow that the schedule in Section 3.9 follows.}
+\label{fig:stages}
+\end{figure}
+
 ### 3.2 Dataset
 
 #### 3.2.1 Per-Dataset Train, Validation, and Test Partitions
@@ -334,11 +452,65 @@ For **IDRiD**, the official partition (413 training, 103 test; Porwal et al., 20
 
 #### 3.2.2 Class Distribution and Handling of Imbalance
 
-All six datasets are imbalanced (long-tailed): grade 0 dominates while the higher grades, especially grades 3 and 4, are minorities. Within each dataset the imbalance is handled identically at two levels, namely (i) a weighted random sampler with weights $\propto 1/\sqrt{n_k}$ ($n_k$ is the number of training images of class $k$ in that dataset) in each mini-batch, and (ii) class-weighted categorical cross-entropy with weights $\propto 1/\sqrt{n_k}$ normalised to sum to $K$. QWK is chosen as the checkpoint-selection metric because it is sensitive to ordinal distance and relatively robust to the marginal distribution.
+Table 3.1 reports, for each dataset, the number of images in every ICDR grade, presented as-is without any rebalancing. Two patterns hold across all six datasets: grade 0 (no DR) is the majority class, and the sight-threatening grades 3 (severe NPDR) and 4 (PDR) are consistently the rarest. The absolute magnitudes differ widely, from 516 images in IDRiD to 88,702 in EyePACS, yet the long-tailed shape recurs regardless of scale, country, or acquisition device.
+
+\begin{table}[htbp]
+\caption{Per-class image distribution across the six datasets on the five-grade ICDR scale (0 = No DR, 1 = Mild NPDR, 2 = Moderate NPDR, 3 = Severe NPDR, 4 = PDR). For EyePACS the full published dataset is shown, whereas the study trains on a quality-filtered, class-stratified subset (Section 3.2.1); DeepDRiD is counted at the image level after retaining one field per eye (994 of its 2,000 raw regular images).}
+\label{tab:distribution}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{Total} \\
+\hline
+IDRiD & 168 & 25 & 168 & 93 & 62 & 516 \\
+\hline
+DeepDRiD & 453 & 111 & 197 & 177 & 56 & 994 \\
+\hline
+Messidor-2 & 1,017 & 270 & 347 & 75 & 35 & 1,744 \\
+\hline
+APTOS 2019 & 1,805 & 370 & 999 & 193 & 295 & 3,662 \\
+\hline
+DDR & 6,266 & 630 & 4,477 & 236 & 913 & 12,522 \\
+\hline
+EyePACS & 65,343 & 6,205 & 13,153 & 2,087 & 1,914 & 88,702 \\
+\hline
+\end{tabular}
+\end{center}\end{table}
+
+The degree of imbalance itself varies by dataset, as Table 3.2 summarises through the imbalance ratio (IR, the largest class divided by the smallest) and a normalised-entropy balance score (1 = perfectly uniform). IDRiD is the most balanced (IR 6.7, with grades 0 and 2 each about one third of its 516 images), whereas EyePACS is the most skewed (grade 0 alone is 74\% of its images, IR 34.1). Messidor-2, DDR, and EyePACS fall in the highly imbalanced (long-tailed) band, while IDRiD, DeepDRiD, and APTOS 2019 are only moderately imbalanced; no dataset is close to uniform.
+
+\begin{table}[htbp]
+\caption{Class-balance summary per dataset. IR is the imbalance ratio (largest class divided by smallest); Majority \% is the share of the largest class; Balance is the normalised Shannon entropy of the class proportions (1 = perfectly uniform).}
+\label{tab:balance}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|p{3.8cm}|}
+\hline
+\textbf{Dataset} & \textbf{IR} & \textbf{Majority \%} & \textbf{Balance} & \textbf{Status} \\
+\hline
+IDRiD & 6.7 & 32.6 & 0.90 & moderately imbalanced \\
+\hline
+DeepDRiD & 8.1 & 45.6 & 0.87 & moderately imbalanced \\
+\hline
+Messidor-2 & 29.1 & 58.3 & 0.71 & highly imbalanced (long-tailed) \\
+\hline
+APTOS 2019 & 9.4 & 49.3 & 0.80 & moderately imbalanced \\
+\hline
+DDR & 26.6 & 50.0 & 0.70 & highly imbalanced (long-tailed) \\
+\hline
+EyePACS & 34.1 & 73.7 & 0.54 & highly imbalanced (long-tailed) \\
+\hline
+\end{tabular}
+\end{center}\end{table}
+
+Because this imbalance is intrinsic to the screening population rather than an artefact to be corrected away, it is handled identically across configurations at two levels, namely (i) a weighted random sampler with weights $\propto 1/\sqrt{n_k}$ ($n_k$ is the number of training images of class $k$ in that dataset) in each mini-batch, and (ii) class-weighted categorical cross-entropy with weights $\propto 1/\sqrt{n_k}$ normalised to sum to $K$. QWK is chosen as the checkpoint-selection metric because it is sensitive to ordinal distance and relatively robust to the marginal distribution.
 
 ### 3.3 Variables and Operational Definitions
 
-This study involves two independent variables, three dependent variables, and a set of controlled variables, defined operationally in Table 3.1.
+This study involves two independent variables, three dependent variables, and a set of controlled variables, defined operationally in Table 3.3.
 
 \begin{table}[htbp]
 \caption{Research variables and their operational definitions.}
@@ -356,7 +528,7 @@ Backbone architecture (independent) & Categorical, 2 levels & Feature-extraction
 \hline
 Classification performance (dependent) & Continuous & Accuracy, QWK, and macro-F1 on the test partition (Section 2.5). \\
 \hline
-Cross-dataset consistency (dependent) & Ordinal/Continuous & Average rank of each configuration over the six datasets and its significance under the Friedman test, the Wilcoxon signed-rank test, and per-dataset McNemar tests, as a measure of how consistently a configuration performs across datasets (Section 3.7). \\
+Cross-dataset consistency (dependent) & Ordinal or continuous & Average rank of each configuration over the six datasets and its significance under the Friedman test, the Wilcoxon signed-rank test, and per-dataset McNemar tests, as a measure of how consistently a configuration performs across datasets (Section 3.7). \\
 \hline
 Computational cost (dependent) & Continuous & Number of model parameters and mean inference time per image. \\
 \hline
@@ -370,6 +542,10 @@ Controls & Fixed & Basic pipeline (Section 3.4.1), augmentation (Section 3.4.3),
 #### 3.4.1 Basic Pipeline
 
 Ahead of any technique-specific step, every image across the six datasets goes through one shared basic pipeline: (i) the retinal mask is estimated by adaptive thresholding on the green channel and then cropped to its minimum bounding box to strip away the black frame; (ii) the image is resized to $224 \times 224$ pixels by bilinear interpolation to match the input expected by ImageNet weights; and (iii) values are scaled to $[0, 1]$ and then standardised per channel with the ImageNet mean and standard deviation ($\mu = (0.485, 0.456, 0.406)$, $\sigma = (0.229, 0.224, 0.225)$). The same pipeline governs training, validation, and testing on every dataset, so that no configuration difference is hidden behind a difference in basic preprocessing.
+
+The choice of $224 \times 224$ deserves comment, because the raw images are far larger (up to several thousand pixels per side, varying by dataset) and DR grading depends on small lesions, above all the microaneurysms that define grade 1, which aggressive downsizing can attenuate. Two considerations justify it as the starting resolution. First, $224 \times 224$ is the input size at which both backbones were pretrained on ImageNet, so it makes transfer learning directly applicable (Section 2.4.3) and keeps the sixty training runs feasible on a single mid-range GPU; it is also the resolution at which comparable DR grading models operate, for example Kumar et al. (2025), who reach a QWK of 0.899 on APTOS 2019 at $224 \times 224$. Second, the five preprocessing techniques under study are themselves partly intended to make small lesions more salient before downsizing, so the resolution choice interacts with, rather than sits apart from, the factor being tested.
+
+Because information loss from downsizing is nonetheless a genuine risk, two contingencies are planned in advance. If evaluation shows the minority classes, particularly grade 1 (mild), which hinges on microaneurysms, suffering disproportionately, the pipeline is designed to be re-run at a higher input resolution such as $384 \times 384$ or $512 \times 512$ (Plan B, at higher compute cost) and, failing that, with a tiling or patch-based scheme that preserves native-resolution detail within the region the retinal mask retains (Plan C). Any such change would be applied identically across all ten configurations so that the comparison stays fair, and would be reported explicitly.
 
 #### 3.4.2 Application of the Five Preprocessing Techniques
 
@@ -393,19 +569,28 @@ The loss function is class-weighted categorical cross-entropy (weights as in Sec
 
 On each of the six datasets, the test partition is evaluated once per configuration with accuracy, QWK, macro-F1, and a per-class confusion matrix, all reported in a per-dataset results table. This produces a $10 \times 6$ matrix of QWK scores, one per configuration per dataset, which is the basis of the statistical analysis.
 
-The statistical analysis proceeds in three stages: an omnibus test, a descriptive ranking, and confirmatory pairwise tests on the leading configurations. As the omnibus stage, the ten configurations are compared across datasets with the Friedman test (Demsar, 2006), the standard non-parametric procedure for comparing several methods over multiple datasets. Within each dataset the ten configurations are ranked by QWK, and the Friedman test examines whether their average ranks differ significantly overall,
+The statistical analysis proceeds in three stages: an omnibus test, a descriptive ranking, and confirmatory pairwise tests on the leading configurations. As the omnibus stage, the ten configurations are compared across datasets with the Friedman test (Demsar, 2006), the standard non-parametric procedure for comparing several methods over multiple datasets. Within each dataset the ten configurations are ranked by QWK, and the Friedman test examines whether their average ranks differ significantly overall, as defined in Equation 3.1,
 
-$$\chi_F^2 = \frac{12N}{k(k+1)}\left[\sum_{j=1}^{k} R_j^2 - \frac{k(k+1)^2}{4}\right],$$
+\begin{equation}
+\chi_F^2 = \frac{12N}{k(k+1)}\left[\sum_{j=1}^{k} R_j^2 - \frac{k(k+1)^2}{4}\right],
+\label{eq:friedman}
+\end{equation}
 
 where $N=6$ datasets, $k=10$ configurations, and $R_j$ is the average rank of configuration $j$. QWK is the metric on which the test is run because it is the primary, ordinal-aware metric for DR grading; accuracy and macro-F1 are reported descriptively alongside it. When the Friedman test is significant, the average-rank ordering of the ten configurations is reported descriptively to show which configurations perform best across datasets. Because six datasets give the omnibus test limited power to resolve all ten configurations, this ranking is treated as descriptive evidence of consistency rather than as a set of pairwise significance claims, and the confirmatory testing below is restricted to the two leading configurations.
 
-The two leading configurations (those with the best average rank across datasets) are then compared directly at two levels. Across datasets, they are compared with the Wilcoxon signed-rank test (Wilcoxon, 1945) on their six paired per-dataset QWK values,
+The two leading configurations (those with the best average rank across datasets) are then compared directly at two levels. Across datasets, they are compared with the Wilcoxon signed-rank test (Wilcoxon, 1945) on their six paired per-dataset QWK values, as defined in Equation 3.2,
 
-$$W = \min(W^+, W^-), \qquad W^+ = \sum_{d_i > 0} \operatorname{rank}(|d_i|),$$
+\begin{equation}
+W = \min(W^+, W^-), \qquad W^+ = \sum_{d_i > 0} \operatorname{rank}(|d_i|),
+\label{eq:wilcoxon}
+\end{equation}
 
-where $d_i$ is the QWK difference between the two configurations on dataset $i$ and ranks are taken over $|d_i|$; the null hypothesis is that the median difference is zero. This is a single planned comparison of two methods, for which six paired datasets provide adequate power. Within each dataset, the same two configurations are compared with McNemar's test (McNemar, 1947) on the paired per-image predictions of that dataset's test partition,
+where $d_i$ is the QWK difference between the two configurations on dataset $i$ and ranks are taken over $|d_i|$; the null hypothesis is that the median difference is zero. This is a single planned comparison of two methods, for which six paired datasets provide adequate power. Within each dataset, the same two configurations are compared with McNemar's test (McNemar, 1947) on the paired per-image predictions of that dataset's test partition, as defined in Equation 3.3,
 
-$$\chi^2 = \frac{(b - c)^2}{b + c},$$
+\begin{equation}
+\chi^2 = \frac{(b - c)^2}{b + c},
+\label{eq:mcnemar}
+\end{equation}
 
 where $b$ and $c$ count the images that one configuration classifies correctly and the other does not; operating on thousands of paired samples, this test has substantially higher power within a single dataset. Because it is applied once per dataset, the family of six per-dataset McNemar tests is corrected with the Holm-Bonferroni procedure (Holm, 1979) to control the family-wise error rate.
 
@@ -421,7 +606,7 @@ The experimental pipeline is implemented in Python 3.11 using the following libr
 
 ### 3.9 Research Schedule
 
-The research activities are planned to run for twelve months, from March 2026 to February 2027, covering literature study and proposal writing, the proposal seminar and its revision, environment preparation and collection of the six datasets, implementation of the preprocessing pipeline, training of the ten configurations on each of the six datasets, per-dataset evaluation, Friedman statistical analysis and Grad-CAM visualisation, the writing of Chapter IV and Chapter V, the results seminar, and the thesis defense and final submission. The monthly schedule is detailed in Table 3.2; the columns from March to December are months in 2026, while January and February are months in 2027. The schedule is indicative and may be adjusted according to the results of consultations with the supervisors and the availability of computational resources.
+The research activities are planned to run for twelve months, from March 2026 to February 2027, covering literature study and proposal writing, the proposal seminar and its revision, environment preparation and collection of the six datasets, implementation of the preprocessing pipeline, training of the ten configurations on each of the six datasets, per-dataset evaluation, Friedman statistical analysis and Grad-CAM visualisation, the writing of Chapter IV and Chapter V, the results seminar, and the thesis defense and final submission. The monthly schedule is detailed in Table 3.4; the columns from March to December are months in 2026, while January and February are months in 2027. The schedule is indicative and may be adjusted according to the results of consultations with the supervisors and the availability of computational resources.
 
 \begin{table}[htbp]
 \caption{Research schedule for the period March 2026 to February 2027.}
@@ -495,6 +680,10 @@ The research activities are planned to run for twelve months, from March 2026 to
 
 \refitem{Kaggle, \& EyePACS. (2015). \emph{Diabetic Retinopathy Detection} [Data set]. Kaggle. \texttt{https://www.kaggle.com/c/diabetic-retinopathy-detection}}
 
+\refitem{Krause, J., Gulshan, V., Rahimy, E., Karth, P., Widner, K., Corrado, G. S., Peng, L., \& Webster, D. R. (2018). Grader Variability and the Importance of Reference Standards for Evaluating Machine Learning Models for Diabetic Retinopathy. \emph{Ophthalmology}, \emph{125}(8), 1264--1272. \texttt{https://doi.org/10.1016/j.ophtha.2018.01.034}}
+
+\refitem{Kumar, S., Aditya, D. S., Kumar, T. L., Bikku, T., Thota, S., \& Kumar, C. (2025). Stage-Aware Diagnosis of Diabetic Retinopathy via Ordinal Regression. \emph{arXiv preprint} arXiv:2511.14398.}
+
 \refitem{Li, T., Gao, Y., Wang, K., Guo, S., Liu, H., \& Kang, H. (2019). Diagnostic Assessment of Deep Learning Algorithms for Diabetic Retinopathy Screening. \emph{Information Sciences}, \emph{501}, 511--522.}
 
 \refitem{Liu, R., Wang, X., Wu, Q., Dai, L., Fang, X., Yan, T., et al. (2022). DeepDRiD: Diabetic Retinopathy-Grading and Image Quality Estimation Challenge. \emph{Patterns}, \emph{3}(6), 100512.}
@@ -502,6 +691,8 @@ The research activities are planned to run for twelve months, from March 2026 to
 \refitem{Loshchilov, I., \& Hutter, F. (2019). Decoupled Weight Decay Regularization. \emph{International Conference on Learning Representations (ICLR)}.}
 
 \refitem{McNemar, Q. (1947). Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages. \emph{Psychometrika}, \emph{12}(2), 153--157.}
+
+\refitem{Mok, D., Bum, J., Tai, L. D., \& Choo, H. (2024). Cross Feature Fusion of Fundus Image and Generated Lesion Map for Referable Diabetic Retinopathy Classification. \emph{arXiv preprint} arXiv:2411.03618.}
 
 \refitem{Porwal, P., Pachade, S., Kokare, M., Deshmukh, G., Son, J., Bae, W., \ldots\ \& Meriaudeau, F. (2020). IDRiD: Diabetic Retinopathy Segmentation and Grading Challenge. \emph{Medical Image Analysis}, \emph{59}, 101561.}
 
@@ -512,6 +703,8 @@ The research activities are planned to run for twelve months, from March 2026 to
 \refitem{Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. \emph{Proceedings of the IEEE International Conference on Computer Vision (ICCV)}, 618--626.}
 
 \refitem{Teo, Z. L., Tham, Y. C., Yu, M., Chee, M. L., Rim, T. H., Cheung, N., \ldots\ \& Cheng, C. Y. (2021). Global Prevalence of Diabetic Retinopathy and Projection of Burden through 2045: Systematic Review and Meta-Analysis. \emph{Ophthalmology}, \emph{128}(11), 1580--1591.}
+
+\refitem{Tusfiqur, H. M., Nguyen, D. M. H., Truong, M. T. N., Nguyen, T. A., Nguyen, B. T., Barz, M., Profitlich, H.-J., Than, N. T. T., Le, N., Xie, P., \& Sonntag, D. (2022). DRG-Net: Interactive Joint Learning of Multi-lesion Segmentation and Classification for Diabetic Retinopathy Grading. \emph{arXiv preprint} arXiv:2212.14615.}
 
 \refitem{Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., \& Polosukhin, I. (2017). Attention Is All You Need. \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 5998--6008.}
 
@@ -524,3 +717,5 @@ The research activities are planned to run for twelve months, from March 2026 to
 \refitem{Wong, T. Y., \& Sabanayagam, C. (2023). The War on Diabetic Retinopathy: Where Are We Now? \emph{Asia-Pacific Journal of Ophthalmology}, \emph{12}(3), 213--221.}
 
 \refitem{Zhou, Y., Chia, M. A., Wagner, S. K., Ayhan, M. S., Williamson, D. J., Struyven, R. R., \ldots\ \& Keane, P. A. (2023). A Foundation Model for Generalizable Disease Detection from Retinal Images. \emph{Nature}, \emph{622}(7981), 156--163.}
+
+\refitem{Zuiderveld, K. (1994). Contrast Limited Adaptive Histogram Equalization. In P. S. Heckbert (Ed.), \emph{Graphics Gems IV} (pp. 474--485). Academic Press.}

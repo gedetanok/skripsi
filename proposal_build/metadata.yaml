@@ -1,11 +1,11 @@
 ---
 # =================================================================
-# METADATA PROPOSAL SKRIPSI
+# METADATA PROPOSAL SKRIPSI (edisi Bahasa Indonesia)
 # Edit field dengan tanda "TODO:" sesuai data kamu, lalu jalankan
 # ./build.sh untuk generate PDF.
 # =================================================================
 
-thesis-title: "Analisis Komparatif Teknik Preprocessing Citra Fundus dan Arsitektur Deep Learning untuk Klasifikasi Tingkat Keparahan Diabetic Retinopathy dengan Evaluasi Lintas Dataset"
+thesis-title: "Analisis Komparatif Teknik Preprocessing Citra Fundus dan Arsitektur Deep Learning untuk Klasifikasi Tingkat Keparahan Diabetic Retinopathy pada Berbagai Dataset Publik"
 
 author: "Gede Tanok Arta Wijaya"
 nim: "2315101018"
@@ -19,14 +19,14 @@ kota: "Singaraja"
 
 # ---------- Dosen Pembimbing ----------
 pembimbing1-nama: "I Made Putrama, S.T., M.Tech., Ph.D."
-pembimbing1-nip:  "...................................."
+pembimbing1-nip:  "198005242014041003"
 
-pembimbing2-nama: "...................................."
-pembimbing2-nip:  "...................................."
+pembimbing2-nama: "I Ketut Purnamawan, S.Kom., M.Kom."
+pembimbing2-nip:  "197905112006041004"
 
 # ---------- Logo (optional) ----------
 # Taruh file logo di folder proposal_build/ lalu uncomment baris berikut:
-# logo-undiksha: "logo-undiksha.png"
+logo-undiksha: "logo-undiksha.png"
 
 # =================================================================
 # ABSTRAK (Indonesia dan English)
@@ -35,59 +35,66 @@ pembimbing2-nip:  "...................................."
 # =================================================================
 
 abstrak-id: |
-  Diabetic retinopathy (DR) merupakan penyebab utama kebutaan yang dapat
-  dicegah di kalangan dewasa usia produktif, dengan prevalensi yang
-  meningkat pesat di Indonesia, sementara rasio oftalmolog terhadap
-  populasi masih jauh dari memadai untuk menopang skrining fundus
-  tahunan. Model deep learning telah mencapai akurasi tinggi dalam
-  klasifikasi tingkat keparahan DR pada citra fundus, namun literatur
-  yang ada cenderung memilih teknik preprocessing dan arsitektur
-  backbone secara ad-hoc tanpa perbandingan apple-to-apple, serta jarang
-  mengevaluasi ketahanan model ketika diuji lintas-dataset.
-  Penelitian ini melakukan analisis komparatif faktorial 5x2 terhadap
-  lima teknik preprocessing citra fundus (CLAHE, Ben Graham
-  preprocessing, Adaptive Sigmoid Enhancement, LAB-ACE, dan Multi-channel
-  Image Enhancement) yang dipasangkan dengan dua arsitektur backbone
-  (ResNet-50 dan Vision Transformer ViT-B/16), menggunakan dataset
-  IDRiD sebagai data pelatihan dan evaluasi dalam-distribusi, serta
-  dataset DDR sebagai evaluasi lintas-dataset tanpa adaptasi untuk
-  menguji ketahanan terhadap pergeseran domain antarinstitusi. Evaluasi
-  dilakukan menggunakan akurasi, quadratic-weighted kappa, dan macro-F1,
-  dengan interval kepercayaan berbasis bootstrap dan pengujian
-  signifikansi berpasangan antarkonfigurasi. Teknik interpretability
-  Grad-CAM diterapkan pada konfigurasi terbaik untuk memvisualisasikan
-  area lesi yang menjadi dasar prediksi. Hasil penelitian diharapkan
-  memberikan panduan empiris yang reproducible mengenai kombinasi
-  preprocessing dan backbone yang paling sesuai untuk deployment sistem
-  skrining DR otomatis pada layanan kesehatan primer di Indonesia.
+  Di kalangan dewasa usia produktif, diabetic retinopathy (DR)
+  merupakan salah satu penyebab utama kehilangan penglihatan yang dapat
+  dicegah, dan prevalensinya di Indonesia terus meningkat meskipun
+  jumlah oftalmolog per kapita masih jauh dari cukup untuk menopang
+  skrining fundus tahunan. Walaupun deep learning kini mampu
+  mengklasifikasikan tingkat keparahan DR dari citra fundus dengan
+  akurasi tinggi, penelitian pada umumnya menetapkan teknik
+  preprocessing dan arsitektur backbone berdasarkan kebiasaan alih-alih
+  perbandingan terkontrol, dan memvalidasi pilihan tersebut hanya pada
+  satu dataset, sehingga validitas pilihan itu secara lebih luas belum
+  teruji. Penelitian ini menjalankan perbandingan faktorial 5x2 yang
+  memasangkan lima teknik preprocessing citra fundus (CLAHE, Ben Graham
+  preprocessing, Adaptive Sigmoid Enhancement, LAB-ACE, dan
+  Multi-channel Image Enhancement) dengan dua backbone (ResNet-50 dan
+  Vision Transformer ViT-B/16) untuk menghasilkan sepuluh konfigurasi,
+  yang masing-masing dilatih dan dievaluasi secara terpisah pada enam
+  dataset publik yang berbagi ontologi ICDR lima tingkat (IDRiD, DDR,
+  APTOS 2019, Messidor-2, EyePACS, dan DeepDRiD). Kinerja diukur dengan
+  akurasi, quadratic-weighted kappa, dan macro-F1; skor per dataset
+  kemudian digabungkan pada keenam dataset dengan uji Friedman, dan dua
+  konfigurasi terdepan dibandingkan dengan uji Wilcoxon signed-rank
+  antardataset serta uji McNemar per dataset (dengan koreksi
+  Holm-Bonferroni) pada prediksi berpasangan, guna menemukan konfigurasi
+  yang tetap terbaik antardataset alih-alih hanya pada salah satunya.
+  Grad-CAM akhirnya diterapkan pada konfigurasi terdepan tersebut untuk
+  mengungkap area lesi yang menjadi dasar prediksinya. Luaran yang
+  diharapkan adalah panduan berbasis bukti yang reproducible mengenai
+  pasangan preprocessing dan backbone yang paling sesuai untuk skrining
+  DR otomatis pada layanan kesehatan primer di Indonesia.
 
-kata-kunci-id: "diabetic retinopathy, preprocessing citra fundus, deep learning, Vision Transformer, ResNet-50, evaluasi lintas-dataset, IDRiD, DDR"
+kata-kunci-id: "diabetic retinopathy, preprocessing citra fundus, deep learning, arsitektur backbone, perbandingan lintas-dataset"
 
 abstract-en: |
-  Diabetic retinopathy (DR) is a leading cause of preventable blindness
-  among working-age adults, with rapidly increasing prevalence in
-  Indonesia, while the ophthalmologist-to-population ratio remains far
-  from sufficient to sustain annual fundus screening. Deep learning
-  models have achieved high accuracy in classifying DR severity on
-  fundus images, yet the existing literature tends to select
-  preprocessing techniques and backbone architectures ad-hoc without
-  apple-to-apple comparisons, and rarely evaluates model robustness
-  under cross-dataset conditions. This study conducts a 5x2 factorial
-  comparative analysis of five fundus-image preprocessing techniques
-  (CLAHE, Ben Graham preprocessing, Adaptive Sigmoid Enhancement,
-  LAB-ACE, and Multi-channel Image Enhancement) paired with two
-  backbone architectures (ResNet-50 and Vision Transformer ViT-B/16),
-  using the IDRiD dataset for in-distribution training and evaluation
-  and the DDR dataset for cross-dataset zero-shot evaluation to probe
-  robustness under inter-institutional domain shift. Evaluation is
-  performed using accuracy, quadratic-weighted kappa, and macro-F1,
-  with bootstrap-based confidence intervals and paired significance
-  testing across configurations. The Grad-CAM interpretability technique
-  is applied to the best-performing configuration to visualise lesion
-  regions driving model predictions. The study is expected to deliver
-  reproducible empirical guidance on the preprocessing-and-backbone
-  combinations most suitable for deploying automated DR screening in
-  Indonesian primary-care settings.
+  Among working-age adults, diabetic retinopathy (DR) ranks as a foremost
+  preventable cause of vision loss, and its prevalence in Indonesia keeps
+  climbing even though the number of ophthalmologists per capita falls
+  well short of what annual fundus screening would demand. Although deep
+  learning now grades DR severity from fundus images with considerable
+  accuracy, studies typically fix their preprocessing technique and
+  backbone architecture by convention rather than by controlled
+  comparison, and they confirm whatever choice they make on a single
+  dataset, so the wider validity of that choice stays untested. The
+  present work runs a 5x2 factorial comparison in which five fundus-image
+  preprocessing techniques (CLAHE, Ben Graham preprocessing, Adaptive
+  Sigmoid Enhancement, LAB-ACE, and Multi-channel Image Enhancement) are
+  crossed with two backbones (ResNet-50 and Vision Transformer ViT-B/16)
+  to yield ten configurations, each trained and evaluated separately on
+  six public datasets that share the five-grade ICDR ontology (IDRiD,
+  DDR, APTOS 2019, Messidor-2, EyePACS, and DeepDRiD). Performance is
+  measured by accuracy, quadratic-weighted kappa, and macro-F1; the
+  per-dataset scores are then combined across the six datasets with the
+  Friedman test, and the two leading configurations are compared with the
+  Wilcoxon signed-rank test across datasets and with per-dataset McNemar
+  tests (Holm-Bonferroni corrected) on the paired predictions, in order to
+  pinpoint the configuration that remains best across datasets rather
+  than on any one of them. Grad-CAM is finally applied to that leading
+  configuration to reveal the lesion regions that drive its predictions.
+  The intended outcome is reproducible, evidence-based guidance on which
+  preprocessing-and-backbone pairings are most appropriate for automated
+  DR screening in Indonesian primary-care settings.
 
-keywords-en: "diabetic retinopathy, fundus image preprocessing, deep learning, Vision Transformer, ResNet-50, cross-dataset evaluation, IDRiD, DDR"
+keywords-en: "diabetic retinopathy, fundus image preprocessing, deep learning, backbone architecture, multi-dataset comparison"
 ---
