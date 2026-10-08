@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from src.train import run
+from src.train import run, run_name
 
 
 def main() -> None:
@@ -51,7 +51,7 @@ def main() -> None:
         for seed in args.seeds:
             n += 1
             out_dir = args.out_dir / f"seed{seed}"
-            done = out_dir / args.dataset / f"{technique}__{backbone}" / "metrics.json"
+            done = out_dir / args.dataset / run_name(technique, backbone, seed) / "metrics.json"
 
             if done.exists():
                 print(f"[{n}/{total}] {technique} x {backbone} seed={seed} -- sudah ada", flush=True)

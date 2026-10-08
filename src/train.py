@@ -41,6 +41,12 @@ from src.models import build_model, count_parameters, inference_time_ms
 MANIFEST_DIR = Path("manifests")
 
 
+def run_name(technique: str, backbone: str, seed: int) -> str:
+    """Nama folder satu run. Seed ikut masuk karena desainnya multi-seed:
+    tanpa itu, run seed kedua menimpa hasil seed pertama."""
+    return f"{technique}__{backbone}__seed{seed}"
+
+
 def get_device() -> torch.device:
     if torch.cuda.is_available():
         return torch.device("cuda")
@@ -158,7 +164,7 @@ def run(dataset: str, technique: str, backbone: str, cache_dir: Path, out_dir: P
         "seed": seed,
     }
 
-    run_dir = Path(out_dir) / dataset / f"{technique}__{backbone}"
+    run_dir = Path(out_dir) / dataset / run_name(technique, backbone, seed)
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2))
     (run_dir / "history.json").write_text(json.dumps(history, indent=2))
