@@ -1,0 +1,55 @@
+{
+  "dataset": "deepdrid",
+  "technique": "ben_graham",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.72,
+    "qwk": 0.7879153908817663,
+    "macro_f1": 0.6353309507501519
+  },
+  "val_qwk_best": 0.8105043270665473,
+  "best_epoch": 22,
+  "epochs_ran": 33,
+  "confusion_matrix": [
+    [
+      84,
+      9,
+      6,
+      1,
+      0
+    ],
+    [
+      5,
+      9,
+      4,
+      0,
+      0
+    ],
+    [
+      5,
+      9,
+      17,
+      5,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      28,
+      3
+    ],
+    [
+      2,
+      0,
+      0,
+      2,
+      6
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.93211669921875,
+  "train_minutes": 2.099180845419566,
+  "device": "cuda",
+  "seed": 42
+}

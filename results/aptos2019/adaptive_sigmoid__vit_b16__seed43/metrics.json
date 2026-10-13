@@ -1,0 +1,55 @@
+{
+  "dataset": "aptos2019",
+  "technique": "adaptive_sigmoid",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.7963636363636364,
+    "qwk": 0.8651825425420696,
+    "macro_f1": 0.646459980695388
+  },
+  "val_qwk_best": 0.876875424383075,
+  "best_epoch": 10,
+  "epochs_ran": 21,
+  "confusion_matrix": [
+    [
+      261,
+      9,
+      1,
+      0,
+      0
+    ],
+    [
+      5,
+      39,
+      11,
+      0,
+      1
+    ],
+    [
+      2,
+      16,
+      102,
+      20,
+      10
+    ],
+    [
+      0,
+      1,
+      6,
+      14,
+      8
+    ],
+    [
+      1,
+      6,
+      8,
+      7,
+      22
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 17.49172607421875,
+  "train_minutes": 13.041383024056753,
+  "device": "cuda",
+  "seed": 43
+}

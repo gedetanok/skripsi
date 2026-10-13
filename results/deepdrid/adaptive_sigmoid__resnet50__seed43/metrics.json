@@ -1,0 +1,55 @@
+{
+  "dataset": "deepdrid",
+  "technique": "adaptive_sigmoid",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.69,
+    "qwk": 0.8308255164635656,
+    "macro_f1": 0.603364644699611
+  },
+  "val_qwk_best": 0.7650920808926501,
+  "best_epoch": 3,
+  "epochs_ran": 14,
+  "confusion_matrix": [
+    [
+      76,
+      18,
+      5,
+      1,
+      0
+    ],
+    [
+      3,
+      10,
+      4,
+      0,
+      1
+    ],
+    [
+      2,
+      8,
+      19,
+      6,
+      1
+    ],
+    [
+      0,
+      0,
+      3,
+      27,
+      6
+    ],
+    [
+      1,
+      0,
+      2,
+      1,
+      6
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.973447875976563,
+  "train_minutes": 0.9062100410461426,
+  "device": "cuda",
+  "seed": 43
+}

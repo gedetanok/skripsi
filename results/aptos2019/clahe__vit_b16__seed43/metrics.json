@@ -1,0 +1,55 @@
+{
+  "dataset": "aptos2019",
+  "technique": "clahe",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.8,
+    "qwk": 0.8652266690058524,
+    "macro_f1": 0.6543393840232185
+  },
+  "val_qwk_best": 0.8803853741669179,
+  "best_epoch": 22,
+  "epochs_ran": 33,
+  "confusion_matrix": [
+    [
+      261,
+      6,
+      4,
+      0,
+      0
+    ],
+    [
+      4,
+      31,
+      16,
+      1,
+      4
+    ],
+    [
+      1,
+      8,
+      108,
+      24,
+      9
+    ],
+    [
+      0,
+      0,
+      6,
+      15,
+      8
+    ],
+    [
+      1,
+      2,
+      13,
+      3,
+      25
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 17.392520751953125,
+  "train_minutes": 20.24331364631653,
+  "device": "cuda",
+  "seed": 43
+}

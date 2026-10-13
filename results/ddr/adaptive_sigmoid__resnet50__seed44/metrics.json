@@ -1,0 +1,55 @@
+{
+  "dataset": "ddr",
+  "technique": "adaptive_sigmoid",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.7097632349028997,
+    "qwk": 0.6944070664998951,
+    "macro_f1": 0.5315657296979186
+  },
+  "val_qwk_best": 0.8591916327725644,
+  "best_epoch": 19,
+  "epochs_ran": 30,
+  "confusion_matrix": [
+    [
+      1822,
+      23,
+      35,
+      0,
+      0
+    ],
+    [
+      111,
+      15,
+      60,
+      0,
+      3
+    ],
+    [
+      595,
+      55,
+      610,
+      38,
+      46
+    ],
+    [
+      6,
+      2,
+      27,
+      31,
+      5
+    ],
+    [
+      18,
+      4,
+      58,
+      5,
+      190
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.782691650390625,
+  "train_minutes": 18.486101456483205,
+  "device": "cuda",
+  "seed": 44
+}

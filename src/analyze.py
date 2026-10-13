@@ -25,6 +25,53 @@ from pathlib import Path
 import pandas as pd
 from scipy import stats
 from statsmodels.stats.multitest import multipletests
+from statsmodels.stats.contingency_tables import mcnemar
+
+
+def paired_correctness(a: pd.DataFrame, b: pd.DataFrame) -> list[list[int]]:
+    """Pair by image ID, refusing duplicates, missing images or label mismatch."""
+    for frame in (a, b):
+        if frame.empty or not {'image_id', 'true', 'pred'} <= set(frame.columns):
+            raise ValueError('Predictions must contain image_id, true, pred')
+        if frame[['image_id', 'true', 'pred']].isna().any().any() or frame.image_id.duplicated().any():
+            raise ValueError('Missing values or duplicate prediction IDs')
+        if not frame[['true', 'pred']].isin(range(5)).all().all():
+            raise ValueError('Labels must be integer grades 0–4')
+    if set(a.image_id) != set(b.image_id):
+        raise ValueError('Prediction image sets differ')
+    pair = a.merge(b, on='image_id', suffixes=('_a', '_b'), validate='one_to_one')
+    if not pair.true_a.equals(pair.true_b):
+        raise ValueError('Ground-truth labels differ')
+    ca, cb = pair.pred_a.eq(pair.true_a), pair.pred_b.eq(pair.true_b)
+    return [[int((ca & cb).sum()), int((ca & ~cb).sum())],
+            [int((~ca & cb).sum()), int((~ca & ~cb).sum())]]
+
+
+def mcnemar_top_two(ranks: pd.Series, datasets: list[str], results_dir: Path,
+                   seed: int = 42) -> pd.DataFrame:
+    """Exploratory, test-selected comparison; exact McNemar on correctness."""
+    configs = ranks.sort_values(kind='stable').index[:2].tolist()
+    if len(configs) != 2:
+        raise ValueError('Need two ranked configurations')
+    rows = []
+    for dataset in datasets:
+        frames = []
+        for config in configs:
+            technique, backbone = config.split(' x ')
+            path = results_dir / dataset / f'{technique}__{backbone}__seed{seed}' / 'predictions.csv'
+            frames.append(pd.read_csv(path, dtype={'image_id': str}))
+        table = paired_correctness(*frames)
+        result = mcnemar(table, exact=True)
+        rows.append(dict(dataset=dataset, config_a=configs[0], config_b=configs[1],
+                         seed=seed, n_images=sum(map(sum, table)),
+                         both_correct=table[0][0], b_a_only_correct=table[0][1],
+                         c_b_only_correct=table[1][0], both_wrong=table[1][1],
+                         p_exact=float(result.pvalue)))
+    out = pd.DataFrame(rows)
+    reject, adjusted, _, _ = multipletests(out.p_exact, alpha=0.05, method='holm')
+    out['p_holm'], out['reject_holm_005'] = adjusted, reject
+    out['interpretation'] = 'exploratory_test_selected_pair_seed42_correctness_not_qwk'
+    return out
 
 
 def cell_means(runs: pd.DataFrame) -> pd.DataFrame:
@@ -53,9 +100,15 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--runs", type=Path, default=Path("results/run_144_qwk.csv"))
     p.add_argument("--out-dir", type=Path, default=Path("results/analysis"))
+    p.add_argument("--results-dir", type=Path, default=Path("results"))
     args = p.parse_args()
 
     runs = pd.read_csv(args.runs)
+    keys = ['dataset', 'technique', 'backbone', 'seed']
+    if runs[keys + ['qwk']].isna().any().any() or runs.duplicated(keys).any():
+        raise ValueError('Missing values or duplicate run keys')
+    if not runs.groupby(keys[:-1]).seed.apply(lambda s: set(s) == {42, 43, 44}).all():
+        raise ValueError('Every cell must contain seeds 42, 43, 44')
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     datasets = sorted(runs.dataset.unique())
@@ -67,6 +120,8 @@ def main() -> None:
 
     # --- 1-2. omnibus seluruh konfigurasi ------------------------------------
     matrix = cell_means(runs)
+    if matrix.isna().any().any():
+        raise ValueError('All datasets must have the same configuration grid')
     matrix.round(4).to_csv(args.out_dir / "matriks_qwk.csv")
     print("\nMatriks QWK (rerata antar-seed)")
     print(matrix.round(4).to_string())
@@ -121,6 +176,13 @@ def main() -> None:
             print(f"    {rank:5.2f}  {technique:<18} QWK {m.loc[technique].mean():.4f}")
 
     ranks.round(3).to_csv(args.out_dir / "peringkat_rata_rata.csv", header=["avg_rank"])
+    paired = mcnemar_top_two(ranks, datasets, args.results_dir)
+    paired.to_csv(args.out_dir / 'mcnemar_holm.csv', index=False)
+    print('\nMcNemar exact + Holm, seed 42:')
+    print(paired.to_string(index=False))
+    print('  Eksploratif: pasangan dipilih dari peringkat test yang sama; Holm tidak')
+    print('  mengoreksi proses pemilihan tersebut. Menguji benar/salah, bukan QWK.')
+    print('  Citra berpasangan dari pasien yang sama dapat melanggar independensi antar citra.')
     print(f"\nkeluaran disimpan di {args.out_dir}")
 
 

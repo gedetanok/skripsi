@@ -1,0 +1,101 @@
+======================================================================
+4 dataset: aptos2019, ddr, deepdrid, idrid
+48 sel, 144 run, 3 seed per sel
+======================================================================
+
+Matriks QWK (rerata antar-seed)
+dataset                      aptos2019     ddr  deepdrid   idrid
+config                                                          
+adaptive_sigmoid x resnet50     0.8813  0.6950    0.8033  0.5974
+adaptive_sigmoid x vit_b16      0.8641  0.6795    0.7863  0.6583
+baseline x resnet50             0.8729  0.7243    0.7817  0.5629
+baseline x vit_b16              0.8511  0.6808    0.7309  0.5544
+ben_graham x resnet50           0.8755  0.7528    0.7935  0.6584
+ben_graham x vit_b16            0.8797  0.7098    0.8069  0.6072
+clahe x resnet50                0.8799  0.7542    0.7996  0.6227
+clahe x vit_b16                 0.8620  0.6773    0.7861  0.6317
+lab_ace x resnet50              0.8770  0.7160    0.7913  0.5986
+lab_ace x vit_b16               0.8608  0.6811    0.7749  0.6025
+mcie x resnet50                 0.8776  0.7310    0.7968  0.6251
+mcie x vit_b16                  0.8418  0.6749    0.7655  0.6418
+
+Friedman seluruh konfigurasi: chi2 = 22.846, p = 0.0186 (k=12 metode, N=4 dataset)
+  signifikan pada 0,05
+
+Rata-rata peringkat (deskriptif, 1 = terbaik):
+   3.00  clahe x resnet50
+   3.50  ben_graham x resnet50
+   4.00  mcie x resnet50
+   4.25  ben_graham x vit_b16
+   5.00  adaptive_sigmoid x resnet50
+   6.25  lab_ace x resnet50
+   6.75  adaptive_sigmoid x vit_b16
+   7.75  baseline x resnet50
+   8.00  clahe x vit_b16
+   9.00  lab_ace x vit_b16
+   9.50  mcie x vit_b16
+  11.00  baseline x vit_b16
+
+----------------------------------------------------------------------
+FAKTOR BACKBONE (dirata-ratakan atas enam teknik)
+dataset   aptos2019     ddr  deepdrid   idrid
+backbone                                     
+resnet50     0.8774  0.7289    0.7944  0.6108
+vit_b16      0.8599  0.6839    0.7751  0.6160
+
+  ResNet-50 menang di 3 dari 4 dataset
+  selisih median: +0.0184
+  Wilcoxon signed-rank: W = 1.0, p = 0.2500
+  CATATAN: pada N=4 dataset, p terkecil yang mungkin adalah 0.1250; signifikansi belum dapat dicapai.
+
+----------------------------------------------------------------------
+FAKTOR PREPROCESSING (dirata-ratakan atas kedua backbone)
+dataset           aptos2019     ddr  deepdrid   idrid
+technique                                            
+adaptive_sigmoid     0.8727  0.6873    0.7948  0.6278
+baseline             0.8620  0.7026    0.7563  0.5587
+ben_graham           0.8776  0.7313    0.8002  0.6328
+clahe                0.8710  0.7158    0.7928  0.6272
+lab_ace              0.8689  0.6986    0.7831  0.6005
+mcie                 0.8597  0.7029    0.7811  0.6334
+
+Friedman preprocessing: chi2 = 10.857, p = 0.0543 (k=6 metode, N=4 dataset)
+  TIDAK signifikan pada 0,05
+
+  Tiap teknik dibandingkan terhadap baseline (Wilcoxon + Holm):
+    adaptive_sigmoid   selisih +0.0258  p = 0.3750  p_Holm = 0.7500  tidak
+    ben_graham         selisih +0.0406  p = 0.1250  p_Holm = 0.6250  tidak
+    clahe              selisih +0.0318  p = 0.1250  p_Holm = 0.6250  tidak
+    lab_ace            selisih +0.0179  p = 0.2500  p_Holm = 0.7500  tidak
+    mcie               selisih +0.0244  p = 0.3750  p_Holm = 0.7500  tidak
+
+----------------------------------------------------------------------
+INTERAKSI: urutan preprocessing di dalam tiap backbone
+
+  resnet50 (sebaran QWK rerata 0.0346):
+     2.00  clahe              QWK 0.7641
+     2.75  mcie               QWK 0.7576
+     3.00  ben_graham         QWK 0.7701
+     3.25  adaptive_sigmoid   QWK 0.7443
+     4.50  lab_ace            QWK 0.7457
+     5.50  baseline           QWK 0.7355
+
+  vit_b16 (sebaran QWK rerata 0.0466):
+     1.75  ben_graham         QWK 0.7509
+     2.25  adaptive_sigmoid   QWK 0.7470
+     3.50  clahe              QWK 0.7393
+     3.75  lab_ace            QWK 0.7298
+     4.75  mcie               QWK 0.7310
+     5.00  baseline           QWK 0.7043
+
+McNemar exact + Holm, seed 42:
+  dataset         config_a              config_b  seed  n_images  both_correct  b_a_only_correct  c_b_only_correct  both_wrong  p_exact   p_holm  reject_holm_005                                            interpretation
+aptos2019 clahe x resnet50 ben_graham x resnet50    42       550           394                40                40          76 1.000000 1.000000            False exploratory_test_selected_pair_seed42_correctness_not_qwk
+      ddr clahe x resnet50 ben_graham x resnet50    42      3759          2579               218               252         710 0.127876 0.511503            False exploratory_test_selected_pair_seed42_correctness_not_qwk
+ deepdrid clahe x resnet50 ben_graham x resnet50    42       200           120                23                24          33 1.000000 1.000000            False exploratory_test_selected_pair_seed42_correctness_not_qwk
+    idrid clahe x resnet50 ben_graham x resnet50    42       103            42                12                17          32 0.458258 1.000000            False exploratory_test_selected_pair_seed42_correctness_not_qwk
+  Eksploratif: pasangan dipilih dari peringkat test yang sama; Holm tidak
+  mengoreksi proses pemilihan tersebut. Menguji benar/salah, bukan QWK.
+  Citra berpasangan dari pasien yang sama dapat melanggar independensi antar citra.
+
+keluaran disimpan di results/analysis

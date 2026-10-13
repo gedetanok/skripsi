@@ -1,0 +1,55 @@
+{
+  "dataset": "aptos2019",
+  "technique": "ben_graham",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.8181818181818182,
+    "qwk": 0.8851500507129646,
+    "macro_f1": 0.6771665880041023
+  },
+  "val_qwk_best": 0.8800384254042672,
+  "best_epoch": 8,
+  "epochs_ran": 19,
+  "confusion_matrix": [
+    [
+      263,
+      7,
+      1,
+      0,
+      0
+    ],
+    [
+      3,
+      34,
+      17,
+      0,
+      2
+    ],
+    [
+      1,
+      14,
+      113,
+      10,
+      12
+    ],
+    [
+      0,
+      0,
+      5,
+      14,
+      10
+    ],
+    [
+      1,
+      1,
+      12,
+      4,
+      26
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 7.11888916015625,
+  "train_minutes": 4.8922261317571,
+  "device": "cuda",
+  "seed": 44
+}

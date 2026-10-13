@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "ben_graham",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.5728155339805825,
+    "qwk": 0.7108920380639419,
+    "macro_f1": 0.4923815475067597
+  },
+  "val_qwk_best": 0.8183971083135984,
+  "best_epoch": 8,
+  "epochs_ran": 19,
+  "confusion_matrix": [
+    [
+      27,
+      2,
+      5,
+      0,
+      0
+    ],
+    [
+      4,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      9,
+      0,
+      17,
+      4,
+      2
+    ],
+    [
+      2,
+      0,
+      5,
+      7,
+      5
+    ],
+    [
+      0,
+      0,
+      5,
+      1,
+      7
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 6.0633087158203125,
+  "train_minutes": 0.7128494222958882,
+  "device": "cuda",
+  "seed": 42
+}

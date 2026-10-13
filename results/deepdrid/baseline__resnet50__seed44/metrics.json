@@ -1,0 +1,55 @@
+{
+  "dataset": "deepdrid",
+  "technique": "baseline",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.69,
+    "qwk": 0.7908073070123748,
+    "macro_f1": 0.6252716718266254
+  },
+  "val_qwk_best": 0.7771129394166043,
+  "best_epoch": 10,
+  "epochs_ran": 21,
+  "confusion_matrix": [
+    [
+      77,
+      16,
+      6,
+      1,
+      0
+    ],
+    [
+      3,
+      11,
+      4,
+      0,
+      0
+    ],
+    [
+      3,
+      5,
+      23,
+      5,
+      0
+    ],
+    [
+      3,
+      0,
+      9,
+      21,
+      3
+    ],
+    [
+      1,
+      0,
+      2,
+      1,
+      6
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 6.534512939453125,
+  "train_minutes": 1.3399505853652953,
+  "device": "cuda",
+  "seed": 44
+}

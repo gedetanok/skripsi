@@ -1,0 +1,55 @@
+{
+  "dataset": "deepdrid",
+  "technique": "baseline",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.62,
+    "qwk": 0.7197520883858799,
+    "macro_f1": 0.5340260420237731
+  },
+  "val_qwk_best": 0.7175374779541446,
+  "best_epoch": 4,
+  "epochs_ran": 15,
+  "confusion_matrix": [
+    [
+      65,
+      17,
+      11,
+      5,
+      2
+    ],
+    [
+      2,
+      3,
+      10,
+      3,
+      0
+    ],
+    [
+      1,
+      3,
+      21,
+      10,
+      1
+    ],
+    [
+      1,
+      1,
+      3,
+      29,
+      2
+    ],
+    [
+      0,
+      0,
+      1,
+      3,
+      6
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.810518798828125,
+  "train_minutes": 2.3242716670036314,
+  "device": "cuda",
+  "seed": 42
+}

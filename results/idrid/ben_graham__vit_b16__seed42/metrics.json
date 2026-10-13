@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "ben_graham",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.4368932038834951,
+    "qwk": 0.6270894851713955,
+    "macro_f1": 0.35091334104492
+  },
+  "val_qwk_best": 0.8694049499736703,
+  "best_epoch": 24,
+  "epochs_ran": 35,
+  "confusion_matrix": [
+    [
+      15,
+      6,
+      13,
+      0,
+      0
+    ],
+    [
+      2,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      5,
+      0,
+      19,
+      4,
+      4
+    ],
+    [
+      1,
+      0,
+      8,
+      5,
+      5
+    ],
+    [
+      0,
+      0,
+      3,
+      4,
+      6
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.790465087890626,
+  "train_minutes": 2.825968650976817,
+  "device": "cuda",
+  "seed": 42
+}

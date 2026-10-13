@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "adaptive_sigmoid",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.49514563106796117,
+    "qwk": 0.5858395842641145,
+    "macro_f1": 0.371492916887343
+  },
+  "val_qwk_best": 0.7826584632994706,
+  "best_epoch": 9,
+  "epochs_ran": 20,
+  "confusion_matrix": [
+    [
+      24,
+      3,
+      5,
+      2,
+      0
+    ],
+    [
+      3,
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      8,
+      0,
+      14,
+      8,
+      2
+    ],
+    [
+      2,
+      0,
+      3,
+      10,
+      4
+    ],
+    [
+      2,
+      0,
+      3,
+      5,
+      3
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.885942993164062,
+  "train_minutes": 0.7611708958943685,
+  "device": "cuda",
+  "seed": 42
+}

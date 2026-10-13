@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "lab_ace",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.4174757281553398,
+    "qwk": 0.6675799298799601,
+    "macro_f1": 0.3079253020188958
+  },
+  "val_qwk_best": 0.8314384577360356,
+  "best_epoch": 23,
+  "epochs_ran": 34,
+  "confusion_matrix": [
+    [
+      25,
+      2,
+      6,
+      1,
+      0
+    ],
+    [
+      2,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      9,
+      1,
+      10,
+      9,
+      3
+    ],
+    [
+      1,
+      0,
+      8,
+      4,
+      6
+    ],
+    [
+      0,
+      0,
+      3,
+      6,
+      4
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.820841064453125,
+  "train_minutes": 2.7486106634140013,
+  "device": "cuda",
+  "seed": 43
+}

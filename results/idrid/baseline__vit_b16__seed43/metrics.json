@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "baseline",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.4077669902912621,
+    "qwk": 0.5122999891150539,
+    "macro_f1": 0.2894175572345881
+  },
+  "val_qwk_best": 0.7694508009153318,
+  "best_epoch": 12,
+  "epochs_ran": 23,
+  "confusion_matrix": [
+    [
+      17,
+      6,
+      11,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      4,
+      0,
+      0
+    ],
+    [
+      4,
+      2,
+      20,
+      2,
+      4
+    ],
+    [
+      1,
+      0,
+      10,
+      3,
+      5
+    ],
+    [
+      2,
+      0,
+      6,
+      3,
+      2
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.9147216796875,
+  "train_minutes": 1.8760857542355855,
+  "device": "cuda",
+  "seed": 43
+}

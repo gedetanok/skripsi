@@ -1,0 +1,55 @@
+{
+  "dataset": "deepdrid",
+  "technique": "clahe",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.675,
+    "qwk": 0.823088455772114,
+    "macro_f1": 0.5902316602316603
+  },
+  "val_qwk_best": 0.8051735428945646,
+  "best_epoch": 4,
+  "epochs_ran": 15,
+  "confusion_matrix": [
+    [
+      75,
+      19,
+      6,
+      0,
+      0
+    ],
+    [
+      2,
+      9,
+      6,
+      1,
+      0
+    ],
+    [
+      1,
+      9,
+      20,
+      6,
+      0
+    ],
+    [
+      1,
+      1,
+      6,
+      27,
+      1
+    ],
+    [
+      1,
+      0,
+      1,
+      4,
+      4
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.835157470703125,
+  "train_minutes": 2.327729070186615,
+  "device": "cuda",
+  "seed": 42
+}

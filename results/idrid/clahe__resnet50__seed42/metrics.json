@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "clahe",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.5242718446601942,
+    "qwk": 0.6205724001133466,
+    "macro_f1": 0.39612855668583224
+  },
+  "val_qwk_best": 0.8313652646941754,
+  "best_epoch": 18,
+  "epochs_ran": 29,
+  "confusion_matrix": [
+    [
+      22,
+      1,
+      11,
+      0,
+      0
+    ],
+    [
+      5,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      4,
+      0,
+      21,
+      7,
+      0
+    ],
+    [
+      2,
+      0,
+      6,
+      7,
+      4
+    ],
+    [
+      1,
+      0,
+      6,
+      2,
+      4
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 6.106642456054687,
+  "train_minutes": 1.0850414872169494,
+  "device": "cuda",
+  "seed": 42
+}

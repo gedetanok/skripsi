@@ -1,0 +1,55 @@
+{
+  "dataset": "aptos2019",
+  "technique": "baseline",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.8272727272727273,
+    "qwk": 0.8838348281245217,
+    "macro_f1": 0.6717307914208184
+  },
+  "val_qwk_best": 0.8777232987323427,
+  "best_epoch": 20,
+  "epochs_ran": 31,
+  "confusion_matrix": [
+    [
+      263,
+      6,
+      1,
+      0,
+      1
+    ],
+    [
+      2,
+      32,
+      20,
+      1,
+      1
+    ],
+    [
+      2,
+      13,
+      126,
+      6,
+      3
+    ],
+    [
+      0,
+      0,
+      6,
+      13,
+      10
+    ],
+    [
+      1,
+      1,
+      15,
+      6,
+      21
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.833743286132813,
+  "train_minutes": 8.40155089298884,
+  "device": "cuda",
+  "seed": 42
+}

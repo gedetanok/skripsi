@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "mcie",
+  "backbone": "resnet50",
+  "test": {
+    "accuracy": 0.5145631067961165,
+    "qwk": 0.6242440565090713,
+    "macro_f1": 0.3843468786700434
+  },
+  "val_qwk_best": 0.8817882971729125,
+  "best_epoch": 8,
+  "epochs_ran": 19,
+  "confusion_matrix": [
+    [
+      25,
+      3,
+      4,
+      2,
+      0
+    ],
+    [
+      4,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      6,
+      1,
+      17,
+      8,
+      0
+    ],
+    [
+      1,
+      0,
+      7,
+      8,
+      3
+    ],
+    [
+      3,
+      0,
+      0,
+      7,
+      3
+    ]
+  ],
+  "n_params": 23518277,
+  "inference_ms": 5.960782470703125,
+  "train_minutes": 0.7209125280380249,
+  "device": "cuda",
+  "seed": 43
+}

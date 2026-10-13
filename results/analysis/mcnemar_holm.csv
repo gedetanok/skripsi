@@ -1,0 +1,5 @@
+dataset,config_a,config_b,seed,n_images,both_correct,b_a_only_correct,c_b_only_correct,both_wrong,p_exact,p_holm,reject_holm_005,interpretation
+aptos2019,clahe x resnet50,ben_graham x resnet50,42,550,394,40,40,76,1.0,1.0,False,exploratory_test_selected_pair_seed42_correctness_not_qwk
+ddr,clahe x resnet50,ben_graham x resnet50,42,3759,2579,218,252,710,0.12787585420395947,0.5115034168158379,False,exploratory_test_selected_pair_seed42_correctness_not_qwk
+deepdrid,clahe x resnet50,ben_graham x resnet50,42,200,120,23,24,33,1.0,1.0,False,exploratory_test_selected_pair_seed42_correctness_not_qwk
+idrid,clahe x resnet50,ben_graham x resnet50,42,103,42,12,17,32,0.45825831964612007,1.0,False,exploratory_test_selected_pair_seed42_correctness_not_qwk

@@ -1,0 +1,35 @@
+Perubahan eksperimen 13 Oktober 2026
+
+EyePACS: subset menjadi 5.000 train, 1.000 val, 2.500 test (seed split 42).
+Lihat eyepacs_subset_verification.json untuk proporsi kelas sumber dan subset.
+Empat dataset terdahulu tidak diubah atau dilatih ulang.
+144 folder run disalin dari hasil Kaggle yang telah diverifikasi, satu kali per kombinasi.
+QWK pada run_144_qwk.csv cocok tepat dengan hasil asli.
+
+McNemar: dua konfigurasi dengan peringkat rata-rata teratas (CLAHE/ResNet-50
+dan Ben Graham/ResNet-50), seed tetap 42, empat uji dalam satu keluarga Holm.
+Pasangan citra diperiksa berdasarkan image_id, label, dan keunikan ID.
+Semua uji menggunakan binomial exact, bukan pendekatan chi-square.
+Pemilihan pasangan berasal dari test yang sama: analisis ini eksploratif,
+bukan konfirmasi independen. Holm mengoreksi empat uji, bukan seleksi pasangan.
+McNemar menguji perbedaan correctness/accuracy; tidak menguji perbedaan QWK.
+Citra dua mata dari satu pasien dapat berkorelasi, sehingga asumsi independensi
+antar citra perlu diperiksa sebelum kesimpulan inferensial.
+
+Catatan interpretasi analisis lama: p Friedman yang dicetak memakai aproksimasi
+chi-square dan N hanya 4 dataset. Jangan menganggapnya bukti konklusif.
+Enam dataset pun tidak menjamin signifikansi setelah Holm: p minimum Wilcoxon
+dua sisi 0,03125 masih di atas ambang Holm pertama 0,01 untuk lima perbandingan.
+Penambahan dataset dilakukan untuk desain penelitian, bukan mengejar p < 0,05.
+
+Gambar 2.1 dan contoh PPT kini memanggil src.data.preprocessing.preprocess,
+termasuk adaptive sigmoid lokal per kanal. Hanya ilustrasi yang diperbarui;
+kode preprocessing training yang sudah dipakai tidak diganti.
+
+Draf untuk pembimbing (belum dikirim):
+Pak Putrama, eksperimen kini menggunakan tiga seed (42, 43, 44) per konfigurasi
+agar variasi antar-run dapat dilaporkan, serta arm baseline tanpa enhancement
+sebagai pembanding. Empat dataset telah lengkap, masing-masing 36 run.
+Untuk EyePACS, saya merencanakan subset stratified 5.000 training, 1.000 validasi,
+dan 2.500 test karena anggaran komputasi. Saya akan mendokumentasikan perubahan
+ini dan membahas batas analisis statistik sebelum menarik kesimpulan.

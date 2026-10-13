@@ -33,7 +33,7 @@ OUT_DIR = Path("manifests")
 
 # EyePACS terlalu besar untuk dilatih utuh (88.702 citra). Sesuai Bagian 3.2.1
 # diambil subset class-stratified yang mempertahankan distribusi kelas aslinya.
-EYEPACS_SUBSET = {"train": 10_000, "val": 2_000, "test": 5_000}
+EYEPACS_SUBSET = {"train": 5_000, "val": 1_000, "test": 2_500}
 
 
 def stratified_split(df: pd.DataFrame, fracs: tuple[float, float, float]) -> pd.DataFrame:

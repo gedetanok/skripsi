@@ -1,0 +1,55 @@
+{
+  "dataset": "idrid",
+  "technique": "clahe",
+  "backbone": "vit_b16",
+  "test": {
+    "accuracy": 0.47572815533980584,
+    "qwk": 0.6572552183119895,
+    "macro_f1": 0.3046233869498236
+  },
+  "val_qwk_best": 0.8125343595382079,
+  "best_epoch": 3,
+  "epochs_ran": 14,
+  "confusion_matrix": [
+    [
+      24,
+      0,
+      8,
+      2,
+      0
+    ],
+    [
+      2,
+      0,
+      1,
+      2,
+      0
+    ],
+    [
+      7,
+      0,
+      9,
+      16,
+      0
+    ],
+    [
+      1,
+      0,
+      2,
+      16,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      12,
+      0
+    ]
+  ],
+  "n_params": 85802501,
+  "inference_ms": 15.8714453125,
+  "train_minutes": 1.1560310959815978,
+  "device": "cuda",
+  "seed": 44
+}
