@@ -1,0 +1,13 @@
+config,aptos2019,ddr,deepdrid,idrid
+adaptive_sigmoid x resnet50,0.8813,0.695,0.8033,0.5974
+adaptive_sigmoid x vit_b16,0.8641,0.6795,0.7863,0.6583
+baseline x resnet50,0.8729,0.7243,0.7817,0.5629
+baseline x vit_b16,0.8511,0.6808,0.7309,0.5544
+ben_graham x resnet50,0.8755,0.7528,0.7935,0.6584
+ben_graham x vit_b16,0.8797,0.7098,0.8069,0.6072
+clahe x resnet50,0.8799,0.7542,0.7996,0.6227
+clahe x vit_b16,0.862,0.6773,0.7861,0.6317
+lab_ace x resnet50,0.877,0.716,0.7913,0.5986
+lab_ace x vit_b16,0.8608,0.6811,0.7749,0.6025
+mcie x resnet50,0.8776,0.731,0.7968,0.6251
+mcie x vit_b16,0.8418,0.6749,0.7655,0.6418

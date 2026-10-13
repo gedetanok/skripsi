@@ -1,0 +1,13 @@
+config,avg_rank
+clahe x resnet50,3.0
+ben_graham x resnet50,3.5
+mcie x resnet50,4.0
+ben_graham x vit_b16,4.25
+adaptive_sigmoid x resnet50,5.0
+lab_ace x resnet50,6.25
+adaptive_sigmoid x vit_b16,6.75
+baseline x resnet50,7.75
+clahe x vit_b16,8.0
+lab_ace x vit_b16,9.0
+mcie x vit_b16,9.5
+baseline x vit_b16,11.0
