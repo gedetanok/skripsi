@@ -108,8 +108,12 @@ def _process(args: tuple[str, str, str, str, int, int]) -> str | None:
         dest = Path(out_dir) / technique / f"{image_id}.jpg"
         if dest.exists():
             continue
-        result = preprocess(img, technique, size=size, work_size=work_size)
-        cv2.imwrite(str(dest), result, [cv2.IMWRITE_JPEG_QUALITY, JPEG_QUALITY])
+        try:
+            result = preprocess(img, technique, size=size, work_size=work_size)
+            if not cv2.imwrite(str(dest), result, [cv2.IMWRITE_JPEG_QUALITY, JPEG_QUALITY]):
+                raise OSError(f"Could not write {dest}")
+        except Exception as exc:
+            raise RuntimeError(f"Cache failed: image_id={image_id}, technique={technique}, source={src}") from exc
     return None
 
 

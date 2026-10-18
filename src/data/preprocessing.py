@@ -175,6 +175,10 @@ def preprocess(img: np.ndarray, technique: str, size: int = IMAGE_SIZE,
     if work_size and max(cropped.shape[:2]) > work_size:
         cropped = cv2.resize(cropped, (work_size, work_size), interpolation=cv2.INTER_AREA)
     mask = retina_mask(cropped)
+    if not np.any(mask):
+        # Every technique is masked afterwards, so an empty mask implies an
+        # all-zero output. Avoid undefined enhancement parameters (sigma=0).
+        return np.zeros((size, size, 3), dtype=np.uint8)
     out = TECHNIQUES[technique](cropped, mask)
     out = out * mask[:, :, None]
     return cv2.resize(out, (size, size), interpolation=cv2.INTER_AREA)
